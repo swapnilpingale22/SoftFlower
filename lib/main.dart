@@ -1,25 +1,33 @@
+import 'package:expense_manager/Features/auth/splash_screen.dart';
+import 'package:expense_manager/utils/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
-import 'Features/auth/login_screen..dart';
-
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Expense Tracker',
+    return GetMaterialApp(
+      title: 'SoftFlower',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginScreen(),
+      theme: AppTheme.lightThemeMode,
+      themeMode: MediaQuery.of(context).platformBrightness == Brightness.dark
+          ? ThemeMode.dark
+          : ThemeMode.light,
+      home: const SplashScreen(),
     );
   }
 }
