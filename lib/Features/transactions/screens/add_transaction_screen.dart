@@ -1,9 +1,10 @@
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
+import 'package:expense_manager/Features/common_widgets/custom_button.dart';
+import 'package:expense_manager/Features/common_widgets/custom_text_field.dart';
 import 'package:expense_manager/Features/company/models/company_model.dart';
 import 'package:expense_manager/Features/product/models/product_model.dart';
 import 'package:expense_manager/Features/transactions/controller/add_transaction_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
-import 'package:expense_manager/utils/global_variables.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,132 +23,381 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Add Transaction',
-            style: lightTextTheme.headlineMedium?.copyWith(
-              fontSize: 20,
-            ),
+      appBar: AppBar(
+        title: Text(
+          'Add Transaction',
+          style: lightTextTheme.headlineMedium?.copyWith(
+            fontSize: 20,
           ),
         ),
-        body: const CommingSoonScreen()
-        //  Obx(
-        //   () => Padding(
-        //     padding: const EdgeInsets.all(20),
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text(
-        //           'Company Name',
-        //           style: lightTextTheme.bodyMedium!.copyWith(
-        //             fontWeight: FontWeight.w500,
-        //           ),
-        //         ),
-        //         Container(
-        //           alignment: Alignment.centerLeft,
-        //           child: addTransactionController.companies.isEmpty
-        //               ? const Center(child: CircularProgressIndicator())
-        //               : DropdownButton<String>(
-        //                   dropdownColor: primaryColor3,
-        //                   value: addTransactionController.selectedCompanyId.value,
-        //                   hint: Text(
-        //                     'Select a company',
-        //                     style: lightTextTheme.headlineMedium
-        //                         ?.copyWith(fontSize: 16, color: secondaryColor),
-        //                   ),
-        //                   onChanged: (String? newValue) {
-        //                     addTransactionController.selectedCompanyId.value =
-        //                         newValue!;
-        //                   },
-        //                   items: addTransactionController.companies
-        //                       .map((Company company) {
-        //                     return DropdownMenuItem<String>(
-        //                       value: company.companyName,
-        //                       child: Text(
-        //                         company.companyName,
-        //                         style: lightTextTheme.headlineMedium
-        //                             ?.copyWith(fontSize: 16, color: textColor),
-        //                       ),
-        //                     );
-        //                   }).toList(),
-        //                 ),
-        //         ),
-        //         const SizedBox(height: 10),
-        //         Text(
-        //           'Agent Name',
-        //           style: lightTextTheme.bodyMedium!.copyWith(
-        //             fontWeight: FontWeight.w500,
-        //           ),
-        //         ),
-        //         Container(
-        //           alignment: Alignment.centerLeft,
-        //           child: addTransactionController.agents.isEmpty
-        //               ? const Center(child: CircularProgressIndicator())
-        //               : DropdownButton<String>(
-        //                   dropdownColor: primaryColor3,
-        //                   value: addTransactionController.selectedAgentId.value,
-        //                   hint: Text(
-        //                     'Select an agent',
-        //                     style: lightTextTheme.headlineMedium
-        //                         ?.copyWith(fontSize: 16, color: secondaryColor),
-        //                   ),
-        //                   onChanged: (String? newValue) {
-        //                     addTransactionController.selectedAgentId.value =
-        //                         newValue!;
-        //                   },
-        //                   items:
-        //                       addTransactionController.agents.map((Agent agent) {
-        //                     return DropdownMenuItem<String>(
-        //                       value: agent.agentId,
-        //                       child: Text(
-        //                         agent.agentName,
-        //                         style: lightTextTheme.headlineMedium
-        //                             ?.copyWith(fontSize: 16, color: textColor),
-        //                       ),
-        //                     );
-        //                   }).toList(),
-        //                 ),
-        //         ),
-        //         const SizedBox(height: 10),
-        //         Text(
-        //           'Product Name',
-        //           style: lightTextTheme.bodyMedium!.copyWith(
-        //             fontWeight: FontWeight.w500,
-        //           ),
-        //         ),
-        //         Container(
-        //           alignment: Alignment.centerLeft,
-        //           child: addTransactionController.products.isEmpty
-        //               ? const Center(child: CircularProgressIndicator())
-        //               : DropdownButton<String>(
-        //                   dropdownColor: primaryColor3,
-        //                   value: addTransactionController.selectedProductId.value,
-        //                   hint: Text(
-        //                     'Select a product',
-        //                     style: lightTextTheme.headlineMedium
-        //                         ?.copyWith(fontSize: 16, color: secondaryColor),
-        //                   ),
-        //                   onChanged: (String? newValue) {
-        //                     addTransactionController.selectedProductId.value =
-        //                         newValue!;
-        //                   },
-        //                   items: addTransactionController.products
-        //                       .map((Product product) {
-        //                     return DropdownMenuItem<String>(
-        //                       value: product.productId,
-        //                       child: Text(
-        //                         product.productName,
-        //                         style: lightTextTheme.headlineMedium
-        //                             ?.copyWith(fontSize: 16, color: textColor),
-        //                       ),
-        //                     );
-        //                   }).toList(),
-        //                 ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+      ),
+      body: //const CommingSoonScreen()
+          Obx(
+        () => Padding(
+          padding: const EdgeInsets.all(20),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Form(
+                  key: addTransactionController.transactionFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Company Name',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black12,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        child: addTransactionController.companies.isEmpty
+                            ? const Center(child: CircularProgressIndicator())
+                            : DropdownButton<String>(
+                                underline: const SizedBox.shrink(),
+                                isExpanded: true,
+                                dropdownColor: primaryColor3,
+                                value: addTransactionController
+                                    .selectedCompanyId.value,
+                                hint: Text(
+                                  'Select a company',
+                                  style:
+                                      lightTextTheme.headlineMedium?.copyWith(
+                                    fontSize: 14,
+                                    color: secondaryColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                onChanged: (String? newValue) {
+                                  addTransactionController
+                                      .selectedCompanyId.value = newValue!;
+                                },
+                                items: addTransactionController.companies
+                                    .map((Company company) {
+                                  return DropdownMenuItem<String>(
+                                    value: company.companyName,
+                                    child: Text(
+                                      company.companyName,
+                                      style: lightTextTheme.headlineMedium
+                                          ?.copyWith(
+                                              fontSize: 16, color: textColor),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      //agent section
+                      Text(
+                        'Agent Name',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black12,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        child: addTransactionController.agents.isEmpty
+                            ? const Center(child: CircularProgressIndicator())
+                            : DropdownButton<String>(
+                                underline: const SizedBox.shrink(),
+                                isExpanded: true,
+                                dropdownColor: primaryColor3,
+                                value: addTransactionController
+                                    .selectedAgentId.value,
+                                hint: Text(
+                                  'Select an agent',
+                                  style:
+                                      lightTextTheme.headlineMedium?.copyWith(
+                                    fontSize: 14,
+                                    color: secondaryColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                onChanged: (String? newValue) {
+                                  addTransactionController
+                                      .selectedAgentId.value = newValue!;
+                                  addTransactionController
+                                      .fetchAgentDetails(newValue);
+                                },
+                                items: addTransactionController.agents
+                                    .map((Agent agent) {
+                                  return DropdownMenuItem<String>(
+                                    value: agent.agentId,
+                                    child: Text(
+                                      agent.agentName,
+                                      style: lightTextTheme.headlineMedium
+                                          ?.copyWith(
+                                              fontSize: 16, color: textColor),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                      ),
+
+                      const SizedBox(height: 10),
+                      Text(
+                        'Motor Rent',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter motor rent';
+                          }
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.motorRentController.value,
+                        hintText: 'Enter motor rent',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Jaga Bhade',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter jaga bhade';
+                          }
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.jagaBhadeController.value,
+                        hintText: 'Enter jaga bhade',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Coolie',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter coolie';
+                          }
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.coolieController.value,
+                        hintText: 'Enter coolie',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Postage',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter postage';
+                          }
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.postageController.value,
+                        hintText: 'Enter postage',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Caret',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter caret';
+                          }
+
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.caretController.value,
+                        hintText: 'Enter caret ',
+                      ),
+                      const SizedBox(height: 10),
+
+                      //product section
+                      Text(
+                        'Product Name',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black12,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        child: addTransactionController.products.isEmpty
+                            ? const Center(child: CircularProgressIndicator())
+                            : DropdownButton<String>(
+                                underline: const SizedBox.shrink(),
+                                isExpanded: true,
+                                dropdownColor: primaryColor3,
+                                value: addTransactionController
+                                    .selectedProductId.value,
+                                hint: Text(
+                                  'Select a product',
+                                  style:
+                                      lightTextTheme.headlineMedium?.copyWith(
+                                    fontSize: 14,
+                                    color: secondaryColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                onChanged: (String? newValue) {
+                                  addTransactionController
+                                      .selectedProductId.value = newValue!;
+                                  addTransactionController
+                                      .fetchProductDetails(newValue);
+                                },
+                                items: addTransactionController.products
+                                    .map((Product product) {
+                                  return DropdownMenuItem<String>(
+                                    value: product.productId,
+                                    child: Text(
+                                      product.productName,
+                                      style: lightTextTheme.headlineMedium
+                                          ?.copyWith(
+                                              fontSize: 16, color: textColor),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Quantity',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter quantity';
+                          }
+                          return null;
+                        },
+                        controller: addTransactionController
+                            .productQuantityController.value,
+                        hintText: 'Enter your quantity',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Commission',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter commission';
+                          }
+                          return null;
+                        },
+                        controller: addTransactionController
+                            .productComissionController.value,
+                        hintText: 'Enter commission',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Daag/Box',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter daag/box';
+                          }
+                          return null;
+                        },
+                        controller:
+                            addTransactionController.productBoxController.value,
+                        hintText: 'Enter daag/box',
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Rate',
+                        style: lightTextTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      CustomTextField(
+                        keyboardType: TextInputType.number,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Please enter rate';
+                          }
+                          return null;
+                        },
+                        controller: addTransactionController
+                            .productRateController.value,
+                        hintText: 'Enter rate',
+                      ),
+                      const SizedBox(height: 60),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CustomButton(
+                  isLoading: addTransactionController.isSaveLoading.value,
+                  text: 'Save',
+                  onTap: () {
+                    if (addTransactionController
+                        .transactionFormKey.currentState!
+                        .validate()) {
+                      addTransactionController.addTransactionMainToDB();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

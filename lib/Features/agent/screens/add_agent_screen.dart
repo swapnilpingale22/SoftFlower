@@ -98,6 +98,25 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                               ),
                               const SizedBox(height: 10),
                               Text(
+                                'Jaga Bhade',
+                                style: lightTextTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              CustomTextField(
+                                keyboardType: TextInputType.number,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'Please enter jaga bhade';
+                                  }
+                                  return null;
+                                },
+                                controller: addAgentController
+                                    .jagaBhadeController.value,
+                                hintText: 'Enter jaga bhade',
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
                                 'Coolie',
                                 style: lightTextTheme.bodyMedium!.copyWith(
                                   fontWeight: FontWeight.w500,
@@ -107,13 +126,13 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                 keyboardType: TextInputType.number,
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
-                                    return 'Please enter Coolie';
+                                    return 'Please enter coolie';
                                   }
                                   return null;
                                 },
                                 controller:
                                     addAgentController.coolieController.value,
-                                hintText: 'Enter Coolie',
+                                hintText: 'Enter coolie',
                               ),
                               const SizedBox(height: 10),
                               Text(

@@ -24,7 +24,7 @@ class Product {
       'productName': productName,
       'quantity': quantity,
       'commission': commission,
-      'productType': bundleType,
+      'bundleType': bundleType,
     };
   }
 

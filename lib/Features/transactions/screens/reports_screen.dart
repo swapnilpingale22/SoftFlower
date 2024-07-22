@@ -1,6 +1,8 @@
-import 'package:expense_manager/utils/global_variables.dart';
+import 'package:expense_manager/Features/transactions/controller/reports_controller.dart';
+import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Reports extends StatefulWidget {
   const Reports({super.key});
@@ -10,6 +12,8 @@ class Reports extends StatefulWidget {
 }
 
 class _ReportsState extends State<Reports> {
+  ReportsController reportsController = Get.put(ReportsController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +25,47 @@ class _ReportsState extends State<Reports> {
           ),
         ),
       ),
-      body: const CommingSoonScreen(),
+      body: //const CommingSoonScreen(),
+          Obx(
+        () => reportsController.dataList.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  sortColumnIndex: 1,
+                  // sortAscending: true,
+                  columns: _createColumns(reportsController.dataList),
+                  rows: _createRows(reportsController.dataList),
+                ),
+              ),
+      ),
     );
+  }
+
+  List<DataColumn> _createColumns(List<Map<String, dynamic>> data) {
+    return data.first.keys
+        .map((key) => DataColumn(
+              label: Text(
+                key,
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              numeric: true,
+            ))
+        .toList();
+  }
+
+  List<DataRow> _createRows(List<Map<String, dynamic>> data) {
+    return data.map((item) {
+      return DataRow(
+        cells: item.values
+            .map((value) => DataCell(Text(value.toString(),
+                style: const TextStyle(color: textColor))))
+            .toList(),
+      );
+    }).toList();
   }
 }

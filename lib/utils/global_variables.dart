@@ -9,11 +9,11 @@ List<Widget> homeScreenItems = [
 ];
 
 List<String> buttonTitles = [
-  "Add Agent",
-  "Add Product",
-  "Add Transaction",
+  "Agent",
+  "Product",
+  "Transaction",
   "Reports",
-  "Add Company",
+  "Company",
 ];
 List<String> buttonIcons = [
   "assets/images/agent.png",

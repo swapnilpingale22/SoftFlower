@@ -1,12 +1,14 @@
-import 'package:expense_manager/Features/agent/screens/add_agent_screen.dart';
+import 'package:expense_manager/Features/agent/screens/agent_screen.dart';
 import 'package:expense_manager/Features/auth/controller/auth.dart';
 import 'package:expense_manager/Features/company/screens/add_company.dart';
-import 'package:expense_manager/Features/product/screens/add_product_screen.dart';
+import 'package:expense_manager/Features/product/screens/product_screen.dart';
 import 'package:expense_manager/Features/transactions/screens/add_transaction_screen.dart';
 import 'package:expense_manager/Features/transactions/screens/reports_screen.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/global_variables.dart';
 import 'package:expense_manager/utils/theme.dart';
+import 'package:expense_manager/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,11 +32,45 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: Auth().signOut,
+            tooltip: 'Sign Out',
+            onPressed: () {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text('Alert'),
+                  content: const Text('Do you really want to Sign Out?'),
+                  actions: [
+                    CupertinoDialogAction(
+                      isDestructiveAction: true,
+                      child: const Text('Yes'),
+                      onPressed: () async {
+                        await Auth().signOut().then(
+                          (value) {
+                            Get.back();
+                          },
+                        );
+
+                        showSnackBar('Signed Out successfully!', Get.context!);
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: const Text('No'),
+                      onPressed: () => Get.back(),
+                    ),
+                  ],
+                ),
+              );
+            },
             icon: const Icon(
               Icons.power_settings_new,
             ),
-          )
+          ),
+          // IconButton(
+          //   onPressed: Auth().signOut,
+          //   icon: const Icon(
+          //     Icons.power_settings_new,
+          //   ),
+          // )
         ],
       ),
       body: Column(
@@ -100,9 +136,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return GestureDetector(
                 onTap: () {
                   if (index == 0) {
-                    Get.to(() => const AddAgentScreen());
+                    Get.to(() => const AgentScreen());
                   } else if (index == 1) {
-                    Get.to(() => const AddProductScreen());
+                    Get.to(() => const ProductScreen());
                   } else if (index == 2) {
                     Get.to(() => const AddTransactionScreen());
                   } else if (index == 3) {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -12,6 +13,7 @@ class AddAgentController extends GetxController {
   Rx<TextEditingController> cityController = TextEditingController().obs;
   Rx<TextEditingController> motorRentController = TextEditingController().obs;
   Rx<TextEditingController> coolieController = TextEditingController().obs;
+  Rx<TextEditingController> jagaBhadeController = TextEditingController().obs;
   Rx<TextEditingController> postageController = TextEditingController().obs;
   Rx<TextEditingController> caretController = TextEditingController().obs;
 
@@ -23,8 +25,10 @@ class AddAgentController extends GetxController {
     agentNameController.value.dispose();
     motorRentController.value.dispose();
     coolieController.value.dispose();
+    jagaBhadeController.value.dispose();
     cityController.value.dispose();
     postageController.value.dispose();
+    caretController.value.dispose();
     super.onClose();
   }
 
@@ -33,6 +37,7 @@ class AddAgentController extends GetxController {
     String agentCity,
     double motorRent,
     double coolie,
+    double jagaBhade,
     double postage,
     double caret,
   ) async {
@@ -47,6 +52,7 @@ class AddAgentController extends GetxController {
         agentCity: agentCity,
         motorRent: motorRent,
         coolie: coolie,
+        jagaBhade: jagaBhade,
         postage: postage,
         caret: caret,
       );
@@ -71,6 +77,7 @@ class AddAgentController extends GetxController {
         cityController.value.text.trim(),
         double.parse(motorRentController.value.text.trim()),
         double.parse(coolieController.value.text.trim()),
+        double.parse(jagaBhadeController.value.text.trim()),
         double.parse(postageController.value.text.trim()),
         double.parse(caretController.value.text.trim()),
       );
@@ -80,6 +87,7 @@ class AddAgentController extends GetxController {
         cityController.value.clear();
         motorRentController.value.clear();
         coolieController.value.clear();
+        jagaBhadeController.value.clear();
         postageController.value.clear();
         caretController.value.clear();
 
