@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res != 'Success') {
       showSnackBar(res, Get.context!);
     } else {
+      showSnackBar(res, Get.context!);
       Navigator.of(Get.context!).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomeScreen(),
@@ -147,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _isObscure = !_isObscure;
                               _isSeen = !_isSeen;
-                            });
+                            });  
                           },
                           icon: _isSeen ? eyeFill : eyeSlashFill,
                         ),
@@ -156,44 +157,45 @@ class _LoginScreenState extends State<LoginScreen> {
                       InkWell(
                         onTap: logInUSer,
                         child: Container(
-                            height: 60.0,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: const ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(4),
-                                ),
-                              ),
-                              color: Colors.transparent,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
+                          height: 60.0,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: const ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
                                 Radius.circular(4),
                               ),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.black.withOpacity(0.4),
-                                  child: _isLoading
-                                      ? const Center(
-                                          child: CupertinoActivityIndicator(
-                                            color: primaryColor,
-                                          ),
-                                        )
-                                      : const Text(
-                                          'Log In',
-                                          style: TextStyle(
-                                            color: whiteColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                            ),
+                            color: Colors.transparent,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                              child: Container(
+                                alignment: Alignment.center,
+                                color: Colors.black.withOpacity(0.4),
+                                child: _isLoading
+                                    ? const Center(
+                                        child: CupertinoActivityIndicator(
+                                          color: primaryColor,
                                         ),
-                                ),
+                                      )
+                                    : const Text(
+                                        'Log In',
+                                        style: TextStyle(
+                                          color: whiteColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 25),
                       const SizedBox(height: 150),

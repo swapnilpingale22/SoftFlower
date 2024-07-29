@@ -18,17 +18,22 @@ class Auth {
 
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await _firebaseAuth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then(
-          (value) {
-            log('value:>>> $value');
-          },
-        );
+        final result = await _firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password);
+        log('result:>>> $result');
+        //     .then(
+        //   (value) {
+        //     log('value:>>> $value');
+        //   },
+        // );
         res = "Success";
       }
     } on FirebaseException catch (err) {
+      log('Error: ${err.message}');
       res = err.message.toString();
+    } catch (err) {
+      log('Unknown Error: $err');
+      res = "An unknown error occurred.";
     }
     return res;
   }

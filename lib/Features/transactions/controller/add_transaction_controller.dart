@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/Features/company/models/company_model.dart';
 import 'package:expense_manager/Features/product/models/product_model.dart';
+import 'package:expense_manager/Features/transactions/models/product.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_details_model.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_main_model.dart';
 import 'package:expense_manager/utils/utils.dart';
@@ -13,6 +14,7 @@ import 'package:uuid/uuid.dart';
 
 class AddTransactionController extends GetxController {
   final transactionFormKey = GlobalKey<FormState>();
+  final productListFormKey = GlobalKey<FormState>();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxBool isLoading = false.obs;
   RxBool isSaveLoading = false.obs;
@@ -48,6 +50,11 @@ class AddTransactionController extends GetxController {
   double totalSale = 0.0;
   double totalExpense = 0.0;
   double totalBalance = 0.0;
+
+  RxList<ProductModel> productsList = <ProductModel>[].obs;
+
+  late ProductModel productModel;
+  var productCount = 0.obs;
 
   @override
   void onInit() {
@@ -186,7 +193,7 @@ class AddTransactionController extends GetxController {
     required double jagaBhade,
     required double postage,
     required double caret,
-    required double totalSale,
+    // required double totalSale,
     required double totalExpense,
     required double totalBalance,
     //
@@ -223,25 +230,46 @@ class AddTransactionController extends GetxController {
 
       //add transaction details
 
-      String transactionDetailsId = const Uuid().v1();
+      // String transactionDetailsId = const Uuid().v1();
 
-      TransactionDetails transactionDetails = TransactionDetails(
-        transactionMainId: transactionId,
-        transactionDetailsId: transactionDetailsId,
-        itemName: itemName,
-        quantity: quantity,
-        rate: rate,
-        totalSale: totalSale,
-      );
+      // TransactionDetails transactionDetails = TransactionDetails(
+      //   transactionMainId: transactionId,
+      //   transactionDetailsId: transactionDetailsId,
+      //   itemName: itemName,
+      //   quantity: quantity,
+      //   rate: rate,
+      //   totalSale: totalSale,
+      // );
 
-      await firestore
-          .collection('transactionMain')
-          .doc(transactionId)
-          .collection('transactionDetails')
-          .doc(transactionDetailsId)
-          .set(
-            transactionDetails.toJson(),
-          );
+      // await firestore
+      //     .collection('transactionMain')
+      //     .doc(transactionId)
+      //     .collection('transactionDetails')
+      //     .doc(transactionDetailsId)
+      //     .set(
+      //       transactionDetails.toJson(),
+      //     );
+
+      for (var product in productsList) {
+        String transactionDetailsId = const Uuid().v1();
+
+        TransactionDetails transactionDetails = TransactionDetails(
+          transactionMainId: selectedProductId.value ?? "",
+          transactionDetailsId: transactionDetailsId,
+          itemName: product.itemName,
+          quantity: product.itemQuantity,
+          rate: product.itemRate,
+          totalSale: product.totalSale,
+        );
+        await firestore
+            .collection('transactionMain')
+            .doc(selectedProductId.value)
+            .collection('transactionDetails')
+            .doc(transactionDetailsId)
+            .set(
+              transactionDetails.toJson(),
+            );
+      }
 
       res = "Success";
     } catch (err) {
@@ -253,8 +281,8 @@ class AddTransactionController extends GetxController {
   void addTransactionMainToDB() async {
     isSaveLoading.value = true;
 
-    totalSale = (double.parse(productQuantityController.value.text.trim()) *
-        double.parse(productRateController.value.text.trim()));
+    // totalSale = (double.parse(productQuantityController.value.text.trim()) *
+    //     double.parse(productRateController.value.text.trim()));
 
     final actualCommission = (totalSale *
             double.parse(productComissionController.value.text.trim())) /
@@ -294,7 +322,7 @@ class AddTransactionController extends GetxController {
         jagaBhade: actualJagaBhade,
         postage: double.parse(postageController.value.text.trim()),
         caret: actualCaret,
-        totalSale: totalSale,
+        // totalSale: totalSale,
         totalExpense: totalExpense,
         totalBalance: totalBalance,
         itemName: productName.value,
@@ -314,8 +342,10 @@ class AddTransactionController extends GetxController {
         totalSale = 0.0;
         totalExpense = 0.0;
         totalBalance = 0.0;
+        productsList.clear();
 
-        isLoading.value = false;
+        // isLoading.value = false;
+        isSaveLoading.value = false;
         Get.back();
         showSnackBar('Transaction saved', Get.context!);
       } else {
@@ -353,7 +383,6 @@ class AddTransactionController extends GetxController {
                     Get.back();
                   },
                 );
-                
               } catch (e) {
                 showSnackBar(e.toString(), Get.context!);
               }
@@ -368,5 +397,46 @@ class AddTransactionController extends GetxController {
         ],
       ),
     );
+  }
+
+  //add product to list
+
+  addProduct(
+    String itemName,
+    int itemQuantity,
+    double itemRate,
+    double totalSale,
+  ) {
+    productModel = ProductModel(
+      itemName: itemName,
+      itemQuantity: itemQuantity,
+      itemRate: itemRate,
+      totalSale: totalSale,
+    );
+    productsList.add(productModel);
+    productCount.value = productsList.length;
+
+    // Add the product's totalSale to the cumulative totalSale
+    this.totalSale += totalSale;
+
+    showSnackBar('Total Sale: $totalSale', Get.context!);
+
+    // Clear input fields after adding the product
+    productName.value = "";
+    selectedProductId.value = null;
+    productQuantityController.value.clear();
+    productComissionController.value.clear();
+    productBoxController.value.clear();
+    productRateController.value.clear();
+  }
+
+  removeProduct(int index) {
+    // Subtract the product's totalSale from the cumulative totalSale
+    totalSale -= productsList[index].totalSale;
+
+    productsList.removeAt(index);
+    productCount.value = productsList.length;
+
+    showSnackBar('Total Sale: $totalSale', Get.context!);
   }
 }

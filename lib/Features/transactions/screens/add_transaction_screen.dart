@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/Features/common_widgets/custom_button.dart';
 import 'package:expense_manager/Features/common_widgets/custom_text_field.dart';
@@ -6,6 +8,7 @@ import 'package:expense_manager/Features/product/models/product_model.dart';
 import 'package:expense_manager/Features/transactions/controller/add_transaction_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
+import 'package:expense_manager/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -149,103 +152,113 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       ),
 
                       const SizedBox(height: 10),
-                      Text(
-                        'Motor Rent',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter motor rent';
-                          }
-                          return null;
-                        },
-                        controller:
-                            addTransactionController.motorRentController.value,
-                        hintText: 'Enter motor rent',
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Jaga Bhade',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter jaga bhade';
-                          }
-                          return null;
-                        },
-                        controller:
-                            addTransactionController.jagaBhadeController.value,
-                        hintText: 'Enter jaga bhade',
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Coolie',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter coolie';
-                          }
-                          return null;
-                        },
-                        controller:
-                            addTransactionController.coolieController.value,
-                        hintText: 'Enter coolie',
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Postage',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter postage';
-                          }
-                          return null;
-                        },
-                        controller:
-                            addTransactionController.postageController.value,
-                        hintText: 'Enter postage',
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Caret',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter caret';
-                          }
 
-                          return null;
-                        },
-                        controller:
-                            addTransactionController.caretController.value,
-                        hintText: 'Enter caret ',
-                      ),
-                      const SizedBox(height: 10),
+                      Visibility(
+                        visible:
+                            addTransactionController.selectedAgentId.value !=
+                                null,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Motor Rent',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            CustomTextField(
+                              keyboardType: TextInputType.number,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please enter motor rent';
+                                }
+                                return null;
+                              },
+                              controller: addTransactionController
+                                  .motorRentController.value,
+                              hintText: 'Enter motor rent',
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Jaga Bhade',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            CustomTextField(
+                              keyboardType: TextInputType.number,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please enter jaga bhade';
+                                }
+                                return null;
+                              },
+                              controller: addTransactionController
+                                  .jagaBhadeController.value,
+                              hintText: 'Enter jaga bhade',
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Coolie',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            CustomTextField(
+                              keyboardType: TextInputType.number,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please enter coolie';
+                                }
+                                return null;
+                              },
+                              controller: addTransactionController
+                                  .coolieController.value,
+                              hintText: 'Enter coolie',
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Postage',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            CustomTextField(
+                              keyboardType: TextInputType.number,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please enter postage';
+                                }
+                                return null;
+                              },
+                              controller: addTransactionController
+                                  .postageController.value,
+                              hintText: 'Enter postage',
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Caret',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            CustomTextField(
+                              keyboardType: TextInputType.number,
+                              validator: (val) {
+                                if (val == null || val.isEmpty) {
+                                  return 'Please enter caret';
+                                }
 
+                                return null;
+                              },
+                              controller: addTransactionController
+                                  .caretController.value,
+                              hintText: 'Enter caret ',
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
                       //product section
                       Text(
                         'Product Name',
@@ -300,80 +313,154 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               ),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Quantity',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
+                      //
+                      Visibility(
+                        visible:
+                            addTransactionController.selectedProductId.value !=
+                                null,
+                        child: Form(
+                          key: addTransactionController.productListFormKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Quantity',
+                                style: lightTextTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              CustomTextField(
+                                keyboardType: TextInputType.number,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'Please enter quantity';
+                                  }
+                                  return null;
+                                },
+                                controller: addTransactionController
+                                    .productQuantityController.value,
+                                hintText: 'Enter your quantity',
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Commission',
+                                style: lightTextTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              CustomTextField(
+                                keyboardType: TextInputType.number,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'Please enter commission';
+                                  }
+                                  return null;
+                                },
+                                controller: addTransactionController
+                                    .productComissionController.value,
+                                hintText: 'Enter commission',
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Daag/Box',
+                                style: lightTextTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              CustomTextField(
+                                keyboardType: TextInputType.number,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'Please enter daag/box';
+                                  }
+                                  return null;
+                                },
+                                controller: addTransactionController
+                                    .productBoxController.value,
+                                hintText: 'Enter daag/box',
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Rate',
+                                style: lightTextTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              CustomTextField(
+                                keyboardType: TextInputType.number,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return 'Please enter rate';
+                                  }
+                                  return null;
+                                },
+                                controller: addTransactionController
+                                    .productRateController.value,
+                                hintText: 'Enter rate',
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter quantity';
-                          }
-                          return null;
-                        },
-                        controller: addTransactionController
-                            .productQuantityController.value,
-                        hintText: 'Enter your quantity',
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Commission',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter commission';
+                      // Text(
+                      //   '${addTransactionController.totalSale}',
+                      //   style: lightTextTheme.bodyMedium!.copyWith(
+                      //     fontWeight: FontWeight.w500,
+                      //     fontSize: 23,
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 10),
+                      CustomButton(
+                        // color: secondaryColor,
+                        text: 'Add to list',
+                        onTap: () {
+                          if (addTransactionController
+                                  .productListFormKey.currentState !=
+                              null) {
+                            if (addTransactionController
+                                .productListFormKey.currentState!
+                                .validate()) {
+                              addTransactionController.addProduct(
+                                addTransactionController.productName.value,
+                                int.parse(addTransactionController
+                                    .productQuantityController.value.text),
+                                double.parse(addTransactionController
+                                    .productRateController.value.text),
+                                (double.parse(addTransactionController
+                                        .productRateController.value.text) *
+                                    int.parse(addTransactionController
+                                        .productQuantityController.value.text)),
+                              );
+                            }
+                          } else {
+                            showSnackBar('Please select a product!', context);
                           }
-                          return null;
                         },
-                        controller: addTransactionController
-                            .productComissionController.value,
-                        hintText: 'Enter commission',
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        'Daag/Box',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter daag/box';
-                          }
-                          return null;
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: addTransactionController.productsList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              addTransactionController
+                                  .productsList[index].itemName,
+                            ),
+                            subtitle: Text(
+                                'Rate: ${addTransactionController.productsList[index].itemRate}, Qty: ${addTransactionController.productsList[index].itemQuantity}, Total Sale: ${addTransactionController.productsList[index].totalSale}'),
+                            trailing: GestureDetector(
+                              onTap: () {
+                                addTransactionController.removeProduct(index);
+                              },
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          );
                         },
-                        controller:
-                            addTransactionController.productBoxController.value,
-                        hintText: 'Enter daag/box',
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Rate',
-                        style: lightTextTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      CustomTextField(
-                        keyboardType: TextInputType.number,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please enter rate';
-                          }
-                          return null;
-                        },
-                        controller: addTransactionController
-                            .productRateController.value,
-                        hintText: 'Enter rate',
                       ),
                       const SizedBox(height: 60),
                     ],
@@ -386,10 +473,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   isLoading: addTransactionController.isSaveLoading.value,
                   text: 'Save',
                   onTap: () {
-                    if (addTransactionController
-                        .transactionFormKey.currentState!
-                        .validate()) {
-                      addTransactionController.addTransactionMainToDB();
+                    if (addTransactionController.selectedAgentId.value !=
+                            null &&
+                        addTransactionController.selectedCompanyId.value !=
+                            null &&
+                        addTransactionController.productsList.isNotEmpty) {
+                      if (addTransactionController
+                          .transactionFormKey.currentState!
+                          .validate()) {
+                        addTransactionController.addTransactionMainToDB();
+                      }
+                    } else {
+                      showSnackBar('Please fill all the fields!', context);
                     }
                   },
                 ),
