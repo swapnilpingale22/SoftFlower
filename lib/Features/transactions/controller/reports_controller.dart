@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 class ReportsController extends GetxController {
   var dataList = <Map<String, dynamic>>[].obs;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -14,6 +15,7 @@ class ReportsController extends GetxController {
 
   Future<void> fetchData() async {
     try {
+      isLoading.value = true;
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('transactionMain').get();
       var data = await Future.wait(querySnapshot.docs.map((doc) async {
@@ -63,7 +65,9 @@ class ReportsController extends GetxController {
       }).toList());
 
       dataList.assignAll(data);
+      isLoading.value = false;
     } catch (e) {
+      isLoading.value = false;
       log("Error fetching data: $e");
     }
   }

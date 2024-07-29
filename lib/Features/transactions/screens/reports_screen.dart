@@ -27,17 +27,28 @@ class _ReportsState extends State<Reports> {
       ),
       body: //const CommingSoonScreen(),
           Obx(
-        () => reportsController.dataList.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  sortColumnIndex: 1,
-                  // sortAscending: true,
-                  columns: _createColumns(reportsController.dataList),
-                  rows: _createRows(reportsController.dataList),
-                ),
-              ),
+        () => reportsController.isLoading.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : reportsController.dataList.isEmpty
+                ? Center(
+                    child: Text(
+                      "No data available",
+                      style: lightTextTheme.headlineMedium?.copyWith(
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      sortColumnIndex: 1,
+                      // sortAscending: true,
+                      columns: _createColumns(reportsController.dataList),
+                      rows: _createRows(reportsController.dataList),
+                    ),
+                  ),
       ),
     );
   }
