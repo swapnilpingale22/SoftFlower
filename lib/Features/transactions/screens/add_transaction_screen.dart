@@ -422,16 +422,23 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 .productListFormKey.currentState!
                                 .validate()) {
                               addTransactionController.addProduct(
-                                addTransactionController.productName.value,
-                                int.parse(addTransactionController
-                                    .productQuantityController.value.text),
-                                double.parse(addTransactionController
-                                    .productRateController.value.text),
-                                (double.parse(addTransactionController
-                                        .productRateController.value.text) *
-                                    int.parse(addTransactionController
-                                        .productQuantityController.value.text)),
-                              );
+                                  addTransactionController.productName.value,
+                                  int.parse(addTransactionController
+                                      .productQuantityController.value.text),
+                                  double.parse(addTransactionController
+                                      .productRateController.value.text),
+                                  (double.parse(addTransactionController.productRateController.value.text) *
+                                      int.parse(addTransactionController
+                                          .productQuantityController
+                                          .value
+                                          .text)),
+                                  ((double.parse(addTransactionController.productRateController.value.text) * int.parse(addTransactionController.productQuantityController.value.text)) *
+                                          double.parse(addTransactionController
+                                              .productComissionController
+                                              .value
+                                              .text
+                                              .trim())) /
+                                      100);
                             }
                           } else {
                             showSnackBar('Please select a product!', context);

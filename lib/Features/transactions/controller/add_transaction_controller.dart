@@ -272,7 +272,6 @@ class AddTransactionController extends GetxController {
           totalSale: product.totalSale,
         );
 
-        
         await firestore
             .collection('transactionMain')
             .doc(transactionId)
@@ -418,21 +417,27 @@ class AddTransactionController extends GetxController {
     String itemName,
     int itemQuantity,
     double itemRate,
-    double totalSale,
+    double itemTotalSale,
+    double itemCommission,
   ) {
     productModel = ProductModel(
       itemName: itemName,
       itemQuantity: itemQuantity,
       itemRate: itemRate,
-      totalSale: totalSale,
+      totalSale: itemTotalSale,
+      commission: itemCommission,
     );
+
     productsList.add(productModel);
     productCount.value = productsList.length;
 
     // Add the product's totalSale to the cumulative totalSale
-    this.totalSale += totalSale;
+    this.totalSale += itemTotalSale;
 
-    showSnackBar('Total Sale: $totalSale', Get.context!);
+    this.actualCommission += itemCommission;
+
+    // showSnackBar('Total Sale: $totalSale', Get.context!);
+    showSnackBar('Total Commission: $actualCommission', Get.context!);
 
     // Clear input fields after adding the product
     productName.value = "";
@@ -446,6 +451,10 @@ class AddTransactionController extends GetxController {
   removeProduct(int index) {
     // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
+
+    final actualCommission = (productsList[index].totalSale *
+            double.parse(productComissionController.value.text.trim())) /
+        100;
 
     productsList.removeAt(index);
     productCount.value = productsList.length;

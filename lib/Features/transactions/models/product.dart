@@ -4,11 +4,13 @@ class ProductModel {
   final int itemQuantity;
   final double itemRate;
   final double totalSale;
+  final double commission;
 
   ProductModel({
     required this.itemName,
     required this.itemQuantity,
     required this.itemRate,
     required this.totalSale,
+    required this.commission,
   });
 }
