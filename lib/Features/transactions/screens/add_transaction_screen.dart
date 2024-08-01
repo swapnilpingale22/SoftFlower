@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/Features/common_widgets/custom_button.dart';
 import 'package:expense_manager/Features/common_widgets/custom_text_field.dart';
@@ -421,24 +419,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             if (addTransactionController
                                 .productListFormKey.currentState!
                                 .validate()) {
-                              addTransactionController.addProduct(
-                                  addTransactionController.productName.value,
-                                  int.parse(addTransactionController
-                                      .productQuantityController.value.text),
-                                  double.parse(addTransactionController
-                                      .productRateController.value.text),
-                                  (double.parse(addTransactionController.productRateController.value.text) *
-                                      int.parse(addTransactionController
-                                          .productQuantityController
-                                          .value
-                                          .text)),
-                                  ((double.parse(addTransactionController.productRateController.value.text) * int.parse(addTransactionController.productQuantityController.value.text)) *
-                                          double.parse(addTransactionController
-                                              .productComissionController
-                                              .value
-                                              .text
-                                              .trim())) /
-                                      100);
+                              addTransactionController.addProduct();
                             }
                           } else {
                             showSnackBar('Please select a product!', context);

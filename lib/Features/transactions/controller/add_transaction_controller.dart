@@ -55,6 +55,7 @@ class AddTransactionController extends GetxController {
   double actualCoolie = 0.0;
   double actualJagaBhade = 0.0;
   double actualCaret = 0.0;
+  int actualDaag = 0;
 
   RxList<ProductModel> productsList = <ProductModel>[].obs;
 
@@ -192,7 +193,7 @@ class AddTransactionController extends GetxController {
     required double caret, //
     required double commission, //
     required double coolie, //
-    // required int daag, //
+    required int daag, //
     required double jagaBhade, //
     required double motorRent, //
     required double postage, //
@@ -222,7 +223,7 @@ class AddTransactionController extends GetxController {
         agentId: agentId,
         agentName: agentName,
         productId: productId,
-        daag: 0,
+        daag: daag,
         commission: commission,
         motorRent: motorRent,
         coolie: coolie,
@@ -292,25 +293,6 @@ class AddTransactionController extends GetxController {
   void addTransactionMainToDB() async {
     isSaveLoading.value = true;
 
-    // totalSale = (double.parse(productQuantityController.value.text.trim()) *
-    //     double.parse(productRateController.value.text.trim()));
-
-    // final actualCommission = (totalSale *
-    //         double.parse(productComissionController.value.text.trim())) /
-    //     100;
-
-    // final actualMotorRent = int.parse(productBoxController.value.text.trim()) *
-    //     double.parse(motorRentController.value.text.trim());
-
-    // final actualCoolie = int.parse(productBoxController.value.text.trim()) *
-    //     double.parse(coolieController.value.text.trim());
-
-    // final actualJagaBhade = int.parse(productBoxController.value.text.trim()) *
-    //     double.parse(jagaBhadeController.value.text.trim());
-
-    // final actualCaret = int.parse(productBoxController.value.text.trim()) *
-    //     double.parse(caretController.value.text.trim());
-
     totalExpense = double.parse(postageController.value.text.trim()) +
         actualCommission +
         actualMotorRent +
@@ -326,7 +308,7 @@ class AddTransactionController extends GetxController {
         agentId: selectedAgentId.value ?? "",
         agentName: agentName.value,
         productId: selectedProductId.value ?? "",
-        // daag: int.parse(productBoxController.value.text.trim()),
+        daag: actualDaag,
         commission: actualCommission,
         motorRent: actualMotorRent,
         coolie: actualCoolie,
@@ -353,6 +335,12 @@ class AddTransactionController extends GetxController {
         totalSale = 0.0;
         totalExpense = 0.0;
         totalBalance = 0.0;
+        actualCommission = 0.0;
+        actualMotorRent = 0.0;
+        actualCoolie = 0.0;
+        actualJagaBhade = 0.0;
+        actualCaret = 0.0;
+        actualDaag = 0;
         productsList.clear();
 
         // isLoading.value = false;
@@ -413,31 +401,71 @@ class AddTransactionController extends GetxController {
 
   //add product to list
 
-  addProduct(
-    String itemName,
-    int itemQuantity,
-    double itemRate,
-    double itemTotalSale,
-    double itemCommission,
-  ) {
+  addProduct() {
+    double commissionRate =
+        double.parse(productComissionController.value.text.trim()) / 100;
+
+    int itemQuantity = int.parse(productQuantityController.value.text.trim());
+
+    double itemRate = double.parse(productRateController.value.text.trim());
+
+    int daag = int.parse(productBoxController.value.text.trim());
+
+    double motorRent = double.parse(motorRentController.value.text.trim());
+
+    double coolie = double.parse(coolieController.value.text.trim());
+
+    double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
+
+    double caret = double.parse(caretController.value.text.trim());
+
+    double postage = double.parse(postageController.value.text.trim());
+
+    //calculations
+
+    double totalSaleItem = itemRate * itemQuantity;
+
+    double actualCommissionItem = totalSaleItem * commissionRate;
+
+    actualMotorRent = motorRent * daag;
+
+    actualCoolie = coolie * daag;
+
+    actualJagaBhade = jagaBhade * daag;
+
+    actualCaret = caret * daag;
+
+    double totalExpenseItem = actualCommissionItem +
+        actualMotorRent +
+        actualCoolie +
+        actualJagaBhade +
+        actualCaret +
+        postage;
+
+    totalSale += totalSaleItem;
+
+    totalExpense += totalExpenseItem;
+
+    actualDaag += daag;
+
+    actualCommission += actualCommissionItem;
+
     productModel = ProductModel(
-      itemName: itemName,
+      itemName: productName.value,
       itemQuantity: itemQuantity,
       itemRate: itemRate,
-      totalSale: itemTotalSale,
-      commission: itemCommission,
+      totalSale: totalSaleItem,
+      commission: actualCommissionItem,
     );
 
     productsList.add(productModel);
     productCount.value = productsList.length;
 
     // Add the product's totalSale to the cumulative totalSale
-    this.totalSale += itemTotalSale;
-
-    this.actualCommission += itemCommission;
+    // totalSale += totalSaleItem;
 
     // showSnackBar('Total Sale: $totalSale', Get.context!);
-    showSnackBar('Total Commission: $actualCommission', Get.context!);
+    // showSnackBar('Total Commission: $actualCommission', Get.context!);
 
     // Clear input fields after adding the product
     productName.value = "";
@@ -452,13 +480,9 @@ class AddTransactionController extends GetxController {
     // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
 
-    final actualCommission = (productsList[index].totalSale *
-            double.parse(productComissionController.value.text.trim())) /
-        100;
-
     productsList.removeAt(index);
     productCount.value = productsList.length;
 
-    showSnackBar('Total Sale: $totalSale', Get.context!);
+    // showSnackBar('Total Sale: $totalSale', Get.context!);
   }
 }
