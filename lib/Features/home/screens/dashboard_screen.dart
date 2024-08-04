@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:expense_manager/Features/agent/screens/agent_screen.dart';
 import 'package:expense_manager/Features/auth/controller/auth.dart';
 import 'package:expense_manager/Features/company/screens/add_company.dart';
@@ -24,45 +25,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Dashboard',
-          style: lightTextTheme.headlineMedium?.copyWith(
-            fontSize: 20,
+        title: FadeInLeft(
+          child: Text(
+            'Dashboard',
+            style: lightTextTheme.headlineMedium?.copyWith(
+              fontSize: 20,
+            ),
           ),
         ),
         actions: [
-          IconButton(
-            tooltip: 'Sign Out',
-            onPressed: () {
-              showCupertinoDialog(
-                context: context,
-                builder: (context) => CupertinoAlertDialog(
-                  title: const Text('Alert'),
-                  content: const Text('Do you really want to Sign Out?'),
-                  actions: [
-                    CupertinoDialogAction(
-                      isDestructiveAction: true,
-                      child: const Text('Yes'),
-                      onPressed: () async {
-                        await Auth().signOut().then(
-                          (value) {
-                            Get.back();
-                          },
-                        );
+          FadeInRight(
+            child: IconButton(
+              tooltip: 'Sign Out',
+              onPressed: () {
+                showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: const Text('Alert'),
+                    content: const Text('Do you really want to Sign Out?'),
+                    actions: [
+                      CupertinoDialogAction(
+                        isDestructiveAction: true,
+                        child: const Text('Yes'),
+                        onPressed: () async {
+                          await Auth().signOut().then(
+                            (value) {
+                              Get.back();
+                            },
+                          );
 
-                        showSnackBar('Signed Out successfully!', Get.context!);
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: const Text('No'),
-                      onPressed: () => Get.back(),
-                    ),
-                  ],
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.power_settings_new,
+                          showSnackBar(
+                              'Signed Out successfully!', Get.context!);
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: const Text('No'),
+                        onPressed: () => Get.back(),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.power_settings_new,
+              ),
             ),
           ),
           // IconButton(
@@ -133,56 +139,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  if (index == 0) {
-                    Get.to(() => const AgentScreen());
-                  } else if (index == 1) {
-                    Get.to(() => const ProductScreen());
-                  } else if (index == 2) {
-                    Get.to(() => const AddTransactionScreen());
-                  } else if (index == 3) {
-                    Get.to(() => const Reports());
-                  } else if (index == 4) {
-                    Get.to(() => const AddCompanyScreen());
-                  }
-                },
-                child: Container(
-                  margin: const EdgeInsets.all(15),
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: primaryColor3,
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 2,
-                        spreadRadius: 0.5,
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(3, 3),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          buttonIcons[index],
-                          height: 55,
-                          width: 55,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          buttonTitles[index],
-                          textAlign: TextAlign.center,
-                          style: lightTextTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
+              return ZoomIn(
+                child: GestureDetector(
+                  onTap: () {
+                    if (index == 0) {
+                      Get.to(() => const AgentScreen());
+                    } else if (index == 1) {
+                      Get.to(() => const ProductScreen());
+                    } else if (index == 2) {
+                      Get.to(() => const AddTransactionScreen());
+                    } else if (index == 3) {
+                      Get.to(() => const Reports());
+                    } else if (index == 4) {
+                      Get.to(() => const AddCompanyScreen());
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(15),
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: primaryColor3,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 2,
+                          spreadRadius: 0.5,
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(3, 3),
                         ),
                       ],
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            buttonIcons[index],
+                            height: 55,
+                            width: 55,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            buttonTitles[index],
+                            textAlign: TextAlign.center,
+                            style: lightTextTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

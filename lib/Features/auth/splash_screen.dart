@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:animate_do/animate_do.dart';
 import 'package:expense_manager/Features/auth/login_screen.dart';
 import 'package:expense_manager/Features/home/screens/botttom_bar.dart';
 import 'package:expense_manager/utils/colors.dart';
@@ -83,21 +84,24 @@ class _SplashScreenState extends State<SplashScreen> {
             bottom: 100,
             left: 50,
             child: AnimatedOpacity(
-              duration: const Duration(seconds: 2),
+              duration: const Duration(seconds: 1),
               opacity: _opacity,
-              child: Text(
-                'SoftFlower',
-                style: TextStyle(
-                  fontSize: 52,
-                  fontWeight: FontWeight.w600,
-                  color: titleColor,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 4.0,
-                      color: Colors.white.withOpacity(0.5),
-                      offset: const Offset(2.0, 2.0),
-                    ),
-                  ],
+              child: ZoomIn(
+                duration: const Duration(seconds: 2),
+                child: Text(
+                  'SoftFlower',
+                  style: TextStyle(
+                    fontSize: 52,
+                    fontWeight: FontWeight.w600,
+                    color: titleColor,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 4.0,
+                        color: Colors.white.withOpacity(0.5),
+                        offset: const Offset(2.0, 2.0),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

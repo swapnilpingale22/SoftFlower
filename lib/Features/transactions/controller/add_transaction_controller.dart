@@ -88,7 +88,6 @@ class AddTransactionController extends GetxController {
   //   isLoading.value = true;
   //   try {
   //     QuerySnapshot querySnapshot = await firestore.collection('company').get();
-
   //     companies.value =
   //         querySnapshot.docs.map((doc) => Company.fromSnap(doc)).toList();
   //   } catch (e) {
@@ -114,7 +113,6 @@ class AddTransactionController extends GetxController {
   //   isLoading.value = true;
   //   try {
   //     QuerySnapshot querySnapshot = await firestore.collection('agent').get();
-
   //     agents.value =
   //         querySnapshot.docs.map((doc) => Agent.fromSnap(doc)).toList();
   //   } catch (e) {
@@ -188,21 +186,21 @@ class AddTransactionController extends GetxController {
   //save transaction
 
   Future<String> addTransactionMain({
-    required String agentId, //
-    required String agentName, //
-    required double caret, //
-    required double commission, //
-    required double coolie, //
-    required int daag, //
-    required double jagaBhade, //
-    required double motorRent, //
-    required double postage, //
-    required String productId, //
-    required double totalBalance, //
-    required double totalExpense, //
+    required String agentId,
+    required String agentName,
+    required double caret,
+    required double commission,
+    required double coolie,
+    required int daag,
+    required double jagaBhade,
+    required double motorRent,
+    required double postage,
+    required String productId,
+    required double totalBalance,
+    required double totalExpense,
     //total sale
     // required double totalSale,
-    required DateTime transactionDate, //
+    required DateTime transactionDate,
     //transaction id
     //
     // required String itemName, //2
@@ -461,11 +459,7 @@ class AddTransactionController extends GetxController {
     productsList.add(productModel);
     productCount.value = productsList.length;
 
-    // Add the product's totalSale to the cumulative totalSale
-    // totalSale += totalSaleItem;
-
     // showSnackBar('Total Sale: $totalSale', Get.context!);
-    // showSnackBar('Total Commission: $actualCommission', Get.context!);
 
     // Clear input fields after adding the product
     productName.value = "";
@@ -477,6 +471,7 @@ class AddTransactionController extends GetxController {
   }
 
   removeProduct(int index) {
+    
     // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
 

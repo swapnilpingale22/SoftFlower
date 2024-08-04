@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_manager/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../utils/utils.dart';
 import '../models/product_model.dart';
 
 enum Bundle {
@@ -12,8 +11,9 @@ enum Bundle {
   thousand,
 }
 
-class AddProductController extends GetxController {
-  final productFormKey = GlobalKey<FormState>();
+class EditProductController extends GetxController {
+  final editProductFormKey = GlobalKey<FormState>();
+  final ScrollController scrollController = ScrollController();
 
   Rx<TextEditingController> productNumberController =
       TextEditingController().obs;
@@ -23,12 +23,13 @@ class AddProductController extends GetxController {
   Rx<TextEditingController> productComissionController =
       TextEditingController().obs;
   Rx<Bundle> bundle = Bundle.kilo.obs;
-  
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   RxBool isLoading = false.obs;
 
   @override
   void onClose() {
+    scrollController.dispose();
     productNumberController.value.dispose();
     productNameController.value.dispose();
     productQuantityController.value.dispose();
@@ -36,7 +37,8 @@ class AddProductController extends GetxController {
     super.onClose();
   }
 
-  Future<String> addProduct(
+  Future<String> editProduct(
+    String productId,
     int productNumber,
     String productName,
     int quantity,
@@ -46,8 +48,6 @@ class AddProductController extends GetxController {
     String res = "Some error occured";
 
     try {
-      String productId = const Uuid().v1();
-
       Product product = Product(
         productId: productId,
         productNumber: productNumber,
@@ -57,7 +57,7 @@ class AddProductController extends GetxController {
         bundleType: bundleType,
       );
 
-      _firestore.collection('product').doc(productId).set(
+      _firestore.collection('product').doc(productId).update(
             product.toJson(),
           );
 
@@ -68,11 +68,12 @@ class AddProductController extends GetxController {
     return res;
   }
 
-  void addProductToDB() async {
+  void editProductInDB({required Product productData}) async {
     isLoading.value = true;
 
     try {
-      String res = await addProduct(
+      String res = await editProduct(
+        productData.productId,
         int.parse(productNumberController.value.text.trim()),
         productNameController.value.text.trim(),
         int.parse(productQuantityController.value.text.trim()),
@@ -89,7 +90,7 @@ class AddProductController extends GetxController {
 
         isLoading.value = false;
         Get.back();
-        showSnackBar('Product added', Get.context!);
+        showSnackBar('Saved', Get.context!);
       } else {
         isLoading.value = false;
 

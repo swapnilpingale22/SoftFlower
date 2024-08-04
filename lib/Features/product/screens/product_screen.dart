@@ -1,9 +1,13 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:expense_manager/Features/product/screens/add_product_screen.dart';
+import 'package:expense_manager/Features/product/screens/edit_product_alert_box.dart';
 import 'package:expense_manager/Features/transactions/controller/add_transaction_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../controller/edit_product_controller.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -15,6 +19,9 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   AddTransactionController addTransactionController =
       Get.put(AddTransactionController());
+
+  EditProductController editProductController =
+      Get.put(EditProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -49,86 +56,97 @@ class _ProductScreenState extends State<ProductScreen> {
                         shrinkWrap: true,
                         itemCount: addTransactionController.products.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                            color: primaryColor2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            margin: const EdgeInsets.only(bottom: 20),
-                            elevation: 4,
-                            child: ListTile(
-                              title: Text(
-                                '${addTransactionController.products[index].productNumber}. ${addTransactionController.products[index].productName}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
+                          return ZoomIn(
+                            child: Card(
+                              color: primaryColor2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              margin: const EdgeInsets.only(bottom: 20),
+                              elevation: 4,
+                              child: ListTile(
+                                title: Text(
+                                  '${addTransactionController.products[index].productNumber}. ${addTransactionController.products[index].productName}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              subtitle: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Quantity: ${addTransactionController.products[index].quantity}  \nCommission: ${addTransactionController.products[index].commission}  \nBundle Type: ${addTransactionController.products[index].bundleType}',
-                                    style: const TextStyle(
-                                      color: Colors.black54,
+                                subtitle: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Quantity: ${addTransactionController.products[index].quantity}  \nCommission: ${addTransactionController.products[index].commission}  \nBundle Type: ${addTransactionController.products[index].bundleType}',
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
                                     ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: primaryColor3,
-                                        child: InkWell(
-                                          onTap: () {},
-                                          child: const Icon(
-                                            Icons.edit_note_outlined,
-                                            color: textColor,
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: primaryColor3,
+                                          child: InkWell(
+                                            onTap: () async =>
+                                                await showEditProductDialog(
+                                              context,
+                                              editProductController,
+                                              addTransactionController
+                                                  .products[index],
+                                            ),
+                                            child: const Icon(
+                                              Icons.edit_note_outlined,
+                                              color: textColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      CircleAvatar(
-                                        backgroundColor: primaryColor3,
-                                        child: InkWell(
-                                          onTap: () {
-                                            addTransactionController
-                                                .showDeleteDialog(
-                                              agentId: addTransactionController
-                                                  .products[index].productId,
-                                              collectionName: 'product',
-                                            );
-                                          },
-                                          child: const Icon(
-                                            Icons.delete_forever,
-                                            color: textColor,
+                                        const SizedBox(height: 10),
+                                        CircleAvatar(
+                                          backgroundColor: primaryColor3,
+                                          child: InkWell(
+                                            onTap: () {
+                                              addTransactionController
+                                                  .showDeleteDialog(
+                                                agentId:
+                                                    addTransactionController
+                                                        .products[index]
+                                                        .productId,
+                                                collectionName: 'product',
+                                              );
+                                            },
+                                            child: const Icon(
+                                              Icons.delete_forever,
+                                              color: textColor,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                // trailing: Column(
+                                //   mainAxisAlignment: MainAxisAlignment.end,
+                                //   crossAxisAlignment: CrossAxisAlignment.end,
+                                //   children: [
+                                //     Expanded(
+                                //       child: InkWell(
+                                //         onTap: () {},
+                                //         child: const Icon(Icons.edit_note_outlined),
+                                //       ),
+                                //     ),
+                                //     const SizedBox(height: 10),
+                                //     Expanded(
+                                //       child: InkWell(
+                                //         onTap: () {},
+                                //         child: const Icon(Icons.delete_forever),
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                               ),
-                              // trailing: Column(
-                              //   mainAxisAlignment: MainAxisAlignment.end,
-                              //   crossAxisAlignment: CrossAxisAlignment.end,
-                              //   children: [
-                              //     Expanded(
-                              //       child: InkWell(
-                              //         onTap: () {},
-                              //         child: const Icon(Icons.edit_note_outlined),
-                              //       ),
-                              //     ),
-                              //     const SizedBox(height: 10),
-                              //     Expanded(
-                              //       child: InkWell(
-                              //         onTap: () {},
-                              //         child: const Icon(Icons.delete_forever),
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
                             ),
                           );
                         },
