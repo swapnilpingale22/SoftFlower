@@ -418,16 +418,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            // Text(
-                            //   '${addTransactionController.totalSale}',
-                            //   style: lightTextTheme.bodyMedium!.copyWith(
-                            //     fontWeight: FontWeight.w500,
-                            //     fontSize: 23,
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 10),
+
                             CustomButton(
-                              // color: secondaryColor,
                               text: 'Add to list',
                               onTap: () {
                                 if (addTransactionController
