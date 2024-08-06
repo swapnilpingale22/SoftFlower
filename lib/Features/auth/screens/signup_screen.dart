@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/theme.dart';
 import '../../../utils/utils.dart';
 import '../../common_widgets/text_input_field.dart';
 import '../../home/screens/botttom_bar.dart';
@@ -51,7 +52,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (res != 'Success') {
       showSnackBar(res, context);
     } else {
-      Get.offAll(() => const HomeScreen());
+      Get.back();
+      // Get.offAll(() => const HomeScreen());
       showSnackBar('Account Created Successfully! Welcome', context);
     }
   }
@@ -63,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -125,7 +127,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: primaryColor,
                             ),
                           )
-                        : const Text('Sign Up'),
+                        : Text(
+                            'Sign Up',
+                            style: lightTextTheme.headlineMedium?.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -134,16 +142,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text('Already have an account?    '),
+                      child: Text(
+                        'Already have an account?    ',
+                        style: lightTextTheme.headlineMedium?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                     InkWell(
                       onTap: navigateToLogIn,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text(
+                        child: Text(
                           'Log In',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                          style: lightTextTheme.headlineMedium?.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),

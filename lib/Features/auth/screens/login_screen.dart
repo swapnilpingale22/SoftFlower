@@ -191,27 +191,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: const Text("Don't have an account?    "),
-                          ),
-                          InkWell(
-                            onTap: navigateToSignUp,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       padding: const EdgeInsets.symmetric(vertical: 8),
+                      //       child: const Text("Don't have an account?    "),
+                      //     ),
+                      //     InkWell(
+                      //       onTap: navigateToSignUp,
+                      //       child: Container(
+                      //         padding: const EdgeInsets.symmetric(vertical: 8),
+                      //         child: const Text(
+                      //           'Sign Up',
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 150),
                     ],
                   ),

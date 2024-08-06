@@ -12,6 +12,12 @@ class ProfileController extends GetxController {
 
   Rx<model.User?> userData = Rx<model.User?>(null);
 
+  @override
+  void onInit() {
+    super.onInit();
+    getData();
+  }
+
   getData() async {
     isLoading.value = true;
 

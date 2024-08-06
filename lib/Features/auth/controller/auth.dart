@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_manager/Features/auth/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 import '../models/user_model.dart' as model;
 
@@ -45,7 +47,21 @@ class Auth {
   //sign out user
 
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    await _firebaseAuth.signOut().then(
+      (value) {
+        Get.back();
+        Get.offAll(() => const LoginScreen());
+      },
+    );
+  }
+
+  Future<void> deleteUserAccount() async {
+    await _firebaseAuth.currentUser!.delete().then(
+      (value) {
+        Get.back();
+        Get.offAll(() => const LoginScreen());
+      },
+    );
   }
 
   //sign up user
