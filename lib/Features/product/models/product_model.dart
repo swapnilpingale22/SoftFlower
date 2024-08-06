@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
+  final String userId;
   final String productId;
   final int productNumber;
   final String productName;
@@ -9,6 +10,7 @@ class Product {
   final String bundleType;
 
   const Product({
+    required this.userId,
     required this.productId,
     required this.productNumber,
     required this.productName,
@@ -19,6 +21,7 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'userId': userId,
       'productId': productId,
       'productNumber': productNumber,
       'productName': productName,
@@ -32,6 +35,7 @@ class Product {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Product(
+      userId: snapshot['userId'] ?? "",
       productId: snapshot['productId'],
       productNumber: snapshot['productNumber'],
       productName: snapshot['productName'],

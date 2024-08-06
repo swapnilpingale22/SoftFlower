@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_details_model.dart';
 
 class Transactions {
+  final String userId;
   final String transactionId;
   final DateTime transactionDate;
   final String agentId;
@@ -21,6 +22,7 @@ class Transactions {
   final List<TransactionDetails> transactionDetailsList;
 
   const Transactions({
+    required this.userId,
     required this.transactionId,
     required this.transactionDate,
     required this.agentId,
@@ -41,6 +43,7 @@ class Transactions {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'userId': userId,
       'transactionId': transactionId,
       'transactionDate': transactionDate,
       'agentId': agentId,
@@ -65,6 +68,7 @@ class Transactions {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Transactions(
+      userId: snapshot['userId'] ?? "",
       transactionId: snapshot['transactionId'],
       transactionDate: (snapshot['transactionDate'] as Timestamp).toDate(),
       agentId: snapshot['agentId'],
@@ -90,6 +94,7 @@ class Transactions {
     List<TransactionDetails>? transactionDetailsList,
   }) {
     return Transactions(
+      userId: userId,
       transactionId: transactionId,
       transactionDate: transactionDate,
       agentId: agentId,

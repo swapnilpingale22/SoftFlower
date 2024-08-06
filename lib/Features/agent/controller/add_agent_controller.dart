@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class AddAgentController extends GetxController {
   Rx<TextEditingController> caretController = TextEditingController().obs;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
 
   @override
@@ -45,8 +47,10 @@ class AddAgentController extends GetxController {
 
     try {
       String agentId = const Uuid().v1();
+      final userId = _auth.currentUser!.uid;
 
       Agent agent = Agent(
+        userId: userId,
         agentId: agentId,
         agentName: agentName,
         agentCity: agentCity,

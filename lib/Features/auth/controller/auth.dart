@@ -1,14 +1,18 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/user_model.dart' as model;
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User? get currentUser => _firebaseAuth.currentUser;
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
-//logging users in
+  //logging users in
 
   Future<String> logInUSer({
     required String email,
@@ -38,36 +42,44 @@ class Auth {
     return res;
   }
 
-  // Future<void> signInWithEmailAndPassword({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   await _firebaseAuth.signInWithEmailAndPassword(
-  //     email: email,
-  //     password: password,
-  //   );
-  // }
-
-  Future<void> createUserWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-  }
+  //sign out user
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    // .then(
-    //   (value) {
-    //     Navigator.pushReplacement(
-    //         Get.context!,
-    //         MaterialPageRoute(
-    //           builder: (context) => const LoginScreen(),
-    //         ));
-    //   },
-    // );
+  }
+
+  //sign up user
+
+  Future<String> signUpUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = "Please fill all the fields.";
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        //register user
+
+        UserCredential cred =
+            await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        //add user to our database
+
+        model.User user = model.User(
+          email: email,
+          uid: cred.user!.uid,
+        );
+
+        await _firestore.collection('users').doc(cred.user!.uid).set(
+              user.toJson(),
+            );
+        res = "Success";
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
   }
 }

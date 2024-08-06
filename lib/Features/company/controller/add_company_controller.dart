@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/company/models/company_model.dart';
 import 'package:expense_manager/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -16,6 +17,7 @@ class AddCompanyController extends GetxController {
   Rx<TextEditingController> contactNoController = TextEditingController().obs;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
 
   @override
@@ -40,8 +42,10 @@ class AddCompanyController extends GetxController {
 
     try {
       String companyId = const Uuid().v1();
+      final userId = _auth.currentUser!.uid;
 
       Company product = Company(
+        userId: userId,
         companyId: companyId,
         companyName: companyName,
         ownerName: ownerName,

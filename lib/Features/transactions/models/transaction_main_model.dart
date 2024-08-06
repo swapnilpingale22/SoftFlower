@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionMain {
+  final String userId;
   final String transactionId;
   final DateTime transactionDate;
   final String agentId;
@@ -18,6 +19,7 @@ class TransactionMain {
   final double totalBalance;
 
   const TransactionMain({
+    required this.userId,
     required this.transactionId,
     required this.transactionDate,
     required this.agentId,
@@ -37,6 +39,7 @@ class TransactionMain {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'userId': userId,
       'transactionId': transactionId,
       'transactionDate': transactionDate,
       'agentId': agentId,
@@ -59,6 +62,7 @@ class TransactionMain {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return TransactionMain(
+      userId: snapshot['userId'] ?? "",
       transactionId: snapshot['transactionId'],
       transactionDate: snapshot['transactionDate'],
       agentId: snapshot['agentId'],

@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Agent {
+  final String userId;
   final String agentId;
   final String agentName;
   final String agentCity;
@@ -12,6 +13,7 @@ class Agent {
   final double caret;
 
   const Agent({
+    required this.userId,
     required this.agentId,
     required this.agentName,
     required this.agentCity,
@@ -24,6 +26,7 @@ class Agent {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'userId': userId,
       'agentId': agentId,
       'agentName': agentName,
       'agentCity': agentCity,
@@ -39,6 +42,7 @@ class Agent {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Agent(
+      userId: snapshot['userId'] ?? "",
       agentId: snapshot['agentId'] ?? "",
       agentName: snapshot['agentName'] ?? "",
       agentCity: snapshot['agentCity'] ?? "",

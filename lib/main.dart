@@ -1,4 +1,4 @@
-import 'package:expense_manager/Features/auth/splash_screen.dart';
+import 'package:expense_manager/Features/auth/screens/splash_screen.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

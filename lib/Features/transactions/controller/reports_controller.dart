@@ -1,16 +1,17 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../utils/utils.dart';
 import '../models/transaction_details_model.dart';
-import '../models/transaction_main_model.dart';
 import '../models/transactions_model.dart';
 
 class ReportsController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   var dataList = <Map<String, dynamic>>[].obs;
   RxBool isLoading = false.obs;
   RxBool isDeleteLoading = false.obs;
@@ -189,8 +190,12 @@ class ReportsController extends GetxController {
 
   void fetchTransactions() {
     isLoading.value = true;
-    firestore.collection('transactionMain').snapshots().listen(
-        (snapshot) async {
+    final uid = _auth.currentUser!.uid;
+    firestore
+        .collection('transactionMain')
+        .where('userId', isEqualTo: uid)
+        .snapshots()
+        .listen((snapshot) async {
       List<Transactions> fetchedTransactions = [];
 
       for (var doc in snapshot.docs) {

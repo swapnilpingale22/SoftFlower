@@ -8,6 +8,7 @@ import 'package:expense_manager/Features/transactions/models/product.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_details_model.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_main_model.dart';
 import 'package:expense_manager/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -16,6 +17,7 @@ class AddTransactionController extends GetxController {
   final transactionFormKey = GlobalKey<FormState>();
   final productListFormKey = GlobalKey<FormState>();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
   RxBool isSaveLoading = false.obs;
   //company
@@ -98,8 +100,13 @@ class AddTransactionController extends GetxController {
   // }
 
   void fetchCompanies() {
+    final uid = _auth.currentUser!.uid;
     isLoading.value = true;
-    firestore.collection('company').snapshots().listen((snapshot) {
+    firestore
+        .collection('company')
+        .where('userId', isEqualTo: uid)
+        .snapshots()
+        .listen((snapshot) {
       companies.value =
           snapshot.docs.map((doc) => Company.fromSnap(doc)).toList();
       isLoading.value = false;
@@ -123,8 +130,13 @@ class AddTransactionController extends GetxController {
   // }
 
   void fetchAgents() {
+    final uid = _auth.currentUser!.uid;
     isLoading.value = true;
-    firestore.collection('agent').snapshots().listen((snapshot) {
+    firestore
+        .collection('agent')
+        .where('userId', isEqualTo: uid)
+        .snapshots()
+        .listen((snapshot) {
       agents.value = snapshot.docs.map((doc) => Agent.fromSnap(doc)).toList();
       isLoading.value = false;
     }, onError: (e) {
@@ -147,8 +159,13 @@ class AddTransactionController extends GetxController {
   // }
 
   void fetchProducts() {
+    final uid = _auth.currentUser!.uid;
     isLoading.value = true;
-    firestore.collection('product').snapshots().listen((snapshot) {
+    firestore
+        .collection('product')
+        .where('userId', isEqualTo: uid)
+        .snapshots()
+        .listen((snapshot) {
       products.value =
           snapshot.docs.map((doc) => Product.fromSnap(doc)).toList();
       isLoading.value = false;
@@ -211,11 +228,13 @@ class AddTransactionController extends GetxController {
     //transaction main id
   }) async {
     String res = "Some error occured";
+    final userId = _auth.currentUser!.uid;
 
     try {
       String transactionId = const Uuid().v1();
 
       TransactionMain transactionMain = TransactionMain(
+        userId: userId,
         transactionId: transactionId,
         transactionDate: transactionDate,
         agentId: agentId,
@@ -471,7 +490,6 @@ class AddTransactionController extends GetxController {
   }
 
   removeProduct(int index) {
-    
     // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -23,8 +24,10 @@ class AddProductController extends GetxController {
   Rx<TextEditingController> productComissionController =
       TextEditingController().obs;
   Rx<Bundle> bundle = Bundle.kilo.obs;
-  
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   RxBool isLoading = false.obs;
 
   @override
@@ -47,8 +50,10 @@ class AddProductController extends GetxController {
 
     try {
       String productId = const Uuid().v1();
+      final userId = _auth.currentUser!.uid;
 
       Product product = Product(
+        userId: userId,
         productId: productId,
         productNumber: productNumber,
         productName: productName,

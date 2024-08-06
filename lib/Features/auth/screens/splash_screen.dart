@@ -1,11 +1,13 @@
 import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
-import 'package:expense_manager/Features/auth/login_screen.dart';
-import 'package:expense_manager/Features/home/screens/botttom_bar.dart';
-import 'package:expense_manager/utils/colors.dart';
+import 'package:expense_manager/Features/auth/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../../utils/colors.dart';
+import '../../home/screens/botttom_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

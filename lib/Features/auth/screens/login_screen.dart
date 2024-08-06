@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:expense_manager/Features/auth/controller/auth.dart';
+import 'package:expense_manager/Features/auth/screens/signup_screen.dart';
 import 'package:expense_manager/Features/common_widgets/text_input_field.dart';
 import 'package:expense_manager/Features/home/screens/botttom_bar.dart';
 import 'package:expense_manager/utils/colors.dart';
@@ -63,22 +64,14 @@ class _LoginScreenState extends State<LoginScreen> {
       showSnackBar(res, Get.context!);
     } else {
       showSnackBar(res, Get.context!);
-      Navigator.of(Get.context!).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Get.offAll(() => const HomeScreen());
       showSnackBar('Welcome', Get.context!);
     }
   }
 
-  // void navigateToSignUp() {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (context) => const SignUpScreen(),
-  //     ),
-  //   );
-  // }
+  void navigateToSignUp() {
+    Get.offAll(() => const SignUpScreen());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               _isObscure = !_isObscure;
                               _isSeen = !_isSeen;
-                            });  
+                            });
                           },
                           icon: _isSeen ? eyeFill : eyeSlashFill,
                         ),
@@ -198,6 +191,27 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: const Text("Don't have an account?    "),
+                          ),
+                          InkWell(
+                            onTap: navigateToSignUp,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 150),
                     ],
                   ),
