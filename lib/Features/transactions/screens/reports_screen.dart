@@ -4,6 +4,7 @@ import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class Reports extends StatefulWidget {
   const Reports({super.key});
@@ -50,6 +51,10 @@ class _ReportsState extends State<Reports> {
                             shrinkWrap: true,
                             itemCount: reportsController.transactions.length,
                             itemBuilder: (context, index) {
+                              String formattedDate = DateFormat('dd/MM/yyyy')
+                                  .format(reportsController
+                                      .transactions[index].transactionDate);
+
                               return ZoomIn(
                                 child: Card(
                                     color: primaryColor2,
@@ -61,9 +66,9 @@ class _ReportsState extends State<Reports> {
                                     child: Stack(
                                       children: [
                                         ExpansionTile(
+                                          shape: LinearBorder.none,
                                           childrenPadding: EdgeInsets.zero,
-                                          title: Text(
-                                              'Date${reportsController.transactions[index].transactionDate}'),
+                                          title: Text('Date: $formattedDate'),
                                           subtitle: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
