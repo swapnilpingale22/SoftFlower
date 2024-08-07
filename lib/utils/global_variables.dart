@@ -7,6 +7,7 @@ import '../Features/auth/screens/profile_screen.dart';
 List<Widget> homeScreenItems = [
   const DashboardScreen(),
   const CommingSoonScreen(),
+  // const ShowPDFScreen(),
   const ProfileScreen(),
 ];
 
