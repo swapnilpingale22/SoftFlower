@@ -26,7 +26,7 @@ class _AgentScreenState extends State<AgentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Agents',
+          'Farmers',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),

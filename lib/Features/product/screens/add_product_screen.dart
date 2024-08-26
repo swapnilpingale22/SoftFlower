@@ -21,7 +21,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Product',
+          'Add Flower',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),
@@ -45,7 +45,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Product Number',
+                                  'Flower Number',
                                   style: lightTextTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -54,17 +54,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   keyboardType: TextInputType.number,
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
-                                      return 'Please enter product no';
+                                      return 'Please enter flower no';
                                     }
                                     return null;
                                   },
                                   controller: addproductController
                                       .productNumberController.value,
-                                  hintText: 'Enter product no',
+                                  hintText: 'Enter flower no',
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  'Product Name',
+                                  'Flower Name',
                                   style: lightTextTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -72,13 +72,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 CustomTextField(
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
-                                      return 'Please enter product name';
+                                      return 'Please enter flower name';
                                     }
                                     return null;
                                   },
                                   controller: addproductController
                                       .productNameController.value,
-                                  hintText: 'Enter product name',
+                                  hintText: 'Enter flower name',
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
@@ -97,7 +97,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   },
                                   controller: addproductController
                                       .productQuantityController.value,
-                                  hintText: 'Enter your quantity',
+                                  hintText: 'Enter quantity',
                                 ),
                                 const SizedBox(height: 10),
                                 Text(

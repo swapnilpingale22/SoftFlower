@@ -32,6 +32,15 @@ class AddTransactionController extends GetxController {
   Rx<String?> selectedProductId = Rx<String?>(null);
   RxList<Product> products = <Product>[].obs;
 
+  //company
+  Rx<Company?> selectedCompanyData = Rx<Company?>(null);
+  RxString companyName = "".obs;
+  RxString companyAddress = "".obs;
+  RxString companyCity = "".obs;
+  RxInt companyMobNo = 0.obs;
+  RxString companyOwnerName = "".obs;
+  RxInt companyPincode = 0.obs;
+
   //agent
   RxString agentName = "".obs;
   Rx<TextEditingController> motorRentController = TextEditingController().obs;
@@ -175,6 +184,27 @@ class AddTransactionController extends GetxController {
     });
   }
 
+  void fetchCompanyDetails(String companyId) {
+    Company? company = companies.firstWhere(
+      (a) => a.companyName == companyId,
+    );
+    if (company != null) {
+      selectedCompanyData.value = company;
+      companyName.value = company.companyName;
+      companyAddress.value = company.address;
+      companyCity.value = company.city;
+      companyMobNo.value = company.mobileNumber;
+      companyOwnerName.value = company.ownerName;
+      companyPincode.value = company.pincode;
+      log(companyName.value);
+      log(companyAddress.value);
+      log(companyCity.value);
+      log(companyMobNo.value.toString());
+      log(companyOwnerName.value);
+      log(companyPincode.value.toString());
+    }
+  }
+
   void fetchAgentDetails(String agentId) {
     Agent? agent = agents.firstWhere(
       (a) => a.agentId == agentId,
@@ -215,6 +245,8 @@ class AddTransactionController extends GetxController {
     required String productId,
     required double totalBalance,
     required double totalExpense,
+    required String companyId,
+    required String companyAddress,
     //total sale
     // required double totalSale,
     required DateTime transactionDate,
@@ -250,6 +282,8 @@ class AddTransactionController extends GetxController {
         totalSale: totalSale,
         totalExpense: totalExpense,
         totalBalance: totalBalance,
+        companyId: companyId,
+        companyAddress: companyAddress,
       );
 
       await firestore.collection('transactionMain').doc(transactionId).set(
@@ -321,24 +355,28 @@ class AddTransactionController extends GetxController {
 
     try {
       String res = await addTransactionMain(
-        transactionDate: DateTime.now(),
-        agentId: selectedAgentId.value ?? "",
-        agentName: agentName.value,
-        productId: selectedProductId.value ?? "",
-        daag: actualDaag,
-        commission: actualCommission,
-        motorRent: actualMotorRent,
-        coolie: actualCoolie,
-        jagaBhade: actualJagaBhade,
-        postage: double.parse(postageController.value.text.trim()),
-        caret: actualCaret,
-        // totalSale: totalSale,
-        totalExpense: totalExpense,
-        totalBalance: totalBalance,
-        // itemName: productName.value,
-        // quantity: int.parse(productQuantityController.value.text),
-        // rate: double.parse(productRateController.value.text),
-      );
+          transactionDate: DateTime.now(),
+          agentId: selectedAgentId.value ?? "",
+          agentName: agentName.value,
+          productId: selectedProductId.value ?? "",
+          daag: actualDaag,
+          commission: actualCommission,
+          motorRent: actualMotorRent,
+          coolie: actualCoolie,
+          jagaBhade: actualJagaBhade,
+          postage: double.parse(postageController.value.text.trim()),
+          caret: actualCaret,
+          // totalSale: totalSale,
+          totalExpense: totalExpense,
+          totalBalance: totalBalance,
+          companyId: selectedCompanyId.value ?? "",
+          companyAddress:
+              "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}"
+
+          // itemName: productName.value,
+          // quantity: int.parse(productQuantityController.value.text),
+          // rate: double.parse(productRateController.value.text),
+          );
 
       if (res == "Success") {
         agentName.value = "";

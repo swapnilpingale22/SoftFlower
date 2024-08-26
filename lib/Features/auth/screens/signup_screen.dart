@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import '../../../utils/theme.dart';
 import '../../../utils/utils.dart';
 import '../../common_widgets/text_input_field.dart';
-import '../../home/screens/botttom_bar.dart';
 import '../controller/auth.dart';
 
 class SignUpScreen extends StatefulWidget {

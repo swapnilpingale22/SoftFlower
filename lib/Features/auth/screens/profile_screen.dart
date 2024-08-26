@@ -128,36 +128,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         const SizedBox(height: 10),
-                        CustomRoundedButton(
-                          text: 'Delete Account',
-                          color: mobileBackgroundColor,
-                          textColor: textColor,
-                          onTap: () {
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (context) => CupertinoAlertDialog(
-                                title: const Text('Alert'),
-                                content: const Text(
-                                    'Do you really want to Delete your account?'),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    isDestructiveAction: true,
-                                    child: const Text('Yes'),
-                                    onPressed: () async {
-                                      await Auth().deleteUserAccount();
-                                      showSnackBar(
-                                          'Account deleted!', Get.context!);
-                                    },
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text('No'),
-                                    onPressed: () => Get.back(),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                        // CustomRoundedButton(
+                        //   text: 'Delete Account',
+                        //   color: mobileBackgroundColor,
+                        //   textColor: textColor,
+                        //   onTap: () {
+                        //     showCupertinoDialog(
+                        //       context: context,
+                        //       builder: (context) => CupertinoAlertDialog(
+                        //         title: const Text('Alert'),
+                        //         content: const Text(
+                        //             'Do you really want to Delete your account?'),
+                        //         actions: [
+                        //           CupertinoDialogAction(
+                        //             isDestructiveAction: true,
+                        //             child: const Text('Yes'),
+                        //             onPressed: () async {
+                        //               await Auth().deleteUserAccount();
+                        //               showSnackBar(
+                        //                   'Account deleted!', Get.context!);
+                        //             },
+                        //           ),
+                        //           CupertinoDialogAction(
+                        //             child: const Text('No'),
+                        //             onPressed: () => Get.back(),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                         const SizedBox(height: 10),
                         const Spacer(),
                         const Divider(

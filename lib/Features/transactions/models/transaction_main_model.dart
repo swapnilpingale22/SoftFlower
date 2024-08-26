@@ -17,6 +17,8 @@ class TransactionMain {
   final double totalSale;
   final double totalExpense;
   final double totalBalance;
+  final String companyId;
+  final String companyAddress;
 
   const TransactionMain({
     required this.userId,
@@ -35,6 +37,8 @@ class TransactionMain {
     required this.totalSale,
     required this.totalExpense,
     required this.totalBalance,
+    required this.companyId,
+    required this.companyAddress,
   });
 
   Map<String, dynamic> toJson() {
@@ -55,6 +59,8 @@ class TransactionMain {
       'totalSale': totalSale,
       'totalExpense': totalExpense,
       'totalBalance': totalBalance,
+      'companyId': companyId,
+      'companyAddress': companyAddress,
     };
   }
 
@@ -78,6 +84,8 @@ class TransactionMain {
       totalSale: snapshot['totalSale'],
       totalExpense: snapshot['totalExpense'],
       totalBalance: snapshot['totalBalance'],
+      companyId: snapshot['companyId'],
+      companyAddress: snapshot['companyAddress'],
     );
   }
 }

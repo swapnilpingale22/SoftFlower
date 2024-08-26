@@ -85,6 +85,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                         addTransactionController
                                             .selectedCompanyId
                                             .value = newValue!;
+                                        addTransactionController
+                                            .fetchCompanyDetails(newValue);
                                       },
                                       items: addTransactionController.companies
                                           .map((Company company) {

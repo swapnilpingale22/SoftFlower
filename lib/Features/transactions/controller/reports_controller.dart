@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_manager/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -146,8 +147,14 @@ class ReportsController extends GetxController {
             CupertinoDialogAction(
               isDestructiveAction: true,
               child: isDeleteLoading.value
-                  ? const Center(
-                      child: CupertinoActivityIndicator(),
+                  ? const SizedBox(
+                      height: 30,
+                      child: Center(
+                        child: CupertinoActivityIndicator(
+                          color: textColor,
+                          radius: 30,
+                        ),
+                      ),
                     )
                   : const Text('Yes'),
               onPressed: () async {

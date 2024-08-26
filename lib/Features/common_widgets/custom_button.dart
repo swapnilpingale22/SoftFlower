@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
         child: isLoading
             ? const Center(
                 child: CupertinoActivityIndicator(
-                  color: primaryColor,
+                  color: textColor,
                 ),
               )
             : Text(

@@ -3,17 +3,18 @@ import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../Features/auth/screens/profile_screen.dart';
+import '../Features/pdf/pdf_screen.dart';
 
 List<Widget> homeScreenItems = [
   const DashboardScreen(),
-  const CommingSoonScreen(),
-  // const ShowPDFScreen(),
+  // const CommingSoonScreen(),
+  const ShowPDFScreen(),
   const ProfileScreen(),
 ];
 
 List<String> buttonTitles = [
-  "Agent",
-  "Product",
+  "Farmers",
+  "Flowers",
   "Transaction",
   "Reports",
   "Company",

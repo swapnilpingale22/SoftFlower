@@ -20,7 +20,7 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Agent',
+          'Add Farmer',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),
@@ -43,7 +43,7 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Agent Name',
+                                'Farmer Name',
                                 style: lightTextTheme.bodyMedium!.copyWith(
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -51,13 +51,13 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                               CustomTextField(
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
-                                    return 'Please enter Agent name';
+                                    return 'Please enter Farmer name';
                                   }
                                   return null;
                                 },
                                 controller: addAgentController
                                     .agentNameController.value,
-                                hintText: 'Enter agent name',
+                                hintText: 'Enter farmer name',
                               ),
                               const SizedBox(height: 10),
                               Text(

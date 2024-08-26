@@ -20,6 +20,8 @@ class Transactions {
   final double totalExpense;
   final double totalBalance;
   final List<TransactionDetails> transactionDetailsList;
+  final String companyId;
+  final String companyAddress;
 
   const Transactions({
     required this.userId,
@@ -39,6 +41,8 @@ class Transactions {
     required this.totalExpense,
     required this.totalBalance,
     required this.transactionDetailsList,
+    required this.companyId,
+    required this.companyAddress,
   });
 
   Map<String, dynamic> toJson() {
@@ -59,6 +63,8 @@ class Transactions {
       'totalSale': totalSale,
       'totalExpense': totalExpense,
       'totalBalance': totalBalance,
+      'companyId': companyId,
+      'companyAddress': companyAddress,
       'transactionDetailsList':
           transactionDetailsList.map((detail) => detail.toJson()).toList(),
     };
@@ -84,6 +90,8 @@ class Transactions {
       totalSale: snapshot['totalSale'],
       totalExpense: snapshot['totalExpense'],
       totalBalance: snapshot['totalBalance'],
+      companyId: snapshot['companyId'] ?? '',
+      companyAddress: snapshot['companyAddress'] ?? '',
       transactionDetailsList: [],
       // transactionDetailsList: (snapshot['transactionDetailsList'] as List)
       //     .map((detail) => TransactionDetails.fromSnap(detail))
@@ -110,6 +118,8 @@ class Transactions {
       totalSale: totalSale,
       totalExpense: totalExpense,
       totalBalance: totalBalance,
+      companyId: companyId,
+      companyAddress: companyAddress,
       transactionDetailsList:
           transactionDetailsList ?? this.transactionDetailsList,
     );

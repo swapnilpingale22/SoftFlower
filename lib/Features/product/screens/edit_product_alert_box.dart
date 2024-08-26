@@ -59,7 +59,7 @@ Future<void> showEditProductDialog(
                                     children: [
                                       Align(
                                         child: Text(
-                                          'Edit Product',
+                                          'Edit Flower',
                                           style: lightTextTheme.bodyLarge!
                                               .copyWith(
                                             fontWeight: FontWeight.w600,
@@ -68,7 +68,7 @@ Future<void> showEditProductDialog(
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
-                                        'Product Number',
+                                        'Flower Number',
                                         style:
                                             lightTextTheme.bodyMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
@@ -78,17 +78,17 @@ Future<void> showEditProductDialog(
                                         keyboardType: TextInputType.number,
                                         validator: (val) {
                                           if (val == null || val.isEmpty) {
-                                            return 'Please enter product no';
+                                            return 'Please enter flower no';
                                           }
                                           return null;
                                         },
                                         controller: editProductController
                                             .productNumberController.value,
-                                        hintText: 'Enter product no',
+                                        hintText: 'Enter flower no',
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
-                                        'Product Name',
+                                        'Flower Name',
                                         style:
                                             lightTextTheme.bodyMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
@@ -97,13 +97,13 @@ Future<void> showEditProductDialog(
                                       CustomTextField(
                                         validator: (val) {
                                           if (val == null || val.isEmpty) {
-                                            return 'Please enter product name';
+                                            return 'Please enter flower name';
                                           }
                                           return null;
                                         },
                                         controller: editProductController
                                             .productNameController.value,
-                                        hintText: 'Enter product name',
+                                        hintText: 'Enter flower name',
                                       ),
                                       const SizedBox(height: 10),
                                       Text(
@@ -123,7 +123,7 @@ Future<void> showEditProductDialog(
                                         },
                                         controller: editProductController
                                             .productQuantityController.value,
-                                        hintText: 'Enter your quantity',
+                                        hintText: 'Enter quantity',
                                       ),
                                       const SizedBox(height: 10),
                                       Text(

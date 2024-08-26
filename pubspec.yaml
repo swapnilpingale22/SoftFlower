@@ -38,9 +38,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
-    - assets/fonts/Roboto-Bold.ttf
-    - assets/fonts/Roboto-Regular.ttf
-  #   - images/a_dot_ham.jpeg
+    - assets/fonts/
 
   fonts:
     - family: Poppins
@@ -50,7 +48,7 @@ flutter:
         - asset: assets/fonts/PoppinsRegular.ttf
         - asset: assets/fonts/PoppinsSemiBold.ttf
 
-    - family: Roboto
+    - family: NotoSans
       fonts:
-        - asset: assets/fonts/Roboto-Bold.ttf
-        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/NotoSansDevanagari-Regular.ttf
+

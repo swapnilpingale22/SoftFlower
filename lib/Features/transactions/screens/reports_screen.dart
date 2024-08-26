@@ -1,10 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:expense_manager/Features/pdf/paragraph_pdf_api.dart';
 import 'package:expense_manager/Features/transactions/controller/reports_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../pdf/save_and_opne_pdf.dart';
 
 class Reports extends StatefulWidget {
   const Reports({super.key});
@@ -68,43 +71,14 @@ class _ReportsState extends State<Reports> {
                                         ExpansionTile(
                                           shape: LinearBorder.none,
                                           childrenPadding: EdgeInsets.zero,
-                                          title: Text('Date: $formattedDate'),
+                                          title: Text(
+                                              'Farmer: ${reportsController.transactions[index].agentName}'),
                                           subtitle: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Total sale: ${reportsController.transactions[index].totalSale}',
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Total Expense: ${reportsController.transactions[index].totalExpense}',
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Total Balance: ${reportsController.transactions[index].totalBalance}',
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Caret: ${reportsController.transactions[index].caret}',
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Commission: ${reportsController.transactions[index].commission}',
-                                                style: const TextStyle(
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Coolie: ${reportsController.transactions[index].coolie}',
+                                                'Date: $formattedDate',
                                                 style: const TextStyle(
                                                   color: Colors.black87,
                                                 ),
@@ -116,7 +90,14 @@ class _ReportsState extends State<Reports> {
                                                 ),
                                               ),
                                               Text(
-                                                'Jaga Bhade: ${reportsController.transactions[index].jagaBhade}',
+                                                'Total sale: ${reportsController.transactions[index].totalSale}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Commission: ${reportsController.transactions[index].commission}',
                                                 style: const TextStyle(
                                                   color: Colors.black87,
                                                 ),
@@ -128,9 +109,41 @@ class _ReportsState extends State<Reports> {
                                                 ),
                                               ),
                                               Text(
+                                                'Coolie: ${reportsController.transactions[index].coolie}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Jaga Bhade: ${reportsController.transactions[index].jagaBhade}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Text(
                                                 'Postage: ${reportsController.transactions[index].postage}',
                                                 style: const TextStyle(
                                                   color: Colors.black87,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Caret: ${reportsController.transactions[index].caret}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Total Expense: ${reportsController.transactions[index].totalExpense}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Total Balance: ${reportsController.transactions[index].totalBalance}',
+                                                style: const TextStyle(
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                             ],
@@ -237,7 +250,46 @@ class _ReportsState extends State<Reports> {
                                               ),
                                             ),
                                           ),
-                                        )
+                                        ),
+                                        Positioned(
+                                          right: 10,
+                                          top: 60,
+                                          child: CircleAvatar(
+                                            backgroundColor: primaryColor3,
+                                            child: InkWell(
+                                              onTap: () async {
+                                                //generate and open Paragraph PDF
+                                                final paragraphPdf =
+                                                    await ParagraphPdfApi
+                                                        .generateParagraphPdf(
+                                                  transData: reportsController
+                                                      .transactions,
+                                                  index: index,
+                                                );
+
+                                                SaveAndOpneDocument.openPdf(
+                                                    paragraphPdf);
+
+                                                //generate and open Simple PDF
+                                                // final simplePdfFile =
+                                                //     await SimplePdfApi
+                                                //         .generateSimpleTextPdf(
+                                                //   reportsController
+                                                //       .transactions[index]
+                                                //       .totalBalance
+                                                //       .toString(),
+                                                //   formattedDate,
+                                                // );
+                                                // SaveAndOpneDocument.openPdf(
+                                                //     simplePdfFile);
+                                              },
+                                              child: const Icon(
+                                                Icons.picture_as_pdf,
+                                                color: textColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     )
 

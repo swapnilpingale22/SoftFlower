@@ -28,7 +28,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Products',
+          'Flowers',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),
