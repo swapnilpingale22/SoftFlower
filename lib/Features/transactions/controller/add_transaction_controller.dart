@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,10 +29,12 @@ class AddTransactionController extends GetxController {
   //agent
   Rx<String?> selectedAgentId = Rx<String?>(null);
   RxList<Agent> agents = <Agent>[].obs;
+  RxList<Agent> filteredAgents = <Agent>[].obs;
 
   //product
   Rx<String?> selectedProductId = Rx<String?>(null);
   RxList<Product> products = <Product>[].obs;
+  RxList<Product> filteredProducts = <Product>[].obs;
 
   //company
   Rx<Company?> selectedCompanyData = Rx<Company?>(null);
@@ -48,6 +52,7 @@ class AddTransactionController extends GetxController {
   Rx<TextEditingController> jagaBhadeController = TextEditingController().obs;
   Rx<TextEditingController> postageController = TextEditingController().obs;
   Rx<TextEditingController> caretController = TextEditingController().obs;
+  Rx<TextEditingController> searchAgentController = TextEditingController().obs;
 
   //product
   RxString productName = "".obs;
@@ -57,6 +62,8 @@ class AddTransactionController extends GetxController {
       TextEditingController().obs;
   Rx<TextEditingController> productBoxController = TextEditingController().obs;
   Rx<TextEditingController> productRateController = TextEditingController().obs;
+  Rx<TextEditingController> searchProductController =
+      TextEditingController().obs;
 
   double totalSale = 0.0;
   double totalExpense = 0.0;
@@ -79,6 +86,9 @@ class AddTransactionController extends GetxController {
     fetchAgents();
     fetchCompanies();
     fetchProducts();
+    // Initially, filteredAgents will contain all agents
+    filteredAgents.value = agents;
+    filteredProducts.value = products;
   }
 
   @override
@@ -92,6 +102,8 @@ class AddTransactionController extends GetxController {
     productComissionController.value.dispose();
     productBoxController.value.dispose();
     productRateController.value.dispose();
+    // searchAgentController.value.dispose();
+    // searchProductController.value.dispose();
     super.onClose();
   }
 
@@ -154,6 +166,23 @@ class AddTransactionController extends GetxController {
     });
   }
 
+  //search agents
+  void searchAgentByName(String query) {
+    if (query.isEmpty) {
+      // If the search query is empty, show all agents
+      filteredAgents.value = agents;
+    } else {
+      // Filter agents by name
+      filteredAgents.value = agents
+          .where(
+            (agent) =>
+                agent.agentName.toLowerCase().contains(query.toLowerCase()) ||
+                agent.agentCity.toLowerCase().contains(query.toLowerCase()),
+          )
+          .toList();
+    }
+  }
+
   // Future<void> fetchProducts() async {
   //   isLoading.value = true;
   //   try {
@@ -182,6 +211,20 @@ class AddTransactionController extends GetxController {
       isLoading.value = false;
       log("Error fetching products: $e");
     });
+  }
+
+  //search products
+  void searchProductByName(String query) {
+    if (query.isEmpty) {
+      // If the search query is empty, show all agents
+      filteredProducts.value = products;
+    } else {
+      // Filter agents by name
+      filteredProducts.value = products
+          .where((product) =>
+              product.productName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
   }
 
   void fetchCompanyDetails(String companyId) {

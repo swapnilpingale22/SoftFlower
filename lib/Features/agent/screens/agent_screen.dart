@@ -7,6 +7,7 @@ import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:searchbar_animation/searchbar_animation.dart';
 
 class AgentScreen extends StatefulWidget {
   const AgentScreen({super.key});
@@ -31,6 +32,51 @@ class _AgentScreenState extends State<AgentScreen> {
             fontSize: 20,
           ),
         ),
+        actions: [
+          const SizedBox(width: 50),
+          Expanded(
+            child: SearchBarAnimation(
+              buttonColour: primaryColor3,
+              searchBoxColour: primaryColor1,
+              hintText: 'Search farmer',
+              durationInMilliSeconds: 500,
+              isSearchBoxOnRightSide: true,
+              textEditingController:
+                  addTransactionController.searchAgentController.value,
+              isOriginalAnimation: false,
+              enableKeyboardFocus: true,
+              buttonBorderColour: Colors.black45,
+              trailingWidget: const Icon(
+                Icons.search,
+                size: 20,
+                color: Colors.black,
+              ),
+              secondaryButtonWidget: const Icon(
+                Icons.close,
+                size: 20,
+                color: Colors.black,
+              ),
+              buttonWidget: const Icon(
+                Icons.search,
+                size: 20,
+                color: Colors.black,
+              ),
+              onFieldSubmitted: (String value) {
+                addTransactionController.searchAgentByName(value);
+              },
+              onChanged: (String value) {
+                addTransactionController.searchAgentByName(value);
+              },
+              onPressButton: (isSearchBarOpens) {
+                addTransactionController.searchAgentController.value.clear();
+                addTransactionController.filteredAgents.value =
+                    addTransactionController.agents;
+                // log('do something before animation started. It\'s the ${isSearchBarOpens ? 'opening' : 'closing'} animation');
+              },
+            ),
+          ),
+          const SizedBox(width: 20),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor3,
@@ -53,121 +99,130 @@ class _AgentScreenState extends State<AgentScreen> {
                       ),
                     ),
                   )
-                : SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: addTransactionController.agents.length,
-                            itemBuilder: (context, index) {
-                              return ZoomIn(
-                                child: Card(
-                                  color: primaryColor2,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  margin: const EdgeInsets.only(bottom: 20),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    isThreeLine: true,
-                                    title: Text(
-                                      addTransactionController
-                                          .agents[index].agentName,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w500,
+                : addTransactionController.filteredAgents.isEmpty
+                    ? Center(
+                        child: Text(
+                          "No results found",
+                          style: lightTextTheme.headlineMedium?.copyWith(
+                            fontSize: 20,
+                          ),
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: addTransactionController
+                                    .filteredAgents.length,
+                                itemBuilder: (context, index) {
+                                  final agent = addTransactionController
+                                      .filteredAgents[index];
+                                  return ZoomIn(
+                                    child: Card(
+                                      color: primaryColor2,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                    ),
-                                    subtitle: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Motor Rent: ${addTransactionController.agents[index].motorRent}  \nCoolie: ${addTransactionController.agents[index].coolie} \nJaga Bhade: ${addTransactionController.agents[index].jagaBhade} \nPostage: ${addTransactionController.agents[index].postage} \nCaret: ${addTransactionController.agents[index].caret} \nCity: ${addTransactionController.agents[index].agentCity}',
+                                      margin: const EdgeInsets.only(bottom: 20),
+                                      elevation: 4,
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        title: Text(
+                                          agent.agentName,
                                           style: const TextStyle(
-                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        Column(
+                                        subtitle: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            CircleAvatar(
-                                              backgroundColor: primaryColor3,
-                                              child: InkWell(
-                                                onTap: () async =>
-                                                    await showEditAgentDialog(
-                                                  context,
-                                                  editAgentController,
-                                                  addTransactionController
-                                                      .agents[index],
-                                                ),
-                                                child: const Icon(
-                                                  Icons.edit_note_outlined,
-                                                  color: textColor,
-                                                ),
+                                            Text(
+                                              'Motor Rent: ${agent.motorRent}  \nCoolie: ${agent.coolie} \nJaga Bhade: ${agent.jagaBhade} \nPostage: ${agent.postage} \nCaret: ${agent.caret} \nCity: ${agent.agentCity}',
+                                              style: const TextStyle(
+                                                color: Colors.black54,
                                               ),
                                             ),
-                                            const SizedBox(height: 10),
-                                            CircleAvatar(
-                                              backgroundColor: primaryColor3,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  addTransactionController
-                                                      .showDeleteDialog(
-                                                    agentId:
-                                                        addTransactionController
-                                                            .agents[index]
-                                                            .agentId,
-                                                    collectionName: 'agent',
-                                                  );
-                                                },
-                                                child: const Icon(
-                                                  Icons.delete_forever,
-                                                  color: textColor,
+                                            Column(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundColor:
+                                                      primaryColor3,
+                                                  child: InkWell(
+                                                    onTap: () async =>
+                                                        await showEditAgentDialog(
+                                                      context,
+                                                      editAgentController,
+                                                      agent,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.edit_note_outlined,
+                                                      color: textColor,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                const SizedBox(height: 10),
+                                                CircleAvatar(
+                                                  backgroundColor:
+                                                      primaryColor3,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      addTransactionController
+                                                          .showDeleteDialog(
+                                                        agentId: agent.agentId,
+                                                        collectionName: 'agent',
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.delete_forever,
+                                                      color: textColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
+                                        // trailing: Column(
+                                        //   mainAxisAlignment: MainAxisAlignment.end,
+                                        //   crossAxisAlignment: CrossAxisAlignment.end,
+                                        //   children: [
+                                        //     Expanded(
+                                        //       child: InkWell(
+                                        //         onTap: () {},
+                                        //         child:
+                                        //             const Icon(Icons.edit_note_outlined),
+                                        //       ),
+                                        //     ),
+                                        //     const SizedBox(height: 10),
+                                        //     Expanded(
+                                        //       child: CircleAvatar(
+                                        //         minRadius: 20,
+                                        //         backgroundColor: primaryColor3,
+                                        //         maxRadius: 20,
+                                        //         child: InkWell(
+                                        //           onTap: () {},
+                                        //           child: const Icon(Icons.delete_forever),
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                      ),
                                     ),
-                                    // trailing: Column(
-                                    //   mainAxisAlignment: MainAxisAlignment.end,
-                                    //   crossAxisAlignment: CrossAxisAlignment.end,
-                                    //   children: [
-                                    //     Expanded(
-                                    //       child: InkWell(
-                                    //         onTap: () {},
-                                    //         child:
-                                    //             const Icon(Icons.edit_note_outlined),
-                                    //       ),
-                                    //     ),
-                                    //     const SizedBox(height: 10),
-                                    //     Expanded(
-                                    //       child: CircleAvatar(
-                                    //         minRadius: 20,
-                                    //         backgroundColor: primaryColor3,
-                                    //         maxRadius: 20,
-                                    //         child: InkWell(
-                                    //           onTap: () {},
-                                    //           child: const Icon(Icons.delete_forever),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        ],
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
       ),
     );
   }
