@@ -49,6 +49,28 @@ class _ReportsState extends State<Reports> {
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              if (reportsController.startDate.value != null &&
+                                  reportsController.endDate.value != null)
+                                Expanded(
+                                  child: Text(
+                                    "Selected Range: ${reportsController.formattedStartDate.value} to ${reportsController.formattedEndDate.value}",
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              IconButton(
+                                onPressed: () {
+                                  reportsController.selectDateRange(context);
+                                },
+                                icon: const Icon(Icons.sort),
+                              )
+                            ],
+                          ),
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,

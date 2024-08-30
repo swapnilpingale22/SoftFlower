@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final darkThemeMode = ThemeData.dark(useMaterial3: true).copyWith(
     brightness: Brightness.dark,
+    primaryColor: textColor,
     scaffoldBackgroundColor: const Color(0xff122243),
     appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
     hintColor: const Color.fromRGBO(255, 255, 255, 0.40),
-    textTheme: Typography().white.apply(fontFamily: 'Poppins'),
-    colorScheme: const ColorScheme.light(
+    // textTheme: Typography().white.apply(fontFamily: 'Poppins'),
+    textTheme: lightTextTheme,
+    colorScheme: const ColorScheme.dark(
       primary: Color(0xff122243),
       secondary: Color(0xff071128),
     ),
@@ -20,7 +22,8 @@ class AppTheme {
     scaffoldBackgroundColor: mobileBackgroundColor,
     appBarTheme: const AppBarTheme(backgroundColor: mobileBackgroundColor),
     hintColor: secondaryColor,
-    textTheme: Typography().white.apply(fontFamily: 'poppins'),
+    // textTheme: Typography().white.apply(fontFamily: 'poppins'),
+    textTheme: lightTextTheme,
     colorScheme: const ColorScheme.light(
       primary: Color(0xff122243),
       secondary: Color(0xff071128),
@@ -93,9 +96,9 @@ const TextTheme lightTextTheme = TextTheme(
     color: textColor,
   ),
   labelMedium: TextStyle(
-    color: textColor,
-    fontWeight: FontWeight.w400,
     fontSize: 12,
+    fontWeight: FontWeight.w400,
     height: 1.2,
+    color: textColor,
   ),
 );

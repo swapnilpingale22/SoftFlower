@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -19,6 +20,11 @@ class ReportsController extends GetxController {
 
   // RxList<Transactions> transactions = <Transactions>[].obs;
   RxList<Transactions> transactions = <Transactions>[].obs;
+
+  Rx<DateTime?> startDate = Rx<DateTime?>(null);
+  Rx<String?> formattedStartDate = Rx<String?>(null);
+  Rx<DateTime?> endDate = Rx<DateTime?>(null);
+  Rx<String?> formattedEndDate = Rx<String?>(null);
 
   @override
   void onInit() {
@@ -229,12 +235,69 @@ class ReportsController extends GetxController {
         // Add transaction main to the list
         fetchedTransactions.add(transactionMain);
       }
+      //sort by date descending
+      fetchedTransactions.sort(
+        (a, b) {
+          DateTime dateA = a.transactionDate;
+          DateTime dateB = b.transactionDate;
+          return dateB.compareTo(dateA);
+        },
+      );
 
       transactions.value = fetchedTransactions;
+
       isLoading.value = false;
     }, onError: (e) {
       isLoading.value = false;
       log("Error fetching transactions: $e");
     });
+  }
+
+  //show date picker
+  Future<void> selectDateRange(BuildContext context) async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: primaryColor2, // Header background color
+              onPrimary: textColor, // Header text color
+              onSurface: textColor, // Body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                backgroundColor: primaryColor2,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+      barrierColor: textColor,
+      context: context,
+      firstDate: DateTime(2020), // Adjust the firstDate as needed
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null &&
+        picked !=
+            DateTimeRange(
+              start: startDate.value ?? DateTime.now(),
+              end: endDate.value ?? DateTime.now(),
+            )) {
+      startDate.value = picked.start;
+      endDate.value = picked.end;
+
+      String formatDate(DateTime date) {
+        String formattedDate = DateFormat('dd/MM/yyyy').format(date);
+        return formattedDate;
+      }
+
+      formattedStartDate.value = formatDate(picked.start);
+      formattedEndDate.value = formatDate(picked.end);
+    }
+
+    // After selecting the date range, you can fetch and filter the documents.
+    // fetchAndFilterDocuments(_startDate, _endDate);
   }
 }
