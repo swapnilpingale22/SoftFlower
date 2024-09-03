@@ -65,6 +65,10 @@ class AddTransactionController extends GetxController {
   Rx<TextEditingController> searchProductController =
       TextEditingController().obs;
 
+  //transaction date
+
+  Rx<DateTime?> selectedTransactionDate = Rx<DateTime?>(null);
+
   double totalSale = 0.0;
   double totalExpense = 0.0;
   double totalBalance = 0.0;
@@ -397,8 +401,12 @@ class AddTransactionController extends GetxController {
     totalBalance = totalSale - totalExpense;
 
     try {
+      // Get the date from the date controller or use the current date if empty
+
+      DateTime selectedDate = selectedTransactionDate.value ?? DateTime.now();
+
       String res = await addTransactionMain(
-          transactionDate: DateTime.now(),
+          transactionDate: selectedDate,
           agentId: selectedAgentId.value ?? "",
           agentName: agentName.value,
           productId: selectedProductId.value ?? "",

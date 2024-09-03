@@ -9,6 +9,7 @@ import 'package:expense_manager/utils/theme.dart';
 import 'package:expense_manager/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -268,6 +269,52 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 ],
                               ),
                             ),
+                            //date section
+                            Text(
+                              'Transaction Date',
+                              style: lightTextTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+
+                            GestureDetector(
+                              onTap: () async {
+                                DateTime? selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime.now(),
+                                );
+
+                                if (selectedDate != null) {
+                                  addTransactionController
+                                      .selectedTransactionDate
+                                      .value = selectedDate;
+                                }
+                              },
+                              child: Obx(
+                                () => Text(
+                                  addTransactionController
+                                              .selectedTransactionDate.value !=
+                                          null
+                                      ? DateFormat('dd-MM-yyyy').format(
+                                          addTransactionController
+                                              .selectedTransactionDate.value!)
+                                      : 'Select a date',
+                                  style: lightTextTheme.bodyMedium!.copyWith(
+                                    fontSize: 16,
+                                    color: addTransactionController
+                                                .selectedTransactionDate
+                                                .value !=
+                                            null
+                                        ? textColor
+                                        : secondaryColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+
                             //product section
                             Text(
                               'Product Name',
