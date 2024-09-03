@@ -18,8 +18,8 @@ class ReportsController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isDeleteLoading = false.obs;
 
-  // RxList<Transactions> transactions = <Transactions>[].obs;
   RxList<Transactions> transactions = <Transactions>[].obs;
+  RxList<Transactions> allTransactions = <Transactions>[].obs;
 
   Rx<DateTime?> startDate = Rx<DateTime?>(null);
   Rx<String?> formattedStartDate = Rx<String?>(null);
@@ -186,21 +186,6 @@ class ReportsController extends GetxController {
     );
   }
 
-  //fetch all transactions
-  // void fetchTransactions() {
-  //   isLoading.value = true;
-  //   firestore.collection('transactionMain').snapshots().listen((snapshot) {
-
-  //     transactions.value =
-  //         snapshot.docs.map((doc) => Transactions.fromSnap(doc)).toList();
-  //     isLoading.value = false;
-
-  //   }, onError: (e) {
-  //     isLoading.value = false;
-  //     log("Error fetching transactions: $e");
-  //   });
-  // }
-
   void fetchTransactions() {
     isLoading.value = true;
     final uid = _auth.currentUser!.uid;
@@ -244,6 +229,10 @@ class ReportsController extends GetxController {
         },
       );
 
+      // Store all transactions locally
+      allTransactions.value = fetchedTransactions;
+
+      // Initially display all transactions
       transactions.value = fetchedTransactions;
 
       isLoading.value = false;
@@ -275,8 +264,11 @@ class ReportsController extends GetxController {
       },
       barrierColor: textColor,
       context: context,
-      firstDate: DateTime(2020), // Adjust the firstDate as needed
+      firstDate: DateTime(2020),
       lastDate: DateTime.now(),
+      initialDateRange: startDate.value != null && endDate.value != null
+          ? DateTimeRange(start: startDate.value!, end: endDate.value!)
+          : null,
     );
 
     if (picked != null &&
@@ -288,16 +280,36 @@ class ReportsController extends GetxController {
       startDate.value = picked.start;
       endDate.value = picked.end;
 
-      String formatDate(DateTime date) {
-        String formattedDate = DateFormat('dd/MM/yyyy').format(date);
-        return formattedDate;
-      }
-
-      formattedStartDate.value = formatDate(picked.start);
-      formattedEndDate.value = formatDate(picked.end);
+      formattedStartDate.value = DateFormat('dd/MM/yyyy').format(picked.start);
+      formattedEndDate.value = DateFormat('dd/MM/yyyy').format(picked.end);
     }
 
-    // After selecting the date range, you can fetch and filter the documents.
-    // fetchAndFilterDocuments(_startDate, _endDate);
+    // After selecting the date range, fetch and filter the documents.
+    filterTransactionsByDateRange();
+  }
+
+  void filterTransactionsByDateRange() {
+    if (startDate.value != null && endDate.value != null) {
+      transactions.value = allTransactions.where((transaction) {
+        DateTime transactionDate = transaction.transactionDate;
+        return transactionDate.isAfter(startDate.value!) &&
+            transactionDate
+                .isBefore(endDate.value!.add(const Duration(days: 1)));
+      }).toList();
+    } else {
+      // If no date range is selected, display all transactions
+      transactions.value = allTransactions;
+    }
+  }
+
+  // Reset the date range and show all transactions
+  void resetDateRange() {
+    startDate.value = null;
+    endDate.value = null;
+    formattedStartDate.value = null;
+    formattedEndDate.value = null;
+
+    // Show all transactions
+    transactions.value = allTransactions;
   }
 }
