@@ -292,9 +292,11 @@ class ReportsController extends GetxController {
     if (startDate.value != null && endDate.value != null) {
       transactions.value = allTransactions.where((transaction) {
         DateTime transactionDate = transaction.transactionDate;
-        return transactionDate.isAfter(startDate.value!) &&
-            transactionDate
-                .isBefore(endDate.value!.add(const Duration(days: 1)));
+        return transactionDate.isAtSameMomentAs(startDate.value!) ||
+            transactionDate.isAtSameMomentAs(endDate.value!) ||
+            transactionDate.isAfter(startDate.value!) &&
+                transactionDate
+                    .isBefore(endDate.value!.add(const Duration(days: 1)));
       }).toList();
     } else {
       // If no date range is selected, display all transactions
