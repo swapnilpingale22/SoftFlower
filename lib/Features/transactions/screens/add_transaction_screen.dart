@@ -171,6 +171,25 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
+                                    'Daag/Box',
+                                    style: lightTextTheme.bodyMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  CustomTextField(
+                                    keyboardType: TextInputType.number,
+                                    validator: (val) {
+                                      if (val == null || val.isEmpty) {
+                                        return 'Please enter daag/box';
+                                      }
+                                      return null;
+                                    },
+                                    controller: addTransactionController
+                                        .productBoxController.value,
+                                    hintText: 'Enter daag/box',
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
                                     'Motor Rent',
                                     style: lightTextTheme.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.w500,
@@ -270,50 +289,96 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                               ),
                             ),
                             //date section
-                            Text(
-                              'Transaction Date',
-                              style: lightTextTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-
-                            GestureDetector(
-                              onTap: () async {
-                                DateTime? selectedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime.now(),
-                                );
-
-                                if (selectedDate != null) {
-                                  addTransactionController
-                                      .selectedTransactionDate
-                                      .value = selectedDate;
-                                }
-                              },
-                              child: Obx(
-                                () => Text(
-                                  addTransactionController
-                                              .selectedTransactionDate.value !=
-                                          null
-                                      ? DateFormat('dd-MM-yyyy').format(
-                                          addTransactionController
-                                              .selectedTransactionDate.value!)
-                                      : 'Select a date',
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Is transaction back dated?',
                                   style: lightTextTheme.bodyMedium!.copyWith(
-                                    fontSize: 16,
-                                    color: addTransactionController
-                                                .selectedTransactionDate
-                                                .value !=
-                                            null
-                                        ? textColor
-                                        : secondaryColor,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                                Checkbox(
+                                  value: addTransactionController
+                                      .isBackDated.value,
+                                  onChanged: (value) {
+                                    addTransactionController.isBackDated.value =
+                                        value!;
+                                  },
+                                  activeColor: primaryColor3,
+                                ),
+                              ],
+                            ),
+                            Visibility(
+                              visible:
+                                  addTransactionController.isBackDated.value,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Transaction Date',
+                                    style: lightTextTheme.bodyMedium!.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      DateTime? selectedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime.now(),
+                                      );
+
+                                      if (selectedDate != null) {
+                                        addTransactionController
+                                            .selectedTransactionDate
+                                            .value = selectedDate;
+                                      }
+                                    },
+                                    child: Obx(
+                                      () => Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.only(left: 8),
+                                        height: 50,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black12,
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          addTransactionController
+                                                      .selectedTransactionDate
+                                                      .value !=
+                                                  null
+                                              ? DateFormat('dd/MM/yyyy').format(
+                                                  addTransactionController
+                                                      .selectedTransactionDate
+                                                      .value!)
+                                              : 'Select a date',
+                                          style: lightTextTheme.bodyMedium!
+                                              .copyWith(
+                                            fontSize: 14,
+                                            color: addTransactionController
+                                                        .selectedTransactionDate
+                                                        .value !=
+                                                    null
+                                                ? textColor
+                                                : secondaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 10),
 
                             //product section
                             Text(
@@ -421,26 +486,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       controller: addTransactionController
                                           .productComissionController.value,
                                       hintText: 'Enter commission',
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Daag/Box',
-                                      style:
-                                          lightTextTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    CustomTextField(
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val == null || val.isEmpty) {
-                                          return 'Please enter daag/box';
-                                        }
-                                        return null;
-                                      },
-                                      controller: addTransactionController
-                                          .productBoxController.value,
-                                      hintText: 'Enter daag/box',
                                     ),
                                     const SizedBox(height: 10),
                                     Text(

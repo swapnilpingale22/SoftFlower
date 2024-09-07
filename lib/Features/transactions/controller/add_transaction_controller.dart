@@ -83,6 +83,7 @@ class AddTransactionController extends GetxController {
 
   late ProductModel productModel;
   var productCount = 0.obs;
+  RxBool isBackDated = false.obs;
 
   @override
   void onInit() {
@@ -272,7 +273,7 @@ class AddTransactionController extends GetxController {
     );
     if (product != null) {
       productName.value = product.productName;
-      productQuantityController.value.text = product.quantity.toString();
+      // productQuantityController.value.text = product.quantity.toString();
       productComissionController.value.text = product.commission.toString();
     }
   }
@@ -574,7 +575,7 @@ class AddTransactionController extends GetxController {
     selectedProductId.value = null;
     productQuantityController.value.clear();
     productComissionController.value.clear();
-    productBoxController.value.clear();
+    // productBoxController.value.clear();
     productRateController.value.clear();
   }
 

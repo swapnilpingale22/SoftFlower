@@ -5,7 +5,7 @@ class Product {
   final String productId;
   final int productNumber;
   final String productName;
-  final int quantity;
+  // final int quantity;
   final double commission;
   final String bundleType;
 
@@ -14,7 +14,7 @@ class Product {
     required this.productId,
     required this.productNumber,
     required this.productName,
-    required this.quantity,
+    // required this.quantity,
     required this.commission,
     required this.bundleType,
   });
@@ -25,7 +25,7 @@ class Product {
       'productId': productId,
       'productNumber': productNumber,
       'productName': productName,
-      'quantity': quantity,
+      // 'quantity': quantity,
       'commission': commission,
       'bundleType': bundleType,
     };
@@ -39,7 +39,7 @@ class Product {
       productId: snapshot['productId'],
       productNumber: snapshot['productNumber'],
       productName: snapshot['productName'],
-      quantity: snapshot['quantity'],
+      // quantity: snapshot['quantity'],
       commission: snapshot['commission'],
       bundleType: snapshot['bundleType'],
     );

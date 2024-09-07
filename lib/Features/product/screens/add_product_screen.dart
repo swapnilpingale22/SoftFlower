@@ -81,25 +81,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   hintText: 'Enter flower name',
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
-                                  'Quantity',
-                                  style: lightTextTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                CustomTextField(
-                                  keyboardType: TextInputType.number,
-                                  validator: (val) {
-                                    if (val == null || val.isEmpty) {
-                                      return 'Please enter quantity';
-                                    }
-                                    return null;
-                                  },
-                                  controller: addproductController
-                                      .productQuantityController.value,
-                                  hintText: 'Enter quantity',
-                                ),
-                                const SizedBox(height: 10),
+                                // Text(
+                                //   'Quantity',
+                                //   style: lightTextTheme.bodyMedium!.copyWith(
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
+                                // CustomTextField(
+                                //   keyboardType: TextInputType.number,
+                                //   validator: (val) {
+                                //     if (val == null || val.isEmpty) {
+                                //       return 'Please enter quantity';
+                                //     }
+                                //     return null;
+                                //   },
+                                //   controller: addproductController
+                                //       .productQuantityController.value,
+                                //   hintText: 'Enter quantity',
+                                // ),
+                                // const SizedBox(height: 10),
                                 Text(
                                   'Commission',
                                   style: lightTextTheme.bodyMedium!.copyWith(
@@ -125,6 +125,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                                const SizedBox(height: 2),
                                 //kilo
                                 Container(
                                   decoration: BoxDecoration(

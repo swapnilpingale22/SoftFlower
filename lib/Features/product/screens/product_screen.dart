@@ -145,7 +145,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              'Quantity: ${product.quantity}  \nCommission: ${product.commission}  \nBundle Type: ${product.bundleType}',
+                                              'Commission: ${product.commission}  \nBundle Type: ${product.bundleType}',
                                               style: const TextStyle(
                                                 color: Colors.black54,
                                               ),

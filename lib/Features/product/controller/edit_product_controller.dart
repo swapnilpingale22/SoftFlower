@@ -19,8 +19,8 @@ class EditProductController extends GetxController {
   Rx<TextEditingController> productNumberController =
       TextEditingController().obs;
   Rx<TextEditingController> productNameController = TextEditingController().obs;
-  Rx<TextEditingController> productQuantityController =
-      TextEditingController().obs;
+  // Rx<TextEditingController> productQuantityController =
+  //     TextEditingController().obs;
   Rx<TextEditingController> productComissionController =
       TextEditingController().obs;
   Rx<Bundle> bundle = Bundle.kilo.obs;
@@ -35,7 +35,7 @@ class EditProductController extends GetxController {
     scrollController.dispose();
     productNumberController.value.dispose();
     productNameController.value.dispose();
-    productQuantityController.value.dispose();
+    // productQuantityController.value.dispose();
     productComissionController.value.dispose();
     super.onClose();
   }
@@ -44,7 +44,7 @@ class EditProductController extends GetxController {
     String productId,
     int productNumber,
     String productName,
-    int quantity,
+    // int quantity,
     double commission,
     String bundleType,
   ) async {
@@ -57,7 +57,7 @@ class EditProductController extends GetxController {
         productId: productId,
         productNumber: productNumber,
         productName: productName,
-        quantity: quantity,
+        // quantity: quantity,
         commission: commission,
         bundleType: bundleType,
       );
@@ -81,7 +81,7 @@ class EditProductController extends GetxController {
         productData.productId,
         int.parse(productNumberController.value.text.trim()),
         productNameController.value.text.trim(),
-        int.parse(productQuantityController.value.text.trim()),
+        // int.parse(productQuantityController.value.text.trim()),
         double.parse(productComissionController.value.text.trim()),
         bundle.value.name,
       );
@@ -89,7 +89,7 @@ class EditProductController extends GetxController {
       if (res == "Success") {
         productNumberController.value.clear();
         productNameController.value.clear();
-        productQuantityController.value.clear();
+        // productQuantityController.value.clear();
         productComissionController.value.clear();
         bundle.value = Bundle.kilo;
 
