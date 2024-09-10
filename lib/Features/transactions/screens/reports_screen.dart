@@ -166,81 +166,143 @@ class _ReportsState extends State<Reports> {
                                           ExpansionTile(
                                             shape: LinearBorder.none,
                                             childrenPadding: EdgeInsets.zero,
-                                            title: Text(
-                                                'Farmer: ${transaction.agentName}'),
+                                            title: CustomRow(
+                                              title: 'Farmer:',
+                                              value: transaction.agentName,
+                                            ),
+                                            //  Text(
+                                            //     'Farmer: ${transaction.agentName}'),
                                             subtitle: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  'Date: $formattedDate',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Date:',
+                                                  value: formattedDate,
                                                 ),
-                                                Text(
-                                                  'Daag: ${transaction.daag}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Daag:',
+                                                  value: '${transaction.daag}',
                                                 ),
-                                                Text(
-                                                  'Total sale: ${transaction.totalSale}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Total sale:',
+                                                  value: transaction.totalSale
+                                                      .toStringAsFixed(2),
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                Text(
-                                                  'Commission: ${transaction.commission}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Commission:',
+                                                  value: transaction.commission
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Motor Rent: ${transaction.motorRent}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Motor Rent:',
+                                                  value: transaction.motorRent
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Coolie: ${transaction.coolie}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Coolie:',
+                                                  value: transaction.coolie
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Jaga Bhade: ${transaction.jagaBhade}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Jaga Bhade:',
+                                                  value: transaction.jagaBhade
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Postage: ${transaction.postage}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Postage:',
+                                                  value: transaction.postage
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Caret: ${transaction.caret}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Caret:',
+                                                  value: transaction.caret
+                                                      .toStringAsFixed(2),
                                                 ),
-                                                Text(
-                                                  'Total Expense: ${transaction.totalExpense}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Total Expense:',
+                                                  value: transaction
+                                                      .totalExpense
+                                                      .toStringAsFixed(2),
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                Text(
-                                                  'Total Balance: ${transaction.totalBalance}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                                CustomRow(
+                                                  title: 'Total Balance:',
+                                                  value: transaction
+                                                      .totalBalance
+                                                      .toStringAsFixed(2),
+                                                  fontWeight: FontWeight.w500,
                                                 ),
+                                                // Text(
+                                                //   'Date: $formattedDate',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Daag: ${transaction.daag}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Total sale: ${transaction.totalSale.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //     fontWeight: FontWeight.w500,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Commission: ${transaction.commission.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Motor Rent: ${transaction.motorRent.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Coolie: ${transaction.coolie.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Jaga Bhade: ${transaction.jagaBhade.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Postage: ${transaction.postage.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Caret: ${transaction.caret.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Total Expense: ${transaction.totalExpense.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //     fontWeight: FontWeight.w500,
+                                                //   ),
+                                                // ),
+                                                // Text(
+                                                //   'Total Balance: ${transaction.totalBalance.toStringAsFixed(2)}',
+                                                //   style: const TextStyle(
+                                                //     color: Colors.black87,
+                                                //     fontWeight: FontWeight.w500,
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                             children: [
@@ -289,29 +351,22 @@ class _ReportsState extends State<Reports> {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Text(
-                                                                'Quantity: ${transactionDetails.quantity}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
+                                                              CustomRow(
+                                                                title:
+                                                                    'Quantity:',
+                                                                value:
+                                                                    '${transactionDetails.quantity}',
                                                               ),
-                                                              Text(
-                                                                'Rate: ${transactionDetails.rate}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
+                                                              CustomRow(
+                                                                title: 'Rate:',
+                                                                value:
+                                                                    '${transactionDetails.rate}',
                                                               ),
-                                                              Text(
-                                                                'Total Sale: ${transactionDetails.totalSale}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
+                                                              CustomRow(
+                                                                title:
+                                                                    'Total Sale:',
+                                                                value:
+                                                                    '${transactionDetails.totalSale}',
                                                               ),
                                                             ],
                                                           ),
@@ -382,6 +437,52 @@ class _ReportsState extends State<Reports> {
                         ),
                       ),
       ),
+    );
+  }
+}
+
+class CustomRow extends StatelessWidget {
+  const CustomRow({
+    super.key,
+    required this.title,
+    required this.value,
+    this.fontWeight,
+  });
+
+  final String title;
+  final String value;
+  final FontWeight? fontWeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: fontWeight,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            textAlign: TextAlign.end,
+            value,
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: fontWeight,
+            ),
+          ),
+        ),
+        const Expanded(
+          flex: 2,
+          child: SizedBox(),
+        )
+      ],
     );
   }
 }
