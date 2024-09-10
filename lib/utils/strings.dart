@@ -1,0 +1,2 @@
+const terms =
+    "The agent agrees to purchase flower products from the farmer at the agreed-upon price and quantity for each type. The farmer ensures the quality and timely delivery of the flowers, while the agent commits to payment within a specified period after delivery. Both parties agree to resolve disputes amicably and abide by local regulations. Any changes to the terms must be mutually agreed upon in writing.";

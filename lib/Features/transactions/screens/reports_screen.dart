@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:expense_manager/Features/pdf/paragraph_pdf_api.dart';
 import 'package:expense_manager/Features/transactions/controller/reports_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../pdf/save_and_opne_pdf.dart';
+import '../../pdf/single_transaction_pdf_api.dart';
 
 class Reports extends StatefulWidget {
   const Reports({super.key});
@@ -354,8 +354,8 @@ class _ReportsState extends State<Reports> {
                                                 onTap: () async {
                                                   //generate and open PDF
                                                   final paragraphPdf =
-                                                      await ParagraphPdfApi
-                                                          .generateParagraphPdf(
+                                                      await SingleTransactionPdfApi
+                                                          .generateSingleTransactionPdf(
                                                     transData: reportsController
                                                         .transactions,
                                                     index: index,

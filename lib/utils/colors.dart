@@ -20,6 +20,8 @@ const textColor = Color(0xff2F3645);
 // const primaryColor2 = Color(0xff939185);
 // const primaryColor3 = Color(0xff2F3645);
 // const whiteColor = Colors.white;
+// const titleColor = Color(0xffFFDB5C);
 
 // const primaryColor = Colors.white;
 // const secondaryColor = Colors.grey;
+// const textColor = Color(0xff2F3645);
