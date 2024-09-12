@@ -14,9 +14,9 @@ List<Widget> homeScreenItems = [
 List<String> buttonTitles = [
   "Farmers",
   "Flowers",
-  "Transaction",
+  "Patti",
   "Reports",
-  "Company",
+  // "Company",
 ];
 List<String> buttonIcons = [
   "assets/images/agent.png",

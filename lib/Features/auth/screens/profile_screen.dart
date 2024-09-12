@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../utils/theme.dart';
 import '../../../utils/utils.dart';
 import '../../common_widgets/custom_rounded_button.dart';
+import '../../company/screens/add_company.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -174,6 +175,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             child: const Icon(
+                              Icons.add,
+                              color: whiteColor,
+                            ),
+                          ),
+                          title: const Text("Company"),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Get.to(() => const AddCompanyScreen());
+                          },
+                        ),
+                        ListTile(
+                          leading: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
+                              color: primaryColor3,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                            ),
+                            child: const Icon(
                               Icons.help_outline_rounded,
                               color: whiteColor,
                             ),
@@ -196,23 +217,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           title: const Text("Terms & Conditions"),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                        ),
-                        ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                              color: primaryColor3,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.hotel_class_outlined,
-                              color: whiteColor,
-                            ),
-                          ),
-                          title: const Text("Help Center"),
                           trailing: const Icon(Icons.arrow_forward_ios),
                         ),
                       ],

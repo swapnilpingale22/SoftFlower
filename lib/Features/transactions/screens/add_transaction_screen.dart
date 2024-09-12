@@ -27,7 +27,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Transaction',
+          'Add Patti',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),

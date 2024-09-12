@@ -133,7 +133,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       elevation: 4,
                                       child: ListTile(
                                         title: Text(
-                                          '${product.productNumber}. ${product.productName}',
+                                          '${product.productName}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                           ),

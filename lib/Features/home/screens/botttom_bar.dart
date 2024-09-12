@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.space_dashboard,
               size: 24,
               color: _page == 1 ? textColor : secondaryColor,
             ),

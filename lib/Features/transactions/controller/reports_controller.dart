@@ -245,17 +245,19 @@ class ReportsController extends GetxController {
   //show date picker
   Future<void> selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
+      helpText: "Select the date range",
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: primaryColor2, // Header background color
-              onPrimary: textColor, // Header text color
-              onSurface: textColor, // Body text color
+              primary: primaryColor2,
+              onPrimary: textColor,
+              onSurface: textColor,
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 backgroundColor: primaryColor2,
+                foregroundColor: textColor,
               ),
             ),
           ),
