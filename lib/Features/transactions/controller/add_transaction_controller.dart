@@ -244,12 +244,12 @@ class AddTransactionController extends GetxController {
       companyMobNo.value = company.mobileNumber;
       companyOwnerName.value = company.ownerName;
       companyPincode.value = company.pincode;
-      log(companyName.value);
-      log(companyAddress.value);
-      log(companyCity.value);
-      log(companyMobNo.value.toString());
-      log(companyOwnerName.value);
-      log(companyPincode.value.toString());
+      // log(companyName.value);
+      // log(companyAddress.value);
+      // log(companyCity.value);
+      // log(companyMobNo.value.toString());
+      // log(companyOwnerName.value);
+      // log(companyPincode.value.toString());
     }
   }
 
@@ -512,7 +512,8 @@ class AddTransactionController extends GetxController {
     double commissionRate =
         double.parse(productComissionController.value.text.trim()) / 100;
 
-    int itemQuantity = int.parse(productQuantityController.value.text.trim());
+    double itemQuantity =
+        double.parse(productQuantityController.value.text.trim());
 
     double itemRate = double.parse(productRateController.value.text.trim());
 

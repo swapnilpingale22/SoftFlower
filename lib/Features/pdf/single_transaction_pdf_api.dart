@@ -42,8 +42,8 @@ class SingleTransactionPdfApi {
         .transactionDetailsList
         .map((transactionDetails) => [
               transactionDetails.itemName,
-              transactionDetails.rate.toStringAsFixed(2),
               transactionDetails.quantity,
+              transactionDetails.rate.toStringAsFixed(2),
               transactionDetails.totalSale.toStringAsFixed(2),
             ])
         .toList();
@@ -53,13 +53,15 @@ class SingleTransactionPdfApi {
         pageTheme: customPageTheme(PdfPageFormat.a4, font, font, font),
         header: (context) =>
             mainHeader(context, formattedDate, transData, index),
-        footer: (context) => buildFooter(context, transData, index),
+        footer: (context) => buildFooter(context, transData, index, font),
         build: (context) => [
-          contentHeader(formattedDate, context, transData, index),
+          contentHeader(formattedDate, context, transData, index, font),
           SizedBox(height: 0.5 * PdfPageFormat.cm),
-          ...bulletPoints(transData, index, formattedDate),
+          ...bulletPoints1(transData, index, formattedDate),
           SizedBox(height: 0.5 * PdfPageFormat.cm),
           contentTable(context, data),
+          SizedBox(height: 0.5 * PdfPageFormat.cm),
+          ...bulletPoints2(transData, index, formattedDate),
           SizedBox(height: 20),
           contentFooter(context, transData, index),
           SizedBox(height: 20),
@@ -80,6 +82,9 @@ class SingleTransactionPdfApi {
         base: base,
         bold: bold,
         italic: italic,
+        boldItalic: font,
+        fontFallback: [font],
+        icons: font,
       ),
       buildBackground: (context) => FullPage(
         ignoreMargins: true,
@@ -123,6 +128,7 @@ class SingleTransactionPdfApi {
                         color: tealColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 40,
+                        font: font,
                       ),
                     ),
                   ),
@@ -135,6 +141,7 @@ class SingleTransactionPdfApi {
                         color: tealColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
+                        font: font,
                       ),
                     ),
                   ),
@@ -164,6 +171,7 @@ class SingleTransactionPdfApi {
     Context context,
     RxList<Transactions> transData,
     int index,
+    Font font,
   ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -171,9 +179,10 @@ class SingleTransactionPdfApi {
       children: [
         Text(
           'Page ${context.pageNumber}/${context.pagesCount}',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             color: PdfColors.white,
+            font: font,
           ),
         ),
       ],
@@ -185,6 +194,7 @@ class SingleTransactionPdfApi {
     Context context,
     RxList<Transactions> transData,
     int index,
+    Font font,
   ) {
     String? mobileNumber = RegExp(r'\b\d{10}\b')
         .firstMatch(transData[index].companyAddress)
@@ -199,52 +209,88 @@ class SingleTransactionPdfApi {
           padding:
               const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 10),
           alignment: Alignment.centerLeft,
-          height: 80,
+          // height: 40,
           child: Row(
             children: [
-              Expanded(
-                flex: 4,
-                child: DefaultTextStyle(
-                  style: const TextStyle(
-                    color: baseColor,
-                    fontSize: 22,
-                  ),
-                  child: GridView(
-                    crossAxisCount: 2,
-                    children: [
-                      Text('Farmer name: '),
-                      Text(transData[index].agentName,
-                          overflow: TextOverflow.clip),
-                      Text('Date:'),
-                      Text(formattedDate),
-                    ],
-                  ),
+              Text(
+                'Name: ',
+                style: TextStyle(
+                  color: baseColor,
+                  fontSize: 22,
+                  font: font,
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    'Scan to Pay',
-                    style: const TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    padding: const EdgeInsets.only(top: 3),
-                    child: BarcodeWidget(
-                        barcode: Barcode.qrCode(),
-                        data: mobileNumber ?? '',
-                        drawText: false,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        padding: const EdgeInsets.all(2)),
-                  ),
-                ],
+              Text(
+                transData[index].agentName,
+                overflow: TextOverflow.clip,
+                style: TextStyle(
+                  color: baseColor,
+                  fontSize: 22,
+                  font: font,
+                ),
               ),
+              Spacer(),
+              Text(
+                'Date: ',
+                style: TextStyle(
+                  color: baseColor,
+                  fontSize: 22,
+                  font: font,
+                ),
+              ),
+              Text(
+                formattedDate,
+                style: TextStyle(
+                  color: baseColor,
+                  fontSize: 22,
+                  font: font,
+                ),
+              ),
+              // Expanded(
+              //   flex: 4,
+              //   child: DefaultTextStyle(
+              //     style: TextStyle(
+              //       color: baseColor,
+              //       fontSize: 22,
+              //       font: font,
+              //     ),
+              //     child: GridView(
+              //       crossAxisCount: 2,
+              //       children: [
+              //         Text('Name: '),
+              //         Text(transData[index].agentName,
+              //             overflow: TextOverflow.clip),
+              //         Text('Date:'),
+              //         Text(formattedDate),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // Column(
+              //   children: [
+              //     Text(
+              //       'Scan to Pay',
+              //       style: TextStyle(
+              //         fontSize: 12,
+              //         font: font,
+              //       ),
+              //     ),
+              //     Container(
+              //       height: 40,
+              //       width: 40,
+              //       padding: const EdgeInsets.only(top: 3),
+              //       child: BarcodeWidget(
+              //           barcode: Barcode.qrCode(),
+              //           data: mobileNumber ?? '',
+              //           drawText: false,
+              //           decoration: BoxDecoration(
+              //             border: Border.all(),
+              //             borderRadius: BorderRadius.circular(2),
+              //           ),
+              //           padding: const EdgeInsets.all(2)),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -273,7 +319,7 @@ class SingleTransactionPdfApi {
     );
   }
 
-  static List<Widget> bulletPoints(
+  static List<Widget> bulletPoints1(
       RxList<Transactions> transData, int index, String formattedDate) {
     return [
       Row(
@@ -282,7 +328,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Daag:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -292,19 +341,31 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].daag}   ',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
         ],
       ),
+    ];
+  }
+
+  static List<Widget> bulletPoints2(
+      RxList<Transactions> transData, int index, String formattedDate) {
+    return [
       Row(
         children: [
           Expanded(
             flex: 2,
             child: Bullet(
               text: 'Total Sale:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -314,7 +375,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].totalSale.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -326,7 +390,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Commission:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -336,7 +403,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].commission.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -348,7 +418,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Motor Rent:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -358,7 +431,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].motorRent.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -370,7 +446,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Coolie:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -380,7 +459,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].coolie.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -392,7 +474,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Total Expense:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -402,7 +487,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].totalExpense.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -414,7 +502,10 @@ class SingleTransactionPdfApi {
             flex: 2,
             child: Bullet(
               text: 'Total Balance:',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
               bulletMargin: const EdgeInsets.only(top: 9, right: 5),
               bulletSize: 3 * PdfPageFormat.mm,
             ),
@@ -424,7 +515,10 @@ class SingleTransactionPdfApi {
             child: Text(
               textAlign: TextAlign.right,
               '${transData[index].totalBalance.toStringAsFixed(2)}/-',
-              style: const TextStyle(fontSize: 22),
+              style: TextStyle(
+                fontSize: 22,
+                font: font,
+              ),
             ),
           ),
           Expanded(flex: 2, child: SizedBox())
@@ -434,7 +528,7 @@ class SingleTransactionPdfApi {
   }
 
   static Widget contentTable(Context context, List<List<Object>> data) {
-    const tableHeaders = ['Item Description', 'Price', 'Quantity', 'Total'];
+    const tableHeaders = ['Item Description', 'Quantity', 'Price', 'Total'];
 
     return TableHelper.fromTextArray(
       border: null,
@@ -447,8 +541,8 @@ class SingleTransactionPdfApi {
       cellHeight: 50,
       cellAlignments: {
         0: Alignment.centerLeft,
-        1: Alignment.centerLeft,
-        2: Alignment.center,
+        1: Alignment.center,
+        2: Alignment.centerLeft,
         3: Alignment.centerRight,
       },
       headerStyle: TextStyle(
@@ -456,10 +550,12 @@ class SingleTransactionPdfApi {
         fontSize: 22,
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
+        font: font,
       ),
-      cellStyle: const TextStyle(
+      cellStyle: TextStyle(
         color: baseColor,
         fontSize: 22,
+        font: font,
       ),
       rowDecoration: const BoxDecoration(
         border: Border(
@@ -496,6 +592,7 @@ class SingleTransactionPdfApi {
                   color: baseColor,
                   fontSize: 20,
                   fontStyle: FontStyle.italic,
+                  font: font,
                 ),
               ),
             ],

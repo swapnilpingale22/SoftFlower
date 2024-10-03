@@ -1,21 +1,21 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:expense_manager/Features/agent/screens/agent_screen.dart';
-import 'package:expense_manager/Features/product/screens/product_screen.dart';
-import 'package:expense_manager/Features/transactions/screens/add_transaction_screen.dart';
+import 'package:expense_manager/Features/transactions/screens/reports_screen.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/global_variables.dart';
 import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+import '../../transactions/screens/month_transaction_screen.dart';
+
+class AllReportsScreen extends StatefulWidget {
+  const AllReportsScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<AllReportsScreen> createState() => _AllReportsScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _AllReportsScreenState extends State<AllReportsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: FadeInLeft(
           child: Text(
-            'Dashboard',
+            'Patti Reports',
             style: lightTextTheme.headlineMedium?.copyWith(
               fontSize: 20,
             ),
@@ -35,7 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           GridView.builder(
             shrinkWrap: true,
-            itemCount: 3,
+            itemCount: 2,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
             itemBuilder: (context, index) {
@@ -43,18 +43,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: GestureDetector(
                   onTap: () {
                     if (index == 0) {
-                      Get.to(() => const AgentScreen());
+                      Get.to(() => const Reports());
                     } else if (index == 1) {
-                      Get.to(() => const ProductScreen());
-                    } else if (index == 2) {
-                      Get.to(() => const AddTransactionScreen());
+                      Get.to(() => const MonthTransactionScreen());
                     }
-                    // else if (index == 3) {
-                    //   Get.to(() => const Reports());
-                    // }
-                    // else if (index == 4) {
-                    //   Get.to(() => const AddCompanyScreen());
-                    // }
                   },
                   child: Container(
                     margin: const EdgeInsets.all(15),
@@ -78,13 +70,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Image.asset(
-                            buttonIcons[index],
+                            allReportsbuttonIcons[index],
                             height: 55,
                             width: 55,
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            buttonTitles[index],
+                            allReportsbuttonTitles[index],
                             textAlign: TextAlign.center,
                             style: lightTextTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w600,

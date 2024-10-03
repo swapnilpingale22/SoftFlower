@@ -17,14 +17,14 @@ dependencies:
   firebase_auth: ^5.1.2
   get: ^4.6.6
   video_player: ^2.9.1
-  uuid: ^4.4.2
+  uuid: ^4.5.1
   cloud_firestore: ^5.1.0
   intl: ^0.19.0
   animate_do: ^3.3.4
-  pdf: ^3.11.0
-  open_file: ^3.5.3
+  pdf: ^3.11.1
+  open_file: ^3.5.7
   path_provider: ^2.1.4
-  printing: ^5.13.1
+  printing: ^5.13.3
   searchbar_animation: ^0.0.4
 
 dev_dependencies:
@@ -40,6 +40,7 @@ flutter:
     - assets/images/
     - assets/svg/
     - assets/fonts/
+    - assets/fonts/NotoSansDevanagari-Regular.ttf
 
   fonts:
     - family: Poppins

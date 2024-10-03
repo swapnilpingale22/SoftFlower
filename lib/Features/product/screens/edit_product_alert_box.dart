@@ -13,8 +13,8 @@ Future<void> showEditProductDialog(
   EditProductController editProductController,
   Product productData,
 ) {
-  editProductController.productNumberController.value.text =
-      productData.productNumber.toString();
+  // editProductController.productNumberController.value.text =
+  //     productData.productNumber.toString();
   editProductController.productNameController.value.text =
       productData.productName;
   // editProductController.productQuantityController.value.text =
@@ -67,25 +67,25 @@ Future<void> showEditProductDialog(
                                         ),
                                       ),
                                       const SizedBox(height: 10),
-                                      Text(
-                                        'Flower Number',
-                                        style:
-                                            lightTextTheme.bodyMedium!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      CustomTextField(
-                                        keyboardType: TextInputType.number,
-                                        validator: (val) {
-                                          if (val == null || val.isEmpty) {
-                                            return 'Please enter flower no';
-                                          }
-                                          return null;
-                                        },
-                                        controller: editProductController
-                                            .productNumberController.value,
-                                        hintText: 'Enter flower no',
-                                      ),
+                                      // Text(
+                                      //   'Flower Number',
+                                      //   style:
+                                      //       lightTextTheme.bodyMedium!.copyWith(
+                                      //     fontWeight: FontWeight.w500,
+                                      //   ),
+                                      // ),
+                                      // CustomTextField(
+                                      //   keyboardType: TextInputType.number,
+                                      //   validator: (val) {
+                                      //     if (val == null || val.isEmpty) {
+                                      //       return 'Please enter flower no';
+                                      //     }
+                                      //     return null;
+                                      //   },
+                                      //   controller: editProductController
+                                      //       .productNumberController.value,
+                                      //   hintText: 'Enter flower no',
+                                      // ),
                                       const SizedBox(height: 10),
                                       Text(
                                         'Flower Name',

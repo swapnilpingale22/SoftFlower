@@ -4,7 +4,7 @@ class TransactionDetails {
   final String transactionMainId;
   final String transactionDetailsId;
   final String itemName;
-  final int quantity;
+  final double quantity;
   final double rate;
   final double totalSale;
 
@@ -35,7 +35,7 @@ class TransactionDetails {
       transactionMainId: snapshot['transactionMainId'],
       transactionDetailsId: snapshot['transactionDetailsId'],
       itemName: snapshot['itemName'],
-      quantity: snapshot['quantity'],
+      quantity: (snapshot['quantity'] as num).toDouble(),
       rate: snapshot['rate'],
       totalSale: snapshot['totalSale'],
     );

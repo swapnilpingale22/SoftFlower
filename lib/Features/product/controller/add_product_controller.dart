@@ -16,8 +16,8 @@ enum Bundle {
 class AddProductController extends GetxController {
   final productFormKey = GlobalKey<FormState>();
 
-  Rx<TextEditingController> productNumberController =
-      TextEditingController().obs;
+  // Rx<TextEditingController> productNumberController =
+  //     TextEditingController().obs;
   Rx<TextEditingController> productNameController = TextEditingController().obs;
   // Rx<TextEditingController> productQuantityController =
   //     TextEditingController().obs;
@@ -32,7 +32,7 @@ class AddProductController extends GetxController {
 
   @override
   void onClose() {
-    productNumberController.value.dispose();
+    // productNumberController.value.dispose();
     productNameController.value.dispose();
     // productQuantityController.value.dispose();
     productComissionController.value.dispose();
@@ -40,7 +40,7 @@ class AddProductController extends GetxController {
   }
 
   Future<String> addProduct(
-    int productNumber,
+    // int productNumber,
     String productName,
     // int quantity,
     double commission,
@@ -55,7 +55,7 @@ class AddProductController extends GetxController {
       Product product = Product(
         userId: userId,
         productId: productId,
-        productNumber: productNumber,
+        // productNumber: productNumber,
         productName: productName,
         // quantity: quantity,
         commission: commission,
@@ -78,7 +78,7 @@ class AddProductController extends GetxController {
 
     try {
       String res = await addProduct(
-        int.parse(productNumberController.value.text.trim()),
+        // int.parse(productNumberController.value.text.trim()),
         productNameController.value.text.trim(),
         // int.parse(productQuantityController.value.text.trim()),
         double.parse(productComissionController.value.text.trim()),
@@ -86,7 +86,7 @@ class AddProductController extends GetxController {
       );
 
       if (res == "Success") {
-        productNumberController.value.clear();
+        // productNumberController.value.clear();
         productNameController.value.clear();
         // productQuantityController.value.clear();
         productComissionController.value.clear();

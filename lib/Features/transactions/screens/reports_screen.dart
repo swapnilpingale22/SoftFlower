@@ -24,7 +24,7 @@ class _ReportsState extends State<Reports> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Reports',
+          'Patti Reports',
           style: lightTextTheme.headlineMedium?.copyWith(
             fontSize: 20,
           ),
@@ -107,6 +107,18 @@ class _ReportsState extends State<Reports> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
+                                  if (reportsController.startDate.value ==
+                                          null &&
+                                      reportsController.endDate.value == null)
+                                    const Expanded(
+                                      child: Text(
+                                        "Showing all reports",
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
                                   if (reportsController.startDate.value !=
                                           null &&
                                       reportsController.endDate.value != null)
@@ -136,7 +148,8 @@ class _ReportsState extends State<Reports> {
                                       reportsController
                                           .selectDateRange(context);
                                     },
-                                    icon: const Icon(Icons.sort),
+                                    icon: const Icon(
+                                        Icons.edit_calendar_outlined),
                                   )
                                 ],
                               ),
@@ -548,7 +561,7 @@ class CustomDivider extends StatelessWidget {
       width: 2,
       height: height ?? 40,
       color: Colors.black26,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
     );
   }
 }

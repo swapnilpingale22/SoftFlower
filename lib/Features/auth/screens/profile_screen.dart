@@ -185,40 +185,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Get.to(() => const AddCompanyScreen());
                           },
                         ),
-                        ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                              color: primaryColor3,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.help_outline_rounded,
-                              color: whiteColor,
-                            ),
-                          ),
-                          title: const Text("FAQ's"),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                        ),
-                        ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                              color: primaryColor3,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.receipt_long_outlined,
-                              color: whiteColor,
-                            ),
-                          ),
-                          title: const Text("Terms & Conditions"),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                        ),
+                        // ListTile(
+                        //   leading: Container(
+                        //     padding: const EdgeInsets.all(5),
+                        //     decoration: const BoxDecoration(
+                        //       color: primaryColor3,
+                        //       borderRadius: BorderRadius.all(
+                        //         Radius.circular(4),
+                        //       ),
+                        //     ),
+                        //     child: const Icon(
+                        //       Icons.help_outline_rounded,
+                        //       color: whiteColor,
+                        //     ),
+                        //   ),
+                        //   title: const Text("FAQ's"),
+                        //   trailing: const Icon(Icons.arrow_forward_ios),
+                        // ),
+                        // ListTile(
+                        //   leading: Container(
+                        //     padding: const EdgeInsets.all(5),
+                        //     decoration: const BoxDecoration(
+                        //       color: primaryColor3,
+                        //       borderRadius: BorderRadius.all(
+                        //         Radius.circular(4),
+                        //       ),
+                        //     ),
+                        //     child: const Icon(
+                        //       Icons.receipt_long_outlined,
+                        //       color: whiteColor,
+                        //     ),
+                        //   ),
+                        //   title: const Text("Terms & Conditions"),
+                        //   trailing: const Icon(Icons.arrow_forward_ios),
+                        // ),
                       ],
                     )),
                   ),

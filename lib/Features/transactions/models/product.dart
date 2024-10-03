@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class ProductModel {
   final String itemName;
-  final int itemQuantity;
+  final double itemQuantity;
   final double itemRate;
   final double totalSale;
   final double commission;

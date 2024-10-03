@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Product {
   final String userId;
   final String productId;
-  final int productNumber;
+  // final int productNumber;
   final String productName;
   // final int quantity;
   final double commission;
@@ -12,7 +12,7 @@ class Product {
   const Product({
     required this.userId,
     required this.productId,
-    required this.productNumber,
+    // required this.productNumber,
     required this.productName,
     // required this.quantity,
     required this.commission,
@@ -23,7 +23,7 @@ class Product {
     return <String, dynamic>{
       'userId': userId,
       'productId': productId,
-      'productNumber': productNumber,
+      // 'productNumber': productNumber,
       'productName': productName,
       // 'quantity': quantity,
       'commission': commission,
@@ -37,7 +37,7 @@ class Product {
     return Product(
       userId: snapshot['userId'] ?? "",
       productId: snapshot['productId'],
-      productNumber: snapshot['productNumber'],
+      // productNumber: snapshot['productNumber'],
       productName: snapshot['productName'],
       // quantity: snapshot['quantity'],
       commission: snapshot['commission'],

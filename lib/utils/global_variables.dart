@@ -3,11 +3,12 @@ import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../Features/auth/screens/profile_screen.dart';
+import '../Features/home/screens/all_reports_screen.dart';
 
 List<Widget> homeScreenItems = [
   const DashboardScreen(),
-  const CommingSoonScreen(),
-  // const ShowPDFScreen(),
+  const AllReportsScreen(),
+  // const CommingSoonScreen(),
   const ProfileScreen(),
 ];
 
@@ -15,15 +16,25 @@ List<String> buttonTitles = [
   "Farmers",
   "Flowers",
   "Patti",
-  "Reports",
+  "Patti Reports",
   // "Company",
 ];
+List<String> allReportsbuttonTitles = [
+  "All Reports",
+  "Month Business",
+];
+
 List<String> buttonIcons = [
   "assets/images/agent.png",
   "assets/images/products.png",
   "assets/images/trade.png",
   "assets/images/transaction (1).png",
   "assets/images/company.png",
+];
+
+List<String> allReportsbuttonIcons = [
+  "assets/images/transaction (1).png",
+  "assets/images/transaction (1).png",
 ];
 
 class CommingSoonScreen extends StatelessWidget {

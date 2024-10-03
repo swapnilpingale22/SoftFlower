@@ -16,8 +16,8 @@ class EditProductController extends GetxController {
   final editProductFormKey = GlobalKey<FormState>();
   final ScrollController scrollController = ScrollController();
 
-  Rx<TextEditingController> productNumberController =
-      TextEditingController().obs;
+  // Rx<TextEditingController> productNumberController =
+  //     TextEditingController().obs;
   Rx<TextEditingController> productNameController = TextEditingController().obs;
   // Rx<TextEditingController> productQuantityController =
   //     TextEditingController().obs;
@@ -33,7 +33,7 @@ class EditProductController extends GetxController {
   @override
   void onClose() {
     scrollController.dispose();
-    productNumberController.value.dispose();
+    // productNumberController.value.dispose();
     productNameController.value.dispose();
     // productQuantityController.value.dispose();
     productComissionController.value.dispose();
@@ -42,7 +42,7 @@ class EditProductController extends GetxController {
 
   Future<String> editProduct(
     String productId,
-    int productNumber,
+    // int productNumber,
     String productName,
     // int quantity,
     double commission,
@@ -55,7 +55,7 @@ class EditProductController extends GetxController {
       Product product = Product(
         userId: userId,
         productId: productId,
-        productNumber: productNumber,
+        // productNumber: productNumber,
         productName: productName,
         // quantity: quantity,
         commission: commission,
@@ -79,7 +79,7 @@ class EditProductController extends GetxController {
     try {
       String res = await editProduct(
         productData.productId,
-        int.parse(productNumberController.value.text.trim()),
+        // int.parse(productNumberController.value.text.trim()),
         productNameController.value.text.trim(),
         // int.parse(productQuantityController.value.text.trim()),
         double.parse(productComissionController.value.text.trim()),
@@ -87,7 +87,7 @@ class EditProductController extends GetxController {
       );
 
       if (res == "Success") {
-        productNumberController.value.clear();
+        // productNumberController.value.clear();
         productNameController.value.clear();
         // productQuantityController.value.clear();
         productComissionController.value.clear();

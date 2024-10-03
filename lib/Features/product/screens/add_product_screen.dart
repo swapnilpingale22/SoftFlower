@@ -44,24 +44,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Flower Number',
-                                  style: lightTextTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                CustomTextField(
-                                  keyboardType: TextInputType.number,
-                                  validator: (val) {
-                                    if (val == null || val.isEmpty) {
-                                      return 'Please enter flower no';
-                                    }
-                                    return null;
-                                  },
-                                  controller: addproductController
-                                      .productNumberController.value,
-                                  hintText: 'Enter flower no',
-                                ),
+                                // Text(
+                                //   'Flower Number',
+                                //   style: lightTextTheme.bodyMedium!.copyWith(
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
+                                // CustomTextField(
+                                //   keyboardType: TextInputType.number,
+                                //   validator: (val) {
+                                //     if (val == null || val.isEmpty) {
+                                //       return 'Please enter flower no';
+                                //     }
+                                //     return null;
+                                //   },
+                                //   controller: addproductController
+                                //       .productNumberController.value,
+                                //   hintText: 'Enter flower no',
+                                // ),
                                 const SizedBox(height: 10),
                                 Text(
                                   'Flower Name',
