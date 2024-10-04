@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/utils.dart';
+import '../../pdf/month_transaction_pdf_api .dart';
+import '../../pdf/save_and_opne_pdf.dart';
 import '../controller/month_transaction_controller.dart';
 
 class MonthTransactionScreen extends StatefulWidget {
@@ -208,7 +210,16 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                                   .transactions.isNotEmpty,
                               child: CustomButton(
                                 text: 'Download PDF',
-                                onTap: () {},
+                                onTap: () async {
+                                  final paragraphPdf =
+                                      await MonthTransactionPdfApi
+                                          .generateMonthTransactionPdf(
+                                    transData:
+                                        monthTransactionController.transactions,
+                                  );
+
+                                  SaveAndOpneDocument.openPdf(paragraphPdf);
+                                },
                               ),
                             ),
 
