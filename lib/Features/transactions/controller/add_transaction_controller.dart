@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
-import 'package:expense_manager/Features/company/models/company_model.dart';
 import 'package:expense_manager/Features/product/models/product_model.dart';
 import 'package:expense_manager/Features/transactions/models/product.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_details_model.dart';
@@ -23,8 +22,8 @@ class AddTransactionController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isSaveLoading = false.obs;
   //company
-  Rx<String?> selectedCompanyId = Rx<String?>(null);
-  RxList<Company> companies = <Company>[].obs;
+  // Rx<String?> selectedCompanyId = Rx<String?>(null);
+  // RxList<Company> companies = <Company>[].obs;
 
   //agent
   Rx<String?> selectedAgentId = Rx<String?>(null);
@@ -37,13 +36,13 @@ class AddTransactionController extends GetxController {
   RxList<Product> filteredProducts = <Product>[].obs;
 
   //company
-  Rx<Company?> selectedCompanyData = Rx<Company?>(null);
-  RxString companyName = "".obs;
-  RxString companyAddress = "".obs;
-  RxString companyCity = "".obs;
-  RxInt companyMobNo = 0.obs;
-  RxString companyOwnerName = "".obs;
-  RxInt companyPincode = 0.obs;
+  // Rx<Company?> selectedCompanyData = Rx<Company?>(null);
+  // RxString companyName = "".obs;
+  // RxString companyAddress = "".obs;
+  // RxString companyCity = "".obs;
+  // RxInt companyMobNo = 0.obs;
+  // RxString companyOwnerName = "".obs;
+  // RxInt companyPincode = 0.obs;
 
   //agent
   RxString agentName = "".obs;
@@ -58,7 +57,7 @@ class AddTransactionController extends GetxController {
   RxString productName = "".obs;
   Rx<TextEditingController> productQuantityController =
       TextEditingController().obs;
-  Rx<TextEditingController> productComissionController =
+  Rx<TextEditingController> productCommissionController =
       TextEditingController().obs;
   Rx<TextEditingController> productBoxController = TextEditingController().obs;
   Rx<TextEditingController> productRateController = TextEditingController().obs;
@@ -73,11 +72,16 @@ class AddTransactionController extends GetxController {
   double totalExpense = 0.0;
   double totalBalance = 0.0;
   double actualCommission = 0.0;
-  double actualMotorRent = 0.0;
-  double actualCoolie = 0.0;
-  double actualJagaBhade = 0.0;
-  double actualCaret = 0.0;
-  int actualDaag = 0;
+  RxDouble actualMotorRent = 0.0.obs;
+  RxDouble actualCoolie = 0.0.obs;
+  RxDouble actualJagaBhade = 0.0.obs;
+  RxDouble actualCaret = 0.0.obs;
+  // int actualDaag = 0;
+  //original initial values
+  RxDouble initialMotorRent = 0.0.obs;
+  RxDouble initialCoolie = 0.0.obs;
+  RxDouble initialJagaBhade = 0.0.obs;
+  RxDouble initialCaret = 0.0.obs;
 
   RxList<ProductModel> productsList = <ProductModel>[].obs;
 
@@ -89,11 +93,15 @@ class AddTransactionController extends GetxController {
   void onInit() {
     super.onInit();
     fetchAgents();
-    fetchCompanies();
+    // fetchCompanies();
     fetchProducts();
     // Initially, filteredAgents will contain all agents
     filteredAgents.value = agents;
     filteredProducts.value = products;
+
+    productBoxController.value.addListener(() {
+      updateCalculatedFields();
+    });
   }
 
   @override
@@ -104,7 +112,7 @@ class AddTransactionController extends GetxController {
     postageController.value.dispose();
     caretController.value.dispose();
     productQuantityController.value.dispose();
-    productComissionController.value.dispose();
+    productCommissionController.value.dispose();
     productBoxController.value.dispose();
     productRateController.value.dispose();
     // searchAgentController.value.dispose();
@@ -125,22 +133,40 @@ class AddTransactionController extends GetxController {
   //   isLoading.value = false;
   // }
 
-  void fetchCompanies() {
-    final uid = _auth.currentUser!.uid;
-    isLoading.value = true;
-    firestore
-        .collection('company')
-        .where('userId', isEqualTo: uid)
-        .snapshots()
-        .listen((snapshot) {
-      companies.value =
-          snapshot.docs.map((doc) => Company.fromSnap(doc)).toList();
-      isLoading.value = false;
-    }, onError: (e) {
-      isLoading.value = false;
-      log("Error fetching companies: $e");
-    });
+  void updateCalculatedFields() {
+    String daagValue = productBoxController.value.text;
+
+    if (daagValue.isNotEmpty && daagValue != "0") {
+      int daag = int.parse(productBoxController.value.text.trim());
+
+      actualMotorRent.value = initialMotorRent * daag;
+      actualJagaBhade.value = initialJagaBhade * daag;
+      actualCoolie.value = initialCoolie * daag;
+      actualCaret.value = initialCaret * daag;
+
+      motorRentController.value.text = actualMotorRent.toString();
+      jagaBhadeController.value.text = actualJagaBhade.toString();
+      coolieController.value.text = actualCoolie.toString();
+      caretController.value.text = actualCaret.toString();
+    }
   }
+
+  // void fetchCompanies() {
+  //   final uid = _auth.currentUser!.uid;
+  //   isLoading.value = true;
+  //   firestore
+  //       .collection('company')
+  //       .where('userId', isEqualTo: uid)
+  //       .snapshots()
+  //       .listen((snapshot) {
+  //     companies.value =
+  //         snapshot.docs.map((doc) => Company.fromSnap(doc)).toList();
+  //     isLoading.value = false;
+  //   }, onError: (e) {
+  //     isLoading.value = false;
+  //     log("Error fetching companies: $e");
+  //   });
+  // }
 
   // Future<void> fetchAgents() async {
   //   isLoading.value = true;
@@ -232,26 +258,20 @@ class AddTransactionController extends GetxController {
     }
   }
 
-  void fetchCompanyDetails(String companyId) {
-    Company? company = companies.firstWhere(
-      (a) => a.companyName == companyId,
-    );
-    if (company != null) {
-      selectedCompanyData.value = company;
-      companyName.value = company.companyName;
-      companyAddress.value = company.address;
-      companyCity.value = company.city;
-      companyMobNo.value = company.mobileNumber;
-      companyOwnerName.value = company.ownerName;
-      companyPincode.value = company.pincode;
-      // log(companyName.value);
-      // log(companyAddress.value);
-      // log(companyCity.value);
-      // log(companyMobNo.value.toString());
-      // log(companyOwnerName.value);
-      // log(companyPincode.value.toString());
-    }
-  }
+  // void fetchCompanyDetails(String companyId) {
+  //   Company? company = companies.firstWhere(
+  //     (a) => a.companyName == companyId,
+  //   );
+  //   if (company != null) {
+  //     selectedCompanyData.value = company;
+  //     companyName.value = company.companyName;
+  //     companyAddress.value = company.address;
+  //     companyCity.value = company.city;
+  //     companyMobNo.value = company.mobileNumber;
+  //     companyOwnerName.value = company.ownerName;
+  //     companyPincode.value = company.pincode;
+  //   }
+  // }
 
   void fetchAgentDetails(String agentId) {
     Agent? agent = agents.firstWhere(
@@ -264,6 +284,11 @@ class AddTransactionController extends GetxController {
       jagaBhadeController.value.text = agent.jagaBhade.toString();
       postageController.value.text = agent.postage.toString();
       caretController.value.text = agent.caret.toString();
+      //set initial values
+      initialMotorRent.value = agent.motorRent;
+      initialJagaBhade.value = agent.jagaBhade;
+      initialCoolie.value = agent.coolie;
+      initialCaret.value = agent.caret;
     }
   }
 
@@ -274,7 +299,7 @@ class AddTransactionController extends GetxController {
     if (product != null) {
       productName.value = product.productName;
       // productQuantityController.value.text = product.quantity.toString();
-      productComissionController.value.text = product.commission.toString();
+      productCommissionController.value.text = product.commission.toString();
     }
   }
 
@@ -340,26 +365,6 @@ class AddTransactionController extends GetxController {
 
       //add transaction details
 
-      // String transactionDetailsId = const Uuid().v1();
-
-      // TransactionDetails transactionDetails = TransactionDetails(
-      //   transactionMainId: transactionId,
-      //   transactionDetailsId: transactionDetailsId,
-      //   itemName: itemName,
-      //   quantity: quantity,
-      //   rate: rate,
-      //   totalSale: totalSale,
-      // );
-
-      // await firestore
-      //     .collection('transactionMain')
-      //     .doc(transactionId)
-      //     .collection('transactionDetails')
-      //     .doc(transactionDetailsId)
-      //     .set(
-      //       transactionDetails.toJson(),
-      //     );
-
       for (var product in productsList) {
         String transactionDetailsId = const Uuid().v1();
 
@@ -394,10 +399,10 @@ class AddTransactionController extends GetxController {
 
     totalExpense = double.parse(postageController.value.text.trim()) +
         actualCommission +
-        actualMotorRent +
-        actualCoolie +
-        actualJagaBhade +
-        actualCaret;
+        actualMotorRent.value +
+        actualCoolie.value +
+        actualJagaBhade.value +
+        actualCaret.value;
 
     totalBalance = totalSale - totalExpense;
 
@@ -407,33 +412,29 @@ class AddTransactionController extends GetxController {
       DateTime selectedDate = selectedTransactionDate.value ?? DateTime.now();
 
       String res = await addTransactionMain(
-          transactionDate: selectedDate,
-          agentId: selectedAgentId.value ?? "",
-          agentName: agentName.value,
-          productId: selectedProductId.value ?? "",
-          daag: actualDaag,
-          commission: actualCommission,
-          motorRent: actualMotorRent,
-          coolie: actualCoolie,
-          jagaBhade: actualJagaBhade,
-          postage: double.parse(postageController.value.text.trim()),
-          caret: actualCaret,
-          // totalSale: totalSale,
-          totalExpense: totalExpense,
-          totalBalance: totalBalance,
-          companyId: selectedCompanyId.value ?? "",
-          companyAddress:
-              "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}"
-
-          // itemName: productName.value,
-          // quantity: int.parse(productQuantityController.value.text),
-          // rate: double.parse(productRateController.value.text),
-          );
+        transactionDate: selectedDate,
+        agentId: selectedAgentId.value ?? "",
+        agentName: agentName.value,
+        productId: selectedProductId.value ?? "",
+        daag: int.parse(productBoxController.value.text.trim()),
+        commission: actualCommission,
+        motorRent: actualMotorRent.value,
+        coolie: actualCoolie.value,
+        jagaBhade: actualJagaBhade.value,
+        postage: double.parse(postageController.value.text.trim()),
+        caret: actualCaret.value,
+        totalExpense: totalExpense,
+        totalBalance: totalBalance,
+        // companyId: selectedCompanyId.value ?? "",
+        companyId: "Shlok Flowers",
+        companyAddress: "Dadar, Mumbai, 420064, Sandip Patil, 9876543210",
+        // "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}",
+      );
 
       if (res == "Success") {
         agentName.value = "";
         productBoxController.value.clear();
-        productComissionController.value.clear();
+        productCommissionController.value.clear();
         motorRentController.value.clear();
         coolieController.value.clear();
         jagaBhadeController.value.clear();
@@ -443,17 +444,17 @@ class AddTransactionController extends GetxController {
         totalExpense = 0.0;
         totalBalance = 0.0;
         actualCommission = 0.0;
-        actualMotorRent = 0.0;
-        actualCoolie = 0.0;
-        actualJagaBhade = 0.0;
-        actualCaret = 0.0;
-        actualDaag = 0;
+        actualMotorRent.value = 0.0;
+        actualCoolie.value = 0.0;
+        actualJagaBhade.value = 0.0;
+        actualCaret.value = 0.0;
+        // actualDaag = 0;
         productsList.clear();
 
         // isLoading.value = false;
         isSaveLoading.value = false;
         Get.back();
-        showSnackBar('Transaction saved', Get.context!);
+        showSnackBar('Patti saved', Get.context!);
       } else {
         isSaveLoading.value = false;
 
@@ -510,7 +511,7 @@ class AddTransactionController extends GetxController {
 
   addProduct() {
     double commissionRate =
-        double.parse(productComissionController.value.text.trim()) / 100;
+        double.parse(productCommissionController.value.text.trim()) / 100;
 
     double itemQuantity =
         double.parse(productQuantityController.value.text.trim());
@@ -519,15 +520,15 @@ class AddTransactionController extends GetxController {
 
     int daag = int.parse(productBoxController.value.text.trim());
 
-    double motorRent = double.parse(motorRentController.value.text.trim());
-
-    double coolie = double.parse(coolieController.value.text.trim());
-
-    double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
-
-    double caret = double.parse(caretController.value.text.trim());
-
     double postage = double.parse(postageController.value.text.trim());
+
+    // double motorRent = double.parse(motorRentController.value.text.trim());
+
+    // double coolie = double.parse(coolieController.value.text.trim());
+
+    // double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
+
+    // double caret = double.parse(caretController.value.text.trim());
 
     //calculations
 
@@ -535,26 +536,26 @@ class AddTransactionController extends GetxController {
 
     double actualCommissionItem = totalSaleItem * commissionRate;
 
-    actualMotorRent = motorRent * daag;
+    // actualMotorRent = motorRent * daag;
 
-    actualCoolie = coolie * daag;
+    // actualCoolie = coolie * daag;
 
-    actualJagaBhade = jagaBhade * daag;
+    // actualJagaBhade = jagaBhade * daag;
 
-    actualCaret = caret * daag;
+    // actualCaret = caret * daag;
 
     double totalExpenseItem = actualCommissionItem +
-        actualMotorRent +
-        actualCoolie +
-        actualJagaBhade +
-        actualCaret +
+        actualMotorRent.value +
+        actualCoolie.value +
+        actualJagaBhade.value +
+        actualCaret.value +
         postage;
 
     totalSale += totalSaleItem;
 
     totalExpense += totalExpenseItem;
 
-    actualDaag += daag;
+    // actualDaag += daag;
 
     actualCommission += actualCommissionItem;
 
@@ -575,7 +576,7 @@ class AddTransactionController extends GetxController {
     productName.value = "";
     selectedProductId.value = null;
     productQuantityController.value.clear();
-    productComissionController.value.clear();
+    productCommissionController.value.clear();
     // productBoxController.value.clear();
     productRateController.value.clear();
   }

@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
+  final Function(String)? onChanged;
   const CustomTextField({
     super.key,
     required this.controller,
@@ -20,11 +21,13 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.suffixIcon,
     this.validator,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       textCapitalization: TextCapitalization.words,
       keyboardType: keyboardType,
       controller: controller,

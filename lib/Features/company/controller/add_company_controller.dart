@@ -44,7 +44,7 @@ class AddCompanyController extends GetxController {
       String companyId = const Uuid().v1();
       final userId = _auth.currentUser!.uid;
 
-      Company product = Company(
+      Company company = Company(
         userId: userId,
         companyId: companyId,
         companyName: companyName,
@@ -56,7 +56,7 @@ class AddCompanyController extends GetxController {
       );
 
       _firestore.collection('company').doc(companyId).set(
-            product.toJson(),
+            company.toJson(),
           );
 
       res = "Success";

@@ -1,7 +1,6 @@
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
 import 'package:expense_manager/Features/common_widgets/custom_button.dart';
 import 'package:expense_manager/Features/common_widgets/custom_text_field.dart';
-import 'package:expense_manager/Features/company/models/company_model.dart';
 import 'package:expense_manager/Features/product/models/product_model.dart';
 import 'package:expense_manager/Features/transactions/controller/add_transaction_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
@@ -49,62 +48,62 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Company Name',
-                              style: lightTextTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black12,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.only(left: 10),
-                              alignment: Alignment.centerLeft,
-                              child: addTransactionController.isLoading.value
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : DropdownButton<String>(
-                                      underline: const SizedBox.shrink(),
-                                      isExpanded: true,
-                                      dropdownColor: primaryColor3,
-                                      value: addTransactionController
-                                          .selectedCompanyId.value,
-                                      hint: Text(
-                                        'Select a company',
-                                        style: lightTextTheme.headlineMedium
-                                            ?.copyWith(
-                                          fontSize: 14,
-                                          color: secondaryColor,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      onChanged: (String? newValue) {
-                                        addTransactionController
-                                            .selectedCompanyId
-                                            .value = newValue!;
-                                        addTransactionController
-                                            .fetchCompanyDetails(newValue);
-                                      },
-                                      items: addTransactionController.companies
-                                          .map((Company company) {
-                                        return DropdownMenuItem<String>(
-                                          value: company.companyName,
-                                          child: Text(
-                                            company.companyName,
-                                            style: lightTextTheme.headlineMedium
-                                                ?.copyWith(
-                                                    fontSize: 16,
-                                                    color: textColor),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                            ),
-                            const SizedBox(height: 10),
+                            // Text(
+                            //   'Company Name',
+                            //   style: lightTextTheme.bodyMedium!.copyWith(
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //     border: Border.all(
+                            //       color: Colors.black12,
+                            //     ),
+                            //     borderRadius: BorderRadius.circular(10),
+                            //   ),
+                            //   padding: const EdgeInsets.only(left: 10),
+                            //   alignment: Alignment.centerLeft,
+                            //   child: addTransactionController.isLoading.value
+                            //       ? const Center(
+                            //           child: CircularProgressIndicator())
+                            //       : DropdownButton<String>(
+                            //           underline: const SizedBox.shrink(),
+                            //           isExpanded: true,
+                            //           dropdownColor: primaryColor3,
+                            //           value: addTransactionController
+                            //               .selectedCompanyId.value,
+                            //           hint: Text(
+                            //             'Select a company',
+                            //             style: lightTextTheme.headlineMedium
+                            //                 ?.copyWith(
+                            //               fontSize: 14,
+                            //               color: secondaryColor,
+                            //               fontWeight: FontWeight.w400,
+                            //             ),
+                            //           ),
+                            //           onChanged: (String? newValue) {
+                            //             addTransactionController
+                            //                 .selectedCompanyId
+                            //                 .value = newValue!;
+                            //             addTransactionController
+                            //                 .fetchCompanyDetails(newValue);
+                            //           },
+                            //           items: addTransactionController.companies
+                            //               .map((Company company) {
+                            //             return DropdownMenuItem<String>(
+                            //               value: company.companyName,
+                            //               child: Text(
+                            //                 company.companyName,
+                            //                 style: lightTextTheme.headlineMedium
+                            //                     ?.copyWith(
+                            //                         fontSize: 16,
+                            //                         color: textColor),
+                            //               ),
+                            //             );
+                            //           }).toList(),
+                            //         ),
+                            // ),
+                            // const SizedBox(height: 10),
                             //agent section
                             Text(
                               'Agent Name',
@@ -125,6 +124,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   ? const Center(
                                       child: CircularProgressIndicator())
                                   : DropdownButton<String>(
+                                      borderRadius: BorderRadius.circular(10),
                                       underline: const SizedBox.shrink(),
                                       isExpanded: true,
                                       dropdownColor: primaryColor3,
@@ -187,6 +187,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                     controller: addTransactionController
                                         .productBoxController.value,
                                     hintText: 'Enter daag/box',
+                                    onChanged: (daagValue) {
+                                      addTransactionController
+                                          .updateCalculatedFields();
+                                    },
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
@@ -400,6 +404,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   ? const Center(
                                       child: CircularProgressIndicator())
                                   : DropdownButton<String>(
+                                      borderRadius: BorderRadius.circular(10),
                                       underline: const SizedBox.shrink(),
                                       isExpanded: true,
                                       dropdownColor: primaryColor3,
@@ -484,7 +489,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                         return null;
                                       },
                                       controller: addTransactionController
-                                          .productComissionController.value,
+                                          .productCommissionController.value,
                                       hintText: 'Enter commission',
                                     ),
                                     const SizedBox(height: 10),
@@ -568,12 +573,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         text: 'Save',
                         onTap: () {
                           if (addTransactionController.selectedAgentId.value !=
-                                  null &&
-                              addTransactionController
-                                      .selectedCompanyId.value !=
-                                  null &&
-                              addTransactionController
-                                  .productsList.isNotEmpty) {
+                                      null &&
+                                  addTransactionController
+                                      .productsList.isNotEmpty
+                              // && addTransactionController
+                              //         .selectedCompanyId.value !=
+                              //     null
+                              ) {
                             if (addTransactionController
                                 .transactionFormKey.currentState!
                                 .validate()) {

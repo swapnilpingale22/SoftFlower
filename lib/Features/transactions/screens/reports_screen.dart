@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:expense_manager/Features/transactions/controller/reports_controller.dart';
 import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,8 @@ class Reports extends StatefulWidget {
 
 class _ReportsState extends State<Reports> {
   ReportsController reportsController = Get.put(ReportsController());
+  final singleTransactionPdfController =
+      Get.put(SingleTransactionPdfController());
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +104,7 @@ class _ReportsState extends State<Reports> {
                       )
                     : SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             children: [
                               Row(
@@ -176,6 +179,314 @@ class _ReportsState extends State<Reports> {
                                       elevation: 4,
                                       child: Stack(
                                         children: [
+                                          Container(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                10, 20, 0, 20),
+                                            child: Column(
+                                              children: [
+                                                //name, date
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Text(
+                                                        transaction.agentName,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: const TextStyle(
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(
+                                                        height: 25),
+                                                    Expanded(
+                                                      flex: 4,
+                                                      child: Text(
+                                                        formattedDate,
+                                                        style: const TextStyle(
+                                                          color: Colors.black87,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Expanded(
+                                                        child: SizedBox()),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+                                                // daag, postage
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      "Daag",
+                                                      style: TextStyle(
+                                                        color: Colors.black54,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      '${transaction.daag}',
+                                                      style: const TextStyle(
+                                                        color: Colors.black87,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    // Expanded(
+                                                    //   child: CustomDataColumn(
+                                                    //     title: "Daag",
+                                                    //     value:
+                                                    //         '${transaction.daag}',
+                                                    //   ),
+                                                    // ),
+                                                    // const Expanded(
+                                                    //     child: SizedBox()),
+                                                    // const Expanded(
+                                                    //     child: SizedBox()),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+                                                //motor rent, commission
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Commission",
+                                                        value: transaction
+                                                            .commission
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Motor Rent",
+                                                        value:
+                                                            '${transaction.motorRent}',
+                                                      ),
+                                                    ),
+
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Coolie",
+                                                        value: transaction
+                                                            .coolie
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+
+                                                    // const Expanded(
+                                                    //     child: SizedBox()),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+                                                //jaga bhade, coolie
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Jaga Bhade",
+                                                        value:
+                                                            '${transaction.jagaBhade}',
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Postage",
+                                                        value: transaction
+                                                            .postage
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Caret",
+                                                        value:
+                                                            '${transaction.caret}',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+
+                                                SizedBox(
+                                                  height: 140,
+                                                  width: Get.width,
+                                                  child: ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: transaction
+                                                        .transactionDetailsList
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, subIndex) {
+                                                      var transactionDetails =
+                                                          reportsController
+                                                                  .transactions[
+                                                                      index]
+                                                                  .transactionDetailsList[
+                                                              subIndex];
+                                                      return Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .fromLTRB(
+                                                                0, 10, 5, 10),
+                                                        width: Get.width * 0.60,
+                                                        height: 50,
+                                                        child: Card(
+                                                          color: primaryColor3,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                          elevation: 4,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                              transactionDetails
+                                                                  .itemName,
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            subtitle: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                CustomItemRow(
+                                                                  title:
+                                                                      'Quantity:',
+                                                                  value:
+                                                                      '${transactionDetails.quantity}',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                                CustomItemRow(
+                                                                  title:
+                                                                      'Rate:',
+                                                                  value:
+                                                                      '${transactionDetails.rate}',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                                CustomItemRow(
+                                                                  title:
+                                                                      'Total Sale:',
+                                                                  value:
+                                                                      '${transactionDetails.totalSale}',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                                // CustomRow(
+                                                //   title: 'Daag:',
+                                                //   value: '${transaction.daag}',
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Commission:',
+                                                //   value: transaction.commission
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Motor Rent:',
+                                                //   value: transaction.motorRent
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Coolie:',
+                                                //   value: transaction.coolie
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Jaga Bhade:',
+                                                //   value: transaction.jagaBhade
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Postage:',
+                                                //   value: transaction.postage
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                // CustomRow(
+                                                //   title: 'Caret:',
+                                                //   value: transaction.caret
+                                                //       .toStringAsFixed(2),
+                                                // ),
+                                                const SizedBox(height: 10),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Total Sale",
+                                                        value: transaction
+                                                            .totalSale
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Expense",
+                                                        value: transaction
+                                                            .totalExpense
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+                                                    const CustomDivider(),
+                                                    Expanded(
+                                                      child: CustomDataColumn(
+                                                        title: "Balance",
+                                                        value: transaction
+                                                            .totalBalance
+                                                            .toStringAsFixed(2),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                           ExpansionTile(
                                             initiallyExpanded: true,
                                             shape: LinearBorder.none,
@@ -190,299 +501,272 @@ class _ReportsState extends State<Reports> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  transaction.agentName,
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                                const CustomDivider(height: 25),
-                                                Text(
-                                                  formattedDate,
-                                                  style: const TextStyle(
-                                                    color: Colors.black87,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
+                                                // Expanded(
+                                                //   flex: 2,
+                                                //   child: Text(
+                                                //     transaction.agentName,
+                                                //     style: const TextStyle(
+                                                //       color: Colors.black87,
+                                                //       fontWeight:
+                                                //           FontWeight.bold,
+                                                //       fontSize: 16,
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                // const CustomDivider(height: 25),
+                                                // Expanded(
+                                                //   flex: 3,
+                                                //   child: Text(
+                                                //     formattedDate,
+                                                //     style: const TextStyle(
+                                                //       color: Colors.black87,
+                                                //       fontWeight:
+                                                //           FontWeight.bold,
+                                                //       fontSize: 16,
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                // const Expanded(
+                                                //     child: SizedBox()),
                                               ],
                                             ),
                                             subtitle: Column(
                                               children: [
-                                                const SizedBox(height: 10),
-                                                CustomRow(
-                                                  title: 'Daag:',
-                                                  value: '${transaction.daag}',
-                                                ),
-                                                CustomRow(
-                                                  title: 'Commission:',
-                                                  value: transaction.commission
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                CustomRow(
-                                                  title: 'Motor Rent:',
-                                                  value: transaction.motorRent
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                CustomRow(
-                                                  title: 'Coolie:',
-                                                  value: transaction.coolie
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                CustomRow(
-                                                  title: 'Jaga Bhade:',
-                                                  value: transaction.jagaBhade
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                CustomRow(
-                                                  title: 'Postage:',
-                                                  value: transaction.postage
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                CustomRow(
-                                                  title: 'Caret:',
-                                                  value: transaction.caret
-                                                      .toStringAsFixed(2),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    CustomDataColumn(
-                                                      title: "Total Sale",
-                                                      value: transaction
-                                                          .totalSale
-                                                          .toStringAsFixed(2),
-                                                    ),
-                                                    const CustomDivider(),
-                                                    CustomDataColumn(
-                                                      title: "Expense",
-                                                      value: transaction
-                                                          .totalExpense
-                                                          .toStringAsFixed(2),
-                                                    ),
-                                                    const CustomDivider(),
-                                                    CustomDataColumn(
-                                                      title: "Balance",
-                                                      value: transaction
-                                                          .totalBalance
-                                                          .toStringAsFixed(2),
-                                                    ),
-                                                  ],
-                                                ),
+                                                // const SizedBox(height: 10),
+                                                // Row(
+                                                //   mainAxisSize:
+                                                //       MainAxisSize.max,
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Daag",
+                                                //         value:
+                                                //             '${transaction.daag}',
+                                                //       ),
+                                                //     ),
+                                                //     const CustomDivider(),
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Postage",
+                                                //         value: transaction
+                                                //             .postage
+                                                //             .toStringAsFixed(2),
+                                                //       ),
+                                                //     ),
+                                                //     const Expanded(
+                                                //         child: SizedBox()),
+                                                //   ],
+                                                // ),
+                                                // const SizedBox(height: 10),
+                                                // Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Motor Rent",
+                                                //         value:
+                                                //             '${transaction.motorRent}',
+                                                //       ),
+                                                //     ),
+                                                //     const CustomDivider(),
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Commission",
+                                                //         value: transaction
+                                                //             .commission
+                                                //             .toStringAsFixed(2),
+                                                //       ),
+                                                //     ),
+                                                //     const Expanded(
+                                                //         child: SizedBox()),
+                                                //   ],
+                                                // ),
+                                                // const SizedBox(height: 10),
+                                                // Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Jaga Bhade",
+                                                //         value:
+                                                //             '${transaction.jagaBhade}',
+                                                //       ),
+                                                //     ),
+                                                //     const CustomDivider(),
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Coolie",
+                                                //         value: transaction
+                                                //             .coolie
+                                                //             .toStringAsFixed(2),
+                                                //       ),
+                                                //     ),
+                                                //     const Expanded(
+                                                //         child: SizedBox()),
+                                                //   ],
+                                                // ),
+                                                // const SizedBox(height: 10),
+                                                // Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.center,
+                                                //   children: [
+                                                //     Expanded(
+                                                //       child: CustomDataColumn(
+                                                //         title: "Caret",
+                                                //         value:
+                                                //             '${transaction.caret}',
+                                                //       ),
+                                                //     ),
+                                                //     const Expanded(
+                                                //       flex: 2,
+                                                //       child: SizedBox(),
+                                                //     ),
+                                                //   ],
+                                                // ),
+                                                // const SizedBox(height: 10),
+                                                // // CustomRow(
+                                                // //   title: 'Daag:',
+                                                // //   value: '${transaction.daag}',
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Commission:',
+                                                // //   value: transaction.commission
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Motor Rent:',
+                                                // //   value: transaction.motorRent
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Coolie:',
+                                                // //   value: transaction.coolie
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Jaga Bhade:',
+                                                // //   value: transaction.jagaBhade
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Postage:',
+                                                // //   value: transaction.postage
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // // CustomRow(
+                                                // //   title: 'Caret:',
+                                                // //   value: transaction.caret
+                                                // //       .toStringAsFixed(2),
+                                                // // ),
+                                                // const SizedBox(height: 10),
+                                                // Row(
+                                                //   mainAxisAlignment:
+                                                //       MainAxisAlignment.start,
+                                                //   children: [
+                                                //     CustomDataColumn(
+                                                //       title: "Total Sale",
+                                                //       value: transaction
+                                                //           .totalSale
+                                                //           .toStringAsFixed(2),
+                                                //     ),
+                                                //     const CustomDivider(),
+                                                //     CustomDataColumn(
+                                                //       title: "Expense",
+                                                //       value: transaction
+                                                //           .totalExpense
+                                                //           .toStringAsFixed(2),
+                                                //     ),
+                                                //     const CustomDivider(),
+                                                //     CustomDataColumn(
+                                                //       title: "Balance",
+                                                //       value: transaction
+                                                //           .totalBalance
+                                                //           .toStringAsFixed(2),
+                                                //     ),
+                                                //   ],
+                                                // ),
                                               ],
                                             ),
-                                            //  Column(
-                                            //   crossAxisAlignment:
-                                            //       CrossAxisAlignment.start,
-                                            //   children: [
-                                            //     CustomRow(
-                                            //       title: 'Date:',
-                                            //       value: formattedDate,
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Daag:',
-                                            //       value: '${transaction.daag}',
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Total sale:',
-                                            //       value: transaction.totalSale
-                                            //           .toStringAsFixed(2),
-                                            //       fontWeight: FontWeight.w500,
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Commission:',
-                                            //       value: transaction.commission
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Motor Rent:',
-                                            //       value: transaction.motorRent
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Coolie:',
-                                            //       value: transaction.coolie
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Jaga Bhade:',
-                                            //       value: transaction.jagaBhade
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Postage:',
-                                            //       value: transaction.postage
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Caret:',
-                                            //       value: transaction.caret
-                                            //           .toStringAsFixed(2),
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Total Expense:',
-                                            //       value: transaction
-                                            //           .totalExpense
-                                            //           .toStringAsFixed(2),
-                                            //       fontWeight: FontWeight.w500,
-                                            //     ),
-                                            //     CustomRow(
-                                            //       title: 'Total Balance:',
-                                            //       value: transaction
-                                            //           .totalBalance
-                                            //           .toStringAsFixed(2),
-                                            //       fontWeight: FontWeight.w500,
-                                            //     ),
-                                            //     // Text(
-                                            //     //   'Date: $formattedDate',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Daag: ${transaction.daag}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Total sale: ${transaction.totalSale.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //     fontWeight: FontWeight.w500,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Commission: ${transaction.commission.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Motor Rent: ${transaction.motorRent.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Coolie: ${transaction.coolie.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Jaga Bhade: ${transaction.jagaBhade.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Postage: ${transaction.postage.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Caret: ${transaction.caret.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Total Expense: ${transaction.totalExpense.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //     fontWeight: FontWeight.w500,
-                                            //     //   ),
-                                            //     // ),
-                                            //     // Text(
-                                            //     //   'Total Balance: ${transaction.totalBalance.toStringAsFixed(2)}',
-                                            //     //   style: const TextStyle(
-                                            //     //     color: Colors.black87,
-                                            //     //     fontWeight: FontWeight.w500,
-                                            //     //   ),
-                                            //     // ),
-                                            //   ],
-                                            // ),
+
                                             children: [
-                                              SizedBox(
-                                                height: 140,
-                                                width: Get.width,
-                                                child: ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: transaction
-                                                      .transactionDetailsList
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, subIndex) {
-                                                    var transactionDetails =
-                                                        reportsController
-                                                                .transactions[index]
-                                                                .transactionDetailsList[
-                                                            subIndex];
-                                                    return Container(
-                                                      padding: const EdgeInsets
-                                                          .fromLTRB(
-                                                          10, 10, 5, 10),
-                                                      width: Get.width * 0.60,
-                                                      height: 50,
-                                                      child: Card(
-                                                        color: primaryColor3,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                        elevation: 4,
-                                                        child: ListTile(
-                                                          title: Text(
-                                                            transactionDetails
-                                                                .itemName,
-                                                            style:
-                                                                const TextStyle(
-                                                              color: Colors
-                                                                  .black87,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          subtitle: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              CustomRow(
-                                                                title:
-                                                                    'Quantity:',
-                                                                value:
-                                                                    '${transactionDetails.quantity}',
-                                                              ),
-                                                              CustomRow(
-                                                                title: 'Rate:',
-                                                                value:
-                                                                    '${transactionDetails.rate}',
-                                                              ),
-                                                              CustomRow(
-                                                                title:
-                                                                    'Total Sale:',
-                                                                value:
-                                                                    '${transactionDetails.totalSale}',
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              )
+                                              // SizedBox(
+                                              //   height: 140,
+                                              //   width: Get.width,
+                                              //   child: ListView.builder(
+                                              //     scrollDirection:
+                                              //         Axis.horizontal,
+                                              //     itemCount: transaction
+                                              //         .transactionDetailsList
+                                              //         .length,
+                                              //     itemBuilder:
+                                              //         (context, subIndex) {
+                                              //       var transactionDetails =
+                                              //           reportsController
+                                              //                   .transactions[index]
+                                              //                   .transactionDetailsList[
+                                              //               subIndex];
+                                              //       return Container(
+                                              //         padding: const EdgeInsets
+                                              //             .fromLTRB(
+                                              //             10, 10, 5, 10),
+                                              //         width: Get.width * 0.60,
+                                              //         height: 50,
+                                              //         child: Card(
+                                              //           color: primaryColor3,
+                                              //           shape:
+                                              //               RoundedRectangleBorder(
+                                              //             borderRadius:
+                                              //                 BorderRadius
+                                              //                     .circular(8),
+                                              //           ),
+                                              //           elevation: 4,
+                                              //           child: ListTile(
+                                              //             title: Text(
+                                              //               transactionDetails
+                                              //                   .itemName,
+                                              //               style:
+                                              //                   const TextStyle(
+                                              //                 color: Colors
+                                              //                     .black87,
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .bold,
+                                              //               ),
+                                              //             ),
+                                              //             subtitle: Column(
+                                              //               crossAxisAlignment:
+                                              //                   CrossAxisAlignment
+                                              //                       .start,
+                                              //               children: [
+                                              //                 CustomRow(
+                                              //                   title:
+                                              //                       'Quantity:',
+                                              //                   value:
+                                              //                       '${transactionDetails.quantity}',
+                                              //                 ),
+                                              //                 CustomRow(
+                                              //                   title: 'Rate:',
+                                              //                   value:
+                                              //                       '${transactionDetails.rate}',
+                                              //                 ),
+                                              //                 CustomRow(
+                                              //                   title:
+                                              //                       'Total Sale:',
+                                              //                   value:
+                                              //                       '${transactionDetails.totalSale}',
+                                              //                 ),
+                                              //               ],
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       );
+                                              //     },
+                                              //   ),
+                                              // )
                                             ],
                                           ),
                                           Positioned(
@@ -516,7 +800,7 @@ class _ReportsState extends State<Reports> {
                                                 onTap: () async {
                                                   //generate and open PDF
                                                   final paragraphPdf =
-                                                      await SingleTransactionPdfApi
+                                                      await singleTransactionPdfController
                                                           .generateSingleTransactionPdf(
                                                     transData: reportsController
                                                         .transactions,
@@ -526,10 +810,20 @@ class _ReportsState extends State<Reports> {
                                                   SaveAndOpneDocument.openPdf(
                                                       paragraphPdf);
                                                 },
-                                                child: const Icon(
-                                                  Icons.picture_as_pdf,
-                                                  color: textColor,
-                                                ),
+                                                child:
+                                                    singleTransactionPdfController
+                                                            .isPDFLoading.value
+                                                        ? const Center(
+                                                            child:
+                                                                CupertinoActivityIndicator(
+                                                              color: textColor,
+                                                            ),
+                                                          )
+                                                        : const Icon(
+                                                            Icons
+                                                                .picture_as_pdf,
+                                                            color: textColor,
+                                                          ),
                                               ),
                                             ),
                                           ),
@@ -578,6 +872,7 @@ class CustomDataColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -635,6 +930,54 @@ class CustomRow extends StatelessWidget {
             style: TextStyle(
               color: Colors.black87,
               fontWeight: fontWeight,
+            ),
+          ),
+        ),
+        const Expanded(
+          flex: 1,
+          child: SizedBox(),
+        )
+      ],
+    );
+  }
+}
+
+class CustomItemRow extends StatelessWidget {
+  const CustomItemRow({
+    super.key,
+    required this.title,
+    required this.value,
+    this.fontWeight,
+  });
+
+  final String title;
+  final String value;
+  final FontWeight? fontWeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.black54,
+              // fontWeight: fontWeight,
+              fontSize: 14,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            textAlign: TextAlign.end,
+            value,
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: fontWeight,
+              fontSize: 15,
             ),
           ),
         ),

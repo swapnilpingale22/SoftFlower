@@ -11,7 +11,7 @@ import 'package:pdf/widgets.dart';
 
 import '../transactions/models/transactions_model.dart';
 
-class MonthTransactionPdfApi {
+class MonthTransactionPdfController extends GetxController {
   static var font;
   static String? bgShape;
   static String? logo1;
@@ -20,49 +20,57 @@ class MonthTransactionPdfApi {
   static const tealColor = PdfColor.fromInt(0xff009688);
   static const accentColor = PdfColors.white;
 
+  RxBool isPDFLoading = false.obs;
+
   static Future<Font> loadFont(String path) async {
     final fontData = await rootBundle.load(path);
     return Font.ttf(fontData);
   }
 
-  static Future<File> generateMonthTransactionPdf({
+  Future<File> generateMonthTransactionPdf({
     required RxList<Transactions> transData,
   }) async {
-    bgShape = await rootBundle.loadString('assets/svg/invoice.svg');
-    logo1 = await rootBundle.loadString('assets/svg/logo_1.svg');
-    logo2 = await rootBundle.loadString('assets/svg/logo_2.svg');
+    try {
+      isPDFLoading.value = true;
 
-    final pdf = Document();
+      bgShape = await rootBundle.loadString('assets/svg/invoice.svg');
+      logo1 = await rootBundle.loadString('assets/svg/logo_1.svg');
+      logo2 = await rootBundle.loadString('assets/svg/logo_2.svg');
 
-    font = await loadFont('assets/fonts/Roboto-Regular.ttf');
+      final pdf = Document();
 
-    // String formattedDate =
-    //     DateFormat('dd-MM-yyyy').format(transData[index].transactionDate);
+      font = await loadFont('assets/fonts/Roboto-Regular.ttf');
 
-    pdf.addPage(
-      MultiPage(
-        pageTheme: customPageTheme(PdfPageFormat.a4, font, font, font),
-        header: (context) => mainHeader(context, transData, 0),
-        footer: (context) => buildFooter(context, transData, font),
-        build: (context) => [
-          contentHeader(context, transData, 0, font),
-          SizedBox(height: 0.5 * PdfPageFormat.cm),
-          // ...bulletPoints1(transData, index, formattedDate),
-          // SizedBox(height: 0.5 * PdfPageFormat.cm),
-          contentTable(context, transData),
-          // SizedBox(height: 0.5 * PdfPageFormat.cm),
-          // ...bulletPoints2(transData, index, formattedDate),
-          SizedBox(height: 20),
-          contentFooter(context, transData),
-          SizedBox(height: 20),
-        ],
-      ),
-    );
+      pdf.addPage(
+        MultiPage(
+          pageTheme: customPageTheme(PdfPageFormat.a4, font, font, font),
+          header: (context) => mainHeader(context, transData, 0),
+          footer: (context) => buildFooter(context, transData, font),
+          build: (context) => [
+            contentHeader(context, transData, 0, font),
+            SizedBox(height: 0.5 * PdfPageFormat.cm),
+            // ...bulletPoints1(transData, index, formattedDate),
+            // SizedBox(height: 0.5 * PdfPageFormat.cm),
+            contentTable(context, transData),
+            // SizedBox(height: 0.5 * PdfPageFormat.cm),
+            // ...bulletPoints2(transData, index, formattedDate),
+            SizedBox(height: 20),
+            contentFooter(context, transData),
+            SizedBox(height: 20),
+          ],
+        ),
+      );
 
-    return SaveAndOpneDocument.savePdf(
-        name:
-            'Invoice - ${transData[0].agentName} ${DateFormat('MMMM-yyyy').format(transData[0].transactionDate)}.pdf',
-        pdf: pdf);
+      return SaveAndOpneDocument.savePdf(
+          name:
+              'Invoice - ${transData[0].agentName} ${DateFormat('MMMM-yyyy').format(transData[0].transactionDate)}.pdf',
+          pdf: pdf);
+    } catch (e) {
+      print("Error generating PDF: $e");
+      throw Exception();
+    } finally {
+      isPDFLoading.value = false;
+    }
   }
 
   static PageTheme customPageTheme(

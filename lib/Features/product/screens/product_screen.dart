@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
+import '../../transactions/screens/reports_screen.dart';
 import '../controller/edit_product_controller.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -133,7 +134,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       elevation: 4,
                                       child: ListTile(
                                         title: Text(
-                                          '${product.productName}',
+                                          product.productName,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -144,10 +145,21 @@ class _ProductScreenState extends State<ProductScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              'Commission: ${product.commission}  \nBundle Type: ${product.bundleType}',
-                                              style: const TextStyle(
-                                                color: Colors.black54,
+                                            Flexible(
+                                              child: Column(
+                                                children: [
+                                                  CustomRow(
+                                                    title: 'Commission:',
+                                                    value: product.commission
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  CustomRow(
+                                                    title: 'Bundle Type:',
+                                                    value: product.bundleType,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             Column(

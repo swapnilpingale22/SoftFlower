@@ -20,6 +20,8 @@ class MonthTransactionScreen extends StatefulWidget {
 class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
   MonthTransactionController monthTransactionController =
       Get.put(MonthTransactionController());
+  final monthTransactionPdfController =
+      Get.put(MonthTransactionPdfController());
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                                   ? const Center(
                                       child: CircularProgressIndicator())
                                   : DropdownButton<String>(
+                                      borderRadius: BorderRadius.circular(10),
                                       underline: const SizedBox.shrink(),
                                       isExpanded: true,
                                       dropdownColor: primaryColor3,
@@ -126,7 +129,8 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                                       child: CircularProgressIndicator())
                                   : DropdownButton<String>(
                                       underline: const SizedBox.shrink(),
-                                      isExpanded: false,
+                                      isExpanded: true,
+                                      borderRadius: BorderRadius.circular(10),
                                       dropdownColor: primaryColor3,
                                       value: monthTransactionController
                                           .selectedMonth.value,
@@ -183,44 +187,55 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                             //   ),
                             // ),
 
-                            CustomButton(
-                              text: 'Search',
-                              onTap: () {
-                                if (monthTransactionController
-                                        .selectedAgentId.value !=
-                                    null) {
-                                  if (monthTransactionController
-                                          .selectedMonth.value !=
-                                      null) {
-                                    monthTransactionController
-                                        .fetchTransactions();
-                                  } else {
-                                    showSnackBar(
-                                        'Please select a month!', context);
-                                  }
-                                } else {
-                                  showSnackBar(
-                                      'Please select a farmer!', context);
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            Visibility(
-                              visible: monthTransactionController
-                                  .transactions.isNotEmpty,
-                              child: CustomButton(
-                                text: 'Download PDF',
-                                onTap: () async {
-                                  final paragraphPdf =
-                                      await MonthTransactionPdfApi
-                                          .generateMonthTransactionPdf(
-                                    transData:
-                                        monthTransactionController.transactions,
-                                  );
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: CustomButton(
+                                    text: 'Search',
+                                    onTap: () {
+                                      if (monthTransactionController
+                                              .selectedAgentId.value !=
+                                          null) {
+                                        if (monthTransactionController
+                                                .selectedMonth.value !=
+                                            null) {
+                                          monthTransactionController
+                                              .fetchTransactions();
+                                        } else {
+                                          showSnackBar('Please select a month!',
+                                              context);
+                                        }
+                                      } else {
+                                        showSnackBar(
+                                            'Please select a farmer!', context);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Visibility(
+                                  visible: monthTransactionController
+                                      .transactions.isNotEmpty,
+                                  child: Flexible(
+                                    child: CustomButton(
+                                      text: 'View PDF',
+                                      onTap: () async {
+                                        final paragraphPdf =
+                                            await monthTransactionPdfController
+                                                .generateMonthTransactionPdf(
+                                          transData: monthTransactionController
+                                              .transactions,
+                                        );
 
-                                  SaveAndOpneDocument.openPdf(paragraphPdf);
-                                },
-                              ),
+                                        SaveAndOpneDocument.openPdf(
+                                            paragraphPdf);
+                                      },
+                                      isLoading: monthTransactionPdfController
+                                          .isPDFLoading.value,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
 
                             const SizedBox(height: 60),

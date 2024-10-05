@@ -8,7 +8,6 @@ import '../Features/home/screens/all_reports_screen.dart';
 List<Widget> homeScreenItems = [
   const DashboardScreen(),
   const AllReportsScreen(),
-  // const CommingSoonScreen(),
   const ProfileScreen(),
 ];
 
@@ -17,10 +16,9 @@ List<String> buttonTitles = [
   "Flowers",
   "Patti",
   "Patti Reports",
-  // "Company",
 ];
 List<String> allReportsbuttonTitles = [
-  "All Reports",
+  "All Patti Reports",
   "Month Business",
 ];
 

@@ -9,7 +9,7 @@ import 'package:pdf/widgets.dart';
 
 import '../transactions/models/transactions_model.dart';
 
-class SingleTransactionPdfApi {
+class SingleTransactionPdfController extends GetxController {
   static var font;
   static String? bgShape;
   static String? logo1;
@@ -18,60 +18,71 @@ class SingleTransactionPdfApi {
   static const tealColor = PdfColor.fromInt(0xff009688);
   static const accentColor = PdfColors.white;
 
+  RxBool isPDFLoading = false.obs;
+
   static Future<Font> loadFont(String path) async {
     final fontData = await rootBundle.load(path);
     return Font.ttf(fontData);
   }
 
-  static Future<File> generateSingleTransactionPdf({
+  Future<File> generateSingleTransactionPdf({
     required RxList<Transactions> transData,
     required int index,
   }) async {
-    String formattedDate =
-        DateFormat('dd-MM-yyyy').format(transData[index].transactionDate);
+    try {
+      isPDFLoading.value = true;
 
-    bgShape = await rootBundle.loadString('assets/svg/invoice.svg');
-    logo1 = await rootBundle.loadString('assets/svg/logo_1.svg');
-    logo2 = await rootBundle.loadString('assets/svg/logo_2.svg');
+      String formattedDate =
+          DateFormat('dd-MM-yyyy').format(transData[index].transactionDate);
 
-    final pdf = Document();
+      bgShape = await rootBundle.loadString('assets/svg/invoice.svg');
+      logo1 = await rootBundle.loadString('assets/svg/logo_1.svg');
+      logo2 = await rootBundle.loadString('assets/svg/logo_2.svg');
 
-    font = await loadFont('assets/fonts/Roboto-Regular.ttf');
+      final pdf = Document();
 
-    final data = transData[index]
-        .transactionDetailsList
-        .map((transactionDetails) => [
-              transactionDetails.itemName,
-              transactionDetails.quantity,
-              transactionDetails.rate.toStringAsFixed(2),
-              transactionDetails.totalSale.toStringAsFixed(2),
-            ])
-        .toList();
+      font = await loadFont('assets/fonts/Roboto-Regular.ttf');
 
-    pdf.addPage(
-      MultiPage(
-        pageTheme: customPageTheme(PdfPageFormat.a4, font, font, font),
-        header: (context) =>
-            mainHeader(context, formattedDate, transData, index),
-        footer: (context) => buildFooter(context, transData, index, font),
-        build: (context) => [
-          contentHeader(formattedDate, context, transData, index, font),
-          SizedBox(height: 0.5 * PdfPageFormat.cm),
-          ...bulletPoints1(transData, index, formattedDate),
-          SizedBox(height: 0.5 * PdfPageFormat.cm),
-          contentTable(context, data),
-          SizedBox(height: 0.5 * PdfPageFormat.cm),
-          ...bulletPoints2(transData, index, formattedDate),
-          SizedBox(height: 20),
-          contentFooter(context, transData, index),
-          SizedBox(height: 20),
-        ],
-      ),
-    );
+      final data = transData[index]
+          .transactionDetailsList
+          .map((transactionDetails) => [
+                transactionDetails.itemName,
+                transactionDetails.quantity,
+                transactionDetails.rate.toStringAsFixed(2),
+                transactionDetails.totalSale.toStringAsFixed(2),
+              ])
+          .toList();
 
-    return SaveAndOpneDocument.savePdf(
-        name: 'Invoice - ${transData[index].agentName} $formattedDate.pdf',
-        pdf: pdf);
+      pdf.addPage(
+        MultiPage(
+          pageTheme: customPageTheme(PdfPageFormat.a4, font, font, font),
+          header: (context) =>
+              mainHeader(context, formattedDate, transData, index),
+          footer: (context) => buildFooter(context, transData, index, font),
+          build: (context) => [
+            contentHeader(formattedDate, context, transData, index, font),
+            SizedBox(height: 0.5 * PdfPageFormat.cm),
+            ...bulletPoints1(transData, index, formattedDate),
+            SizedBox(height: 0.5 * PdfPageFormat.cm),
+            contentTable(context, data),
+            SizedBox(height: 0.5 * PdfPageFormat.cm),
+            ...bulletPoints2(transData, index, formattedDate),
+            SizedBox(height: 20),
+            contentFooter(context, transData, index),
+            SizedBox(height: 20),
+          ],
+        ),
+      );
+
+      return SaveAndOpneDocument.savePdf(
+          name: 'Invoice - ${transData[index].agentName} $formattedDate.pdf',
+          pdf: pdf);
+    } catch (e) {
+      print("Error generating PDF: $e");
+      throw Exception();
+    } finally {
+      isPDFLoading.value = false;
+    }
   }
 
   static PageTheme customPageTheme(
@@ -196,9 +207,9 @@ class SingleTransactionPdfApi {
     int index,
     Font font,
   ) {
-    String? mobileNumber = RegExp(r'\b\d{10}\b')
-        .firstMatch(transData[index].companyAddress)
-        ?.group(0);
+    // String? mobileNumber = RegExp(r'\b\d{10}\b')
+    //     .firstMatch(transData[index].companyAddress)
+    //     ?.group(0);
     return Column(
       children: [
         Container(
@@ -294,27 +305,27 @@ class SingleTransactionPdfApi {
             ],
           ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                height: 30,
-                child: Text(
-                  'Total: \u20B9${transData[index].totalBalance.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 28,
-                    font: font,
-                    color: tealColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     Expanded(
+        //       child: Container(
+        //         margin:
+        //             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        //         height: 30,
+        //         child: Text(
+        //           'Total: \u20B9${transData[index].totalBalance.toStringAsFixed(2)}',
+        //           style: TextStyle(
+        //             fontSize: 28,
+        //             font: font,
+        //             color: tealColor,
+        //             fontWeight: FontWeight.bold,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
@@ -325,21 +336,29 @@ class SingleTransactionPdfApi {
       Row(
         children: [
           Expanded(
-            flex: 2,
-            child: Bullet(
-              text: 'Daag:',
+            flex: 1,
+            child: Text(
+              textAlign: TextAlign.left,
+              'Daag:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            //  Bullet(
+            //   text: 'Daag:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
-              textAlign: TextAlign.right,
+              textAlign: TextAlign.left,
               '${transData[index].daag}   ',
               style: TextStyle(
                 fontSize: 22,
@@ -347,7 +366,7 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
+          // Expanded(flex: 2, child: SizedBox())
         ],
       ),
     ];
@@ -358,17 +377,26 @@ class SingleTransactionPdfApi {
     return [
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Total Sale:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Total Sale:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            // Bullet(
+            //   text: 'Total Sale:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -381,22 +409,30 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Commission:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Commission:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            // Bullet(
+            //   text: 'Commission:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -409,22 +445,30 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Motor Rent:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Motor Rent:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            // Bullet(
+            //   text: 'Motor Rent:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -437,22 +481,31 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Coolie:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Coolie:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+
+            // Bullet(
+            //   text: 'Coolie:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -465,22 +518,30 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Total Expense:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Total Expense:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            //  Bullet(
+            //   text: 'Total Expense:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -493,22 +554,30 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
       Row(
         children: [
+          Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Bullet(
-              text: 'Total Balance:',
+            child: Text(
+              textAlign: TextAlign.left,
+              'Total Balance:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
               ),
-              bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-              bulletSize: 3 * PdfPageFormat.mm,
             ),
+            // Bullet(
+            //   text: 'Total Balance:',
+            //   style: TextStyle(
+            //     fontSize: 22,
+            //     font: font,
+            //   ),
+            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
+            //   bulletSize: 3 * PdfPageFormat.mm,
+            // ),
           ),
           Expanded(
             flex: 2,
@@ -521,7 +590,6 @@ class SingleTransactionPdfApi {
               ),
             ),
           ),
-          Expanded(flex: 2, child: SizedBox())
         ],
       ),
     ];

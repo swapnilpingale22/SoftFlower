@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
+import '../../transactions/screens/reports_screen.dart';
+
 class AgentScreen extends StatefulWidget {
   const AgentScreen({super.key});
 
@@ -131,11 +133,22 @@ class _AgentScreenState extends State<AgentScreen> {
                                       elevation: 4,
                                       child: ListTile(
                                         isThreeLine: true,
-                                        title: Text(
-                                          agent.agentName,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                        title: Row(
+                                          children: [
+                                            Text(
+                                              "${agent.agentName}, ",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              agent.agentCity,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         subtitle: Row(
                                           crossAxisAlignment:
@@ -143,12 +156,53 @@ class _AgentScreenState extends State<AgentScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              'Motor Rent: ${agent.motorRent}  \nCoolie: ${agent.coolie} \nJaga Bhade: ${agent.jagaBhade} \nPostage: ${agent.postage} \nCaret: ${agent.caret} \nCity: ${agent.agentCity}',
-                                              style: const TextStyle(
-                                                color: Colors.black54,
+                                            Flexible(
+                                              child: Column(
+                                                children: [
+                                                  CustomRow(
+                                                    title: 'Motor Rent:',
+                                                    value: agent.motorRent
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  CustomRow(
+                                                    title: 'Coolie:',
+                                                    value: agent.coolie
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  CustomRow(
+                                                    title: 'Jaga Bhade:',
+                                                    value: agent.jagaBhade
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  CustomRow(
+                                                    title: 'Postage:',
+                                                    value: agent.postage
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  CustomRow(
+                                                    title: 'Caret:',
+                                                    value: agent.caret
+                                                        .toStringAsFixed(2),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  // CustomRow(
+                                                  //   title: 'City:',
+                                                  //   value: agent.agentCity,
+                                                  //   fontWeight: FontWeight.bold,
+                                                  // ),
+                                                ],
                                               ),
                                             ),
+                                            // Text(
+                                            //   'Motor Rent: ${agent.motorRent}  \nCoolie: ${agent.coolie} \nJaga Bhade: ${agent.jagaBhade} \nPostage: ${agent.postage} \nCaret: ${agent.caret} \nCity: ${agent.agentCity}',
+                                            //   style: const TextStyle(
+                                            //     color: Colors.black54,
+                                            //   ),
+                                            // ),
                                             Column(
                                               children: [
                                                 CircleAvatar(

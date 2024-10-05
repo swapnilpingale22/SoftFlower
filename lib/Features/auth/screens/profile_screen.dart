@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import '../../../utils/theme.dart';
 import '../../../utils/utils.dart';
 import '../../common_widgets/custom_rounded_button.dart';
-import '../../company/screens/add_company.dart';
 import '../controller/profile_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -57,19 +56,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                       children: [
                         const SizedBox(height: 30),
-                        const CircleAvatar(
-                          minRadius: 53,
-                          backgroundColor: primaryColor3,
-                          child: CircleAvatar(
+                        // CircleAvatar(
+                        // minRadius: 53,
+                        // backgroundColor: primaryColor3,
+                        // child:
+                        CircleAvatar(
                             minRadius: 50,
                             backgroundColor: mobileBackgroundColor,
-                            child: Icon(
-                              Icons.person,
-                              size: 70,
-                              color: primaryColor3,
+                            child: Image.asset(
+                              "assets/images/man.png",
+                              height: 100,
+                            )
+                            // Icon(
+                            //   Icons.person,
+                            //   size: 70,
+                            //   color: primaryColor3,
+                            // ),
                             ),
-                          ),
-                        ),
+                        // ),
                         const SizedBox(height: 10),
                         Text(
                           '${profileController.userData.value?.email}',
@@ -161,30 +165,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // ),
                         const SizedBox(height: 10),
                         const Spacer(),
-                        const Divider(
-                          color: primaryColor2,
-                          thickness: 1.5,
-                        ),
-                        ListTile(
-                          leading: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                              color: primaryColor3,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(4),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: whiteColor,
-                            ),
-                          ),
-                          title: const Text("Company"),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Get.to(() => const AddCompanyScreen());
-                          },
-                        ),
+                        // const Divider(
+                        //   color: primaryColor2,
+                        //   thickness: 1.5,
+                        // ),
+                        // ListTile(
+                        //   leading: Container(
+                        //     padding: const EdgeInsets.all(5),
+                        //     decoration: const BoxDecoration(
+                        //       color: primaryColor3,
+                        //       borderRadius: BorderRadius.all(
+                        //         Radius.circular(4),
+                        //       ),
+                        //     ),
+                        //     child: const Icon(
+                        //       Icons.add,
+                        //       color: whiteColor,
+                        //     ),
+                        //   ),
+                        //   title: const Text("Company"),
+                        //   trailing: const Icon(Icons.arrow_forward_ios),
+                        //   onTap: () {
+                        //     Get.to(() => const AddCompanyScreen());
+                        //   },
+                        // ),
                         // ListTile(
                         //   leading: Container(
                         //     padding: const EdgeInsets.all(5),
