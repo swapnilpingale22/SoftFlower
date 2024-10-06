@@ -59,6 +59,7 @@ class MonthTransactionController extends GetxController {
     firestore
         .collection('agent')
         .where('userId', isEqualTo: uid)
+        .orderBy('agentName')
         .snapshots()
         .listen((snapshot) {
       agents.value = snapshot.docs.map((doc) => Agent.fromSnap(doc)).toList();

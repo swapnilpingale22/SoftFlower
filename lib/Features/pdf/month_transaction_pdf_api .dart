@@ -19,6 +19,10 @@ class MonthTransactionPdfController extends GetxController {
   static const baseColor = PdfColors.blueGrey800;
   static const tealColor = PdfColor.fromInt(0xff009688);
   static const accentColor = PdfColors.white;
+  double totalDaag = 0;
+  double totalSale = 0;
+  double totalExpense = 0;
+  double totalBalance = 0;
 
   RxBool isPDFLoading = false.obs;
 
@@ -524,30 +528,30 @@ class MonthTransactionPdfController extends GetxController {
     ];
   }
 
-  static Widget contentTable(Context context, RxList<Transactions> transData) {
+  Widget contentTable(Context context, RxList<Transactions> transData) {
     const tableHeaders = [
       'Date',
       "Daag",
       'Flower',
-      'Quantity',
+      'QNT',
       'Rate',
-      'Total sale',
-      "Commission",
+      'Sale',
+      "Comm",
       "Coolie",
-      "Jaga Bhade",
-      "Motor Rent",
+      "Rent",
+      "Motor",
       "Postage",
       "Caret",
-      "Total Expense",
-      "Total Balance",
+      "Expense",
+      "Balance",
     ];
     List<List<dynamic>> totalData = [];
 
     // Variables to store the total sum
-    double totalDaag = 0;
-    double totalSale = 0;
-    double totalExpense = 0;
-    double totalBalance = 0;
+    // double totalDaag = 0;
+    // double totalSale = 0;
+    // double totalExpense = 0;
+    // double totalBalance = 0;
     String? lastTransactionId;
 
     for (var index = 0; index < transData.length; index++) {
@@ -616,6 +620,7 @@ class MonthTransactionPdfController extends GetxController {
     return TableHelper.fromTextArray(
       border: null,
       cellAlignment: Alignment.centerRight,
+      headerAlignment: Alignment.centerRight,
       headerDecoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(3)),
         color: tealColor,
@@ -646,6 +651,14 @@ class MonthTransactionPdfController extends GetxController {
         fontSize: 8,
         font: font,
       ),
+      cellDecoration: (index, data, rowNum) {
+        if (rowNum == totalData.length) {
+          return const BoxDecoration(
+            color: PdfColors.teal100,
+          );
+        }
+        return const BoxDecoration();
+      },
       rowDecoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -674,6 +687,7 @@ class MonthTransactionPdfController extends GetxController {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 50),
               Text(
                 'Thank you for your business',
                 style: TextStyle(

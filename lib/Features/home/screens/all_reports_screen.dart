@@ -21,7 +21,7 @@ class _AllReportsScreenState extends State<AllReportsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: FadeInLeft(
+        title: FadeIn(
           child: Text(
             'Patti Reports',
             style: lightTextTheme.headlineMedium?.copyWith(

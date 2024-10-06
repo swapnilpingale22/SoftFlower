@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:expense_manager/Features/auth/controller/auth.dart';
 import 'package:expense_manager/Features/auth/screens/signup_screen.dart';
 import 'package:expense_manager/utils/colors.dart';
@@ -25,10 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          'Profile',
-          style: lightTextTheme.headlineMedium?.copyWith(
-            fontSize: 20,
+        title: FadeIn(
+          child: Text(
+            'Profile',
+            style: lightTextTheme.headlineMedium?.copyWith(
+              fontSize: 20,
+            ),
           ),
         ),
       ),
@@ -56,30 +59,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                       children: [
                         const SizedBox(height: 30),
-                        // CircleAvatar(
-                        // minRadius: 53,
-                        // backgroundColor: primaryColor3,
-                        // child:
-                        CircleAvatar(
-                            minRadius: 50,
-                            backgroundColor: mobileBackgroundColor,
-                            child: Image.asset(
-                              "assets/images/man.png",
-                              height: 100,
-                            )
-                            // Icon(
-                            //   Icons.person,
-                            //   size: 70,
-                            //   color: primaryColor3,
-                            // ),
-                            ),
-                        // ),
+
+                        ZoomIn(
+                          child: CircleAvatar(
+                              minRadius: 50,
+                              backgroundColor: mobileBackgroundColor,
+                              child: Image.asset(
+                                "assets/images/man.png",
+                                height: 100,
+                              )),
+                        ),
+
                         const SizedBox(height: 10),
-                        Text(
-                          '${profileController.userData.value?.email}',
-                          style: lightTextTheme.headlineMedium?.copyWith(
-                            fontSize: 14,
-                          ),
+                        // profileController.userData.value?.userType == 'admin'
+                        //     ? Text(
+                        //         '${profileController.userData.value?.email}',
+                        //         style: lightTextTheme.headlineMedium?.copyWith(
+                        //           fontSize: 14,
+                        //         ),
+                        //       )
+                        //     :
+                        Column(
+                          children: [
+                            Text(
+                              'Milind Ghag',
+                              textAlign: TextAlign.center,
+                              style: lightTextTheme.headlineMedium?.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'App contact:  7710008987',
+                              textAlign: TextAlign.center,
+                              style: lightTextTheme.headlineMedium?.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 5),
                         profileController.userData.value?.userType == 'admin'

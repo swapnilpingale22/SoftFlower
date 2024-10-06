@@ -382,7 +382,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.left,
-              'Total Sale:',
+              ' Total Sale:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -402,7 +402,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.right,
-              '${transData[index].totalSale.toStringAsFixed(2)}/-',
+              '${transData[index].totalSale.toStringAsFixed(2)}/- ',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -418,7 +418,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.left,
-              'Commission:',
+              ' Commission:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -438,7 +438,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.right,
-              '${transData[index].commission.toStringAsFixed(2)}/-',
+              '${transData[index].commission.toStringAsFixed(2)}/- ',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -454,7 +454,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.left,
-              'Motor Rent:',
+              ' Motor Rent:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -474,7 +474,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.right,
-              '${transData[index].motorRent.toStringAsFixed(2)}/-',
+              '${transData[index].motorRent.toStringAsFixed(2)}/- ',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -490,7 +490,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.left,
-              'Coolie:',
+              ' Coolie:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -511,7 +511,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.right,
-              '${transData[index].coolie.toStringAsFixed(2)}/-',
+              '${transData[index].coolie.toStringAsFixed(2)}/- ',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -527,7 +527,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.left,
-              'Total Expense:',
+              ' Total Expense:',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -547,7 +547,7 @@ class SingleTransactionPdfController extends GetxController {
             flex: 2,
             child: Text(
               textAlign: TextAlign.right,
-              '${transData[index].totalExpense.toStringAsFixed(2)}/-',
+              '${transData[index].totalExpense.toStringAsFixed(2)}/- ',
               style: TextStyle(
                 fontSize: 22,
                 font: font,
@@ -561,32 +561,51 @@ class SingleTransactionPdfController extends GetxController {
           Expanded(flex: 2, child: SizedBox()),
           Expanded(
             flex: 2,
-            child: Text(
-              textAlign: TextAlign.left,
-              'Total Balance:',
-              style: TextStyle(
-                fontSize: 22,
-                font: font,
+            child: Container(
+              height: 40,
+              // width: 100,
+              decoration: const BoxDecoration(
+                color: tealColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(3),
+                  bottomLeft: Radius.circular(3),
+                ),
+              ),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                textAlign: TextAlign.left,
+                ' Total Balance:',
+                style: TextStyle(
+                  fontSize: 23,
+                  font: font,
+                  color: accentColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            // Bullet(
-            //   text: 'Total Balance:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              textAlign: TextAlign.right,
-              '${transData[index].totalBalance.toStringAsFixed(2)}/-',
-              style: TextStyle(
-                fontSize: 22,
-                font: font,
+            child: Container(
+              height: 40,
+              // width: 100,
+              decoration: const BoxDecoration(
+                color: tealColor,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(3),
+                  bottomRight: Radius.circular(3),
+                ),
+              ),
+              alignment: Alignment.centerRight,
+              child: Text(
+                textAlign: TextAlign.right,
+                '${transData[index].totalBalance.toStringAsFixed(2)}/- ',
+                style: TextStyle(
+                  fontSize: 23,
+                  font: font,
+                  color: accentColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -602,7 +621,7 @@ class SingleTransactionPdfController extends GetxController {
       border: null,
       cellAlignment: Alignment.centerLeft,
       headerDecoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(2)),
+        borderRadius: BorderRadius.all(Radius.circular(3)),
         color: tealColor,
       ),
       headerHeight: 30,
@@ -654,6 +673,7 @@ class SingleTransactionPdfController extends GetxController {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 50),
               Text(
                 'Thank you for your business',
                 style: TextStyle(

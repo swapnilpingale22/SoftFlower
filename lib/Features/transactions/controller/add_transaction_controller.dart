@@ -8,6 +8,7 @@ import 'package:expense_manager/Features/product/models/product_model.dart';
 import 'package:expense_manager/Features/transactions/models/product.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_details_model.dart';
 import 'package:expense_manager/Features/transactions/models/transaction_main_model.dart';
+import 'package:expense_manager/utils/colors.dart';
 import 'package:expense_manager/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,7 @@ class AddTransactionController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
   RxBool isSaveLoading = false.obs;
+  RxBool isSaveLoading2 = false.obs;
   //company
   // Rx<String?> selectedCompanyId = Rx<String?>(null);
   // RxList<Company> companies = <Company>[].obs;
@@ -99,9 +101,9 @@ class AddTransactionController extends GetxController {
     filteredAgents.value = agents;
     filteredProducts.value = products;
 
-    productBoxController.value.addListener(() {
-      updateCalculatedFields();
-    });
+    // productBoxController.value.addListener(() {
+    //   updateCalculatedFields();
+    // });
   }
 
   @override
@@ -139,10 +141,20 @@ class AddTransactionController extends GetxController {
     if (daagValue.isNotEmpty && daagValue != "0") {
       int daag = int.parse(productBoxController.value.text.trim());
 
-      actualMotorRent.value = initialMotorRent * daag;
-      actualJagaBhade.value = initialJagaBhade * daag;
-      actualCoolie.value = initialCoolie * daag;
-      actualCaret.value = initialCaret * daag;
+      actualMotorRent.value = initialMotorRent.value * daag;
+      actualJagaBhade.value = initialJagaBhade.value * daag;
+      actualCoolie.value = initialCoolie.value * daag;
+      actualCaret.value = initialCaret.value * daag;
+
+      motorRentController.value.text = actualMotorRent.toString();
+      jagaBhadeController.value.text = actualJagaBhade.toString();
+      coolieController.value.text = actualCoolie.toString();
+      caretController.value.text = actualCaret.toString();
+    } else {
+      actualMotorRent.value = initialMotorRent.value;
+      actualJagaBhade.value = initialJagaBhade.value;
+      actualCoolie.value = initialCoolie.value;
+      actualCaret.value = initialCaret.value;
 
       motorRentController.value.text = actualMotorRent.toString();
       jagaBhadeController.value.text = actualJagaBhade.toString();
@@ -187,6 +199,7 @@ class AddTransactionController extends GetxController {
     firestore
         .collection('agent')
         .where('userId', isEqualTo: uid)
+        .orderBy('agentName')
         .snapshots()
         .listen((snapshot) {
       agents.value = snapshot.docs.map((doc) => Agent.fromSnap(doc)).toList();
@@ -233,6 +246,7 @@ class AddTransactionController extends GetxController {
     firestore
         .collection('product')
         .where('userId', isEqualTo: uid)
+        .orderBy('productName')
         .snapshots()
         .listen((snapshot) {
       products.value =
@@ -399,67 +413,103 @@ class AddTransactionController extends GetxController {
 
     totalExpense = double.parse(postageController.value.text.trim()) +
         actualCommission +
-        actualMotorRent.value +
-        actualCoolie.value +
-        actualJagaBhade.value +
-        actualCaret.value;
+        double.parse(motorRentController.value.text.trim()) +
+        double.parse(jagaBhadeController.value.text.trim()) +
+        double.parse(coolieController.value.text.trim()) +
+        double.parse(caretController.value.text.trim());
 
     totalBalance = totalSale - totalExpense;
 
     try {
-      // Get the date from the date controller or use the current date if empty
-
       DateTime selectedDate = selectedTransactionDate.value ?? DateTime.now();
 
-      String res = await addTransactionMain(
-        transactionDate: selectedDate,
-        agentId: selectedAgentId.value ?? "",
-        agentName: agentName.value,
-        productId: selectedProductId.value ?? "",
-        daag: int.parse(productBoxController.value.text.trim()),
-        commission: actualCommission,
-        motorRent: actualMotorRent.value,
-        coolie: actualCoolie.value,
-        jagaBhade: actualJagaBhade.value,
-        postage: double.parse(postageController.value.text.trim()),
-        caret: actualCaret.value,
-        totalExpense: totalExpense,
-        totalBalance: totalBalance,
-        // companyId: selectedCompanyId.value ?? "",
-        companyId: "Shlok Flowers",
-        companyAddress: "Dadar, Mumbai, 420064, Sandip Patil, 9876543210",
-        // "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}",
+      DateTime selectedDateWithoutTime = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
       );
 
-      if (res == "Success") {
-        agentName.value = "";
-        productBoxController.value.clear();
-        productCommissionController.value.clear();
-        motorRentController.value.clear();
-        coolieController.value.clear();
-        jagaBhadeController.value.clear();
-        postageController.value.clear();
-        caretController.value.clear();
-        totalSale = 0.0;
-        totalExpense = 0.0;
-        totalBalance = 0.0;
-        actualCommission = 0.0;
-        actualMotorRent.value = 0.0;
-        actualCoolie.value = 0.0;
-        actualJagaBhade.value = 0.0;
-        actualCaret.value = 0.0;
-        // actualDaag = 0;
-        productsList.clear();
+      final uid = _auth.currentUser!.uid;
 
-        // isLoading.value = false;
-        isSaveLoading.value = false;
-        Get.back();
-        showSnackBar('Patti saved', Get.context!);
-      } else {
-        isSaveLoading.value = false;
+      QuerySnapshot snapshot = await firestore
+          .collection('transactionMain')
+          .where('userId', isEqualTo: uid)
+          .get();
 
-        showSnackBar(res, Get.context!);
+      bool transactionExists = false;
+
+      for (var doc in snapshot.docs) {
+        DateTime transactionDate =
+            (doc['transactionDate'] as Timestamp).toDate();
+        DateTime transactionDateWithoutTime = DateTime(
+          transactionDate.year,
+          transactionDate.month,
+          transactionDate.day,
+        );
+
+        if (transactionDateWithoutTime == selectedDateWithoutTime) {
+          transactionExists = true;
+          break;
+        }
       }
+
+      if (transactionExists) {
+        isSaveLoading.value = false;
+        _showTransactionExistsDialog(selectedDateWithoutTime);
+        return;
+      }
+
+      _saveTransactionToDB(selectedDateWithoutTime);
+
+      // String res = await addTransactionMain(
+      //   transactionDate: selectedDate,
+      //   agentId: selectedAgentId.value ?? "",
+      //   agentName: agentName.value,
+      //   productId: selectedProductId.value ?? "",
+      //   daag: int.parse(productBoxController.value.text.trim()),
+      //   commission: actualCommission,
+      //   motorRent: double.parse(motorRentController.value.text.trim()),
+      //   coolie: double.parse(coolieController.value.text.trim()),
+      //   jagaBhade: double.parse(jagaBhadeController.value.text.trim()),
+      //   postage: double.parse(postageController.value.text.trim()),
+      //   caret: double.parse(caretController.value.text.trim()),
+      //   totalExpense: totalExpense,
+      //   totalBalance: totalBalance,
+      //   // companyId: selectedCompanyId.value ?? "",
+      //   companyId: "Softflower",
+      //   companyAddress: "Dadar, Mumbai, 420064, Milind Ghag, 7710008987",
+      //   // "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}",
+      // );
+
+      // if (res == "Success") {
+      //   agentName.value = "";
+      //   productBoxController.value.clear();
+      //   productCommissionController.value.clear();
+      //   motorRentController.value.clear();
+      //   coolieController.value.clear();
+      //   jagaBhadeController.value.clear();
+      //   postageController.value.clear();
+      //   caretController.value.clear();
+      //   totalSale = 0.0;
+      //   totalExpense = 0.0;
+      //   totalBalance = 0.0;
+      //   actualCommission = 0.0;
+      //   actualMotorRent.value = 0.0;
+      //   actualCoolie.value = 0.0;
+      //   actualJagaBhade.value = 0.0;
+      //   actualCaret.value = 0.0;
+      //   // actualDaag = 0;
+      //   productsList.clear();
+
+      //   // isLoading.value = false;
+      //   isSaveLoading.value = false;
+      //   Get.back();
+      //   showSnackBar('Patti saved', Get.context!);
+      // } else {
+      //   isSaveLoading.value = false;
+
+      //   showSnackBar(res, Get.context!);
+      // }
     } catch (e) {
       isSaveLoading.value = false;
       log(e.toString());
@@ -467,8 +517,94 @@ class AddTransactionController extends GetxController {
     }
   }
 
-  // Future<void> deleteDocument(
-  //     {required String agentId, required String collectionName}) async {}
+  void _saveTransactionToDB(DateTime selectedDateWithoutTime) async {
+    isSaveLoading2.value = true;
+    String res = await addTransactionMain(
+      transactionDate: selectedDateWithoutTime,
+      agentId: selectedAgentId.value ?? "",
+      agentName: agentName.value,
+      productId: selectedProductId.value ?? "",
+      daag: int.parse(productBoxController.value.text.trim()),
+      commission: actualCommission,
+      motorRent: double.parse(motorRentController.value.text.trim()),
+      coolie: double.parse(coolieController.value.text.trim()),
+      jagaBhade: double.parse(jagaBhadeController.value.text.trim()),
+      postage: double.parse(postageController.value.text.trim()),
+      caret: double.parse(caretController.value.text.trim()),
+      totalExpense: totalExpense,
+      totalBalance: totalBalance,
+      companyId: "Softflower",
+      companyAddress: "Prop: Milind Ghag, Mob: 7710008987",
+    );
+
+    if (res == "Success") {
+      // Clear the form and show success snackbar
+      agentName.value = "";
+      productBoxController.value.clear();
+      productCommissionController.value.clear();
+      motorRentController.value.clear();
+      coolieController.value.clear();
+      jagaBhadeController.value.clear();
+      postageController.value.clear();
+      caretController.value.clear();
+      totalSale = 0.0;
+      totalExpense = 0.0;
+      totalBalance = 0.0;
+      actualCommission = 0.0;
+      actualMotorRent.value = 0.0;
+      actualCoolie.value = 0.0;
+      actualJagaBhade.value = 0.0;
+      actualCaret.value = 0.0;
+      productsList.clear();
+
+      isSaveLoading.value = false;
+      isSaveLoading2.value = false;
+      Get.back();
+      Get.back();
+      showSnackBar('Patti saved', Get.context!);
+    } else {
+      isSaveLoading.value = false;
+      isSaveLoading2.value = false;
+      showSnackBar(res, Get.context!);
+    }
+  }
+
+  _showTransactionExistsDialog(DateTime selectedDateWithoutTime) {
+    showCupertinoDialog(
+      context: Get.context!,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Transaction Exists'),
+        content: const Text(
+            'A transaction for this date already exists. Do you want to continue?'),
+        actions: [
+          Obx(
+            () => CupertinoDialogAction(
+              isDestructiveAction: true,
+              child: isSaveLoading2.value
+                  ? const SizedBox(
+                      height: 30,
+                      child: Center(
+                        child: CupertinoActivityIndicator(
+                          color: textColor,
+                          radius: 30,
+                        ),
+                      ),
+                    )
+                  : const Text('Continue'),
+              onPressed: () async {
+                isSaveLoading2.value = true;
+                _saveTransactionToDB(selectedDateWithoutTime);
+              },
+            ),
+          ),
+          CupertinoDialogAction(
+            child: const Text('Cancel'),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
+  }
 
   showDeleteDialog({required String agentId, required String collectionName}) {
     showCupertinoDialog(
@@ -518,17 +654,17 @@ class AddTransactionController extends GetxController {
 
     double itemRate = double.parse(productRateController.value.text.trim());
 
-    int daag = int.parse(productBoxController.value.text.trim());
+    // int daag = int.parse(productBoxController.value.text.trim());
 
     double postage = double.parse(postageController.value.text.trim());
 
-    // double motorRent = double.parse(motorRentController.value.text.trim());
+    double motorRent = double.parse(motorRentController.value.text.trim());
 
-    // double coolie = double.parse(coolieController.value.text.trim());
+    double coolie = double.parse(coolieController.value.text.trim());
 
-    // double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
+    double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
 
-    // double caret = double.parse(caretController.value.text.trim());
+    double caret = double.parse(caretController.value.text.trim());
 
     //calculations
 
@@ -544,12 +680,8 @@ class AddTransactionController extends GetxController {
 
     // actualCaret = caret * daag;
 
-    double totalExpenseItem = actualCommissionItem +
-        actualMotorRent.value +
-        actualCoolie.value +
-        actualJagaBhade.value +
-        actualCaret.value +
-        postage;
+    double totalExpenseItem =
+        actualCommissionItem + motorRent + coolie + jagaBhade + caret + postage;
 
     totalSale += totalSaleItem;
 

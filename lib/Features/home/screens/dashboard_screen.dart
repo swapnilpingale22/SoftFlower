@@ -27,60 +27,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 30),
-              Container(
-                height: 55,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(width: 8),
-                    CircleAvatar(
-                      maxRadius: 20,
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset("assets/images/man.png"),
-                    ),
-                    const SizedBox(width: 20),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Hello Sandip!',
-                          style: TextStyle(
+              SlideInDown(
+                child: Container(
+                  height: 55,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black26),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(width: 8),
+                      CircleAvatar(
+                        maxRadius: 20,
+                        backgroundColor: Colors.transparent,
+                        child: Image.asset("assets/images/man.png"),
+                      ),
+                      const SizedBox(width: 20),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Hello Sandip!',
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            'Welcome Back!',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      CircleAvatar(
+                        backgroundColor: Colors.transparent, // Colors.black26,
+                        maxRadius: 20,
+                        child: CircleAvatar(
+                          maxRadius: 19,
+                          backgroundColor: mobileBackgroundColor,
+                          child: Image.asset(
+                            "assets/images/menu-button.png",
                             color: Colors.black45,
-                            fontSize: 13,
+                            height: 16,
                           ),
-                        ),
-                        Text(
-                          'Welcome Back!',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    CircleAvatar(
-                      backgroundColor: Colors.transparent, // Colors.black26,
-                      maxRadius: 20,
-                      child: CircleAvatar(
-                        maxRadius: 19,
-                        backgroundColor: mobileBackgroundColor,
-                        child: Image.asset(
-                          "assets/images/menu-button.png",
-                          color: Colors.black45,
-                          height: 16,
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                  ],
+                      const SizedBox(width: 8),
+                    ],
+                  ),
                 ),
               ),
             ],
