@@ -97,13 +97,8 @@ class AddTransactionController extends GetxController {
     fetchAgents();
     // fetchCompanies();
     fetchProducts();
-    // Initially, filteredAgents will contain all agents
     filteredAgents.value = agents;
     filteredProducts.value = products;
-
-    // productBoxController.value.addListener(() {
-    //   updateCalculatedFields();
-    // });
   }
 
   @override
@@ -441,6 +436,9 @@ class AddTransactionController extends GetxController {
       bool transactionExists = false;
 
       for (var doc in snapshot.docs) {
+        var agentNameDb = doc['agentName'];
+        var isActive = doc['isActive'];
+
         DateTime transactionDate =
             (doc['transactionDate'] as Timestamp).toDate();
         DateTime transactionDateWithoutTime = DateTime(
@@ -449,7 +447,9 @@ class AddTransactionController extends GetxController {
           transactionDate.day,
         );
 
-        if (transactionDateWithoutTime == selectedDateWithoutTime) {
+        if (transactionDateWithoutTime == selectedDateWithoutTime &&
+            agentNameDb == agentName.value &&
+            isActive == 1) {
           transactionExists = true;
           break;
         }
@@ -734,6 +734,8 @@ class AddTransactionController extends GetxController {
     double commissionRate =
         double.parse(productCommissionController.value.text.trim()) / 100;
 
+    log("commissionRate >>>$commissionRate");
+
     double itemQuantity =
         double.parse(productQuantityController.value.text.trim());
 
@@ -757,6 +759,8 @@ class AddTransactionController extends GetxController {
 
     double actualCommissionItem = totalSaleItem * commissionRate;
 
+    log("actualCommissionItem >>>$actualCommissionItem");
+
     // actualMotorRent = motorRent * daag;
 
     // actualCoolie = coolie * daag;
@@ -775,6 +779,8 @@ class AddTransactionController extends GetxController {
     // actualDaag += daag;
 
     actualCommission += actualCommissionItem;
+
+    log("actualCommission after addition >>>$actualCommission");
 
     productModel = ProductModel(
       itemName: productName.value,
@@ -801,7 +807,8 @@ class AddTransactionController extends GetxController {
   removeProduct(int index) {
     // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
-
+    actualCommission -= productsList[index].commission;
+    log("actualCommission after remove >>>$actualCommission");
     productsList.removeAt(index);
     productCount.value = productsList.length;
 
