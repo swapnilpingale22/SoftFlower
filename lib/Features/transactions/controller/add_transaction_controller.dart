@@ -199,6 +199,7 @@ class AddTransactionController extends GetxController {
     firestore
         .collection('agent')
         .where('userId', isEqualTo: uid)
+        .where('isActive', isEqualTo: 1)
         .orderBy('agentName')
         .snapshots()
         .listen((snapshot) {
@@ -246,6 +247,7 @@ class AddTransactionController extends GetxController {
     firestore
         .collection('product')
         .where('userId', isEqualTo: uid)
+        .where('isActive', isEqualTo: 1)
         .orderBy('productName')
         .snapshots()
         .listen((snapshot) {
@@ -534,7 +536,7 @@ class AddTransactionController extends GetxController {
       totalExpense: totalExpense,
       totalBalance: totalBalance,
       companyId: "Softflower",
-      companyAddress: "Prop: Milind Ghag, Mob: 7710008987",
+      companyAddress: "Prop: Milind Ghag, \nMob: 7710008987",
     );
 
     if (res == "Success") {
@@ -618,15 +620,98 @@ class AddTransactionController extends GetxController {
             child: const Text('Yes'),
             onPressed: () async {
               try {
+                final uid = _auth.currentUser!.uid;
+                //first fetch all trans
+
+                QuerySnapshot allTransactions = await FirebaseFirestore.instance
+                    .collection('transactionMain')
+                    .where('userId', isEqualTo: uid)
+                    .where('agentId', isEqualTo: agentId)
+                    .get();
+
+                //set isActive 0  for all trans
+                for (var transaction in allTransactions.docs) {
+                  transaction.reference.update({'isActive': 0});
+                  // showSnackBar('Deleted successfully!', Get.context!);
+                  log('Deleted successfully! ${transaction.reference.id}');
+                }
+
+                // set isActive 0  for farmer
                 await firestore
                     .collection(collectionName)
                     .doc(agentId)
-                    .delete()
+                    // .delete()
+                    .update({'isActive': 0}).then(
+                  (value) {
+                    Get.back();
+                  },
+                );
+              } catch (e) {
+                showSnackBar(e.toString(), Get.context!);
+              }
+
+              showSnackBar('Deleted successfully!', Get.context!);
+            },
+          ),
+          CupertinoDialogAction(
+            child: const Text('No'),
+            onPressed: () => Get.back(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  showProductDeleteDialog(
+      {required String productId, required String collectionName}) {
+    showCupertinoDialog(
+      context: Get.context!,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('Alert'),
+        content: const Text('Do you really want to delete?'),
+        actions: [
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            child: const Text('Yes'),
+            onPressed: () async {
+              try {
+                final documentReference = FirebaseFirestore.instance
+                    .collection(collectionName)
+                    .doc(productId);
+
+                await documentReference.update({'isActive': 0})
+                    // .delete()
                     .then(
                   (value) {
                     Get.back();
                   },
                 );
+                // final uid = _auth.currentUser!.uid;
+                // //first fetch all trans
+
+                // QuerySnapshot allTransactions = await FirebaseFirestore.instance
+                //     .collection('transactionMain')
+                //     .where('userId', isEqualTo: uid)
+                //     .where('agentId', isEqualTo: agentId)
+                //     .get();
+
+                // //set isActive 0  for all trans
+                // for (var transaction in allTransactions.docs) {
+                //   transaction.reference.update({'isActive': 0});
+                //   // showSnackBar('Deleted successfully!', Get.context!);
+                //   log('Deleted successfully! ${transaction.reference.id}');
+                // }
+
+                // // set isActive 0  for farmer
+                // await firestore
+                //     .collection(collectionName)
+                //     .doc(agentId)
+                //     // .delete()
+                //     .update({'isActive': 0}).then(
+                //   (value) {
+                //     Get.back();
+                //   },
+                // );
               } catch (e) {
                 showSnackBar(e.toString(), Get.context!);
               }

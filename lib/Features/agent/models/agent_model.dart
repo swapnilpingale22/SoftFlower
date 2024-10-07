@@ -11,8 +11,9 @@ class Agent {
   final double jagaBhade;
   final double postage;
   final double caret;
+  int? isActive;
 
-  const Agent({
+  Agent({
     required this.userId,
     required this.agentId,
     required this.agentName,
@@ -22,6 +23,7 @@ class Agent {
     required this.jagaBhade,
     required this.postage,
     required this.caret,
+    this.isActive = 1,
   });
 
   Map<String, dynamic> toJson() {
@@ -35,6 +37,7 @@ class Agent {
       'jagaBhade': jagaBhade,
       'postage': postage,
       'caret': caret,
+      'isActive': isActive,
     };
   }
 
@@ -51,6 +54,7 @@ class Agent {
       jagaBhade: snapshot['jagaBhade'] ?? 0.0,
       postage: snapshot['postage'] ?? 0.0,
       caret: snapshot['caret'] ?? 0.0,
+      isActive: snapshot['isActive'] ?? 0,
     );
   }
 }

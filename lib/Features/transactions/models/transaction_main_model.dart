@@ -19,8 +19,9 @@ class TransactionMain {
   final double totalBalance;
   final String companyId;
   final String companyAddress;
+  int? isActive;
 
-  const TransactionMain({
+  TransactionMain({
     required this.userId,
     required this.transactionId,
     required this.transactionDate,
@@ -39,6 +40,7 @@ class TransactionMain {
     required this.totalBalance,
     required this.companyId,
     required this.companyAddress,
+    this.isActive = 1,
   });
 
   Map<String, dynamic> toJson() {
@@ -61,6 +63,7 @@ class TransactionMain {
       'totalBalance': totalBalance,
       'companyId': companyId,
       'companyAddress': companyAddress,
+      'isActive': isActive,
     };
   }
 
@@ -86,6 +89,7 @@ class TransactionMain {
       totalBalance: snapshot['totalBalance'],
       companyId: snapshot['companyId'],
       companyAddress: snapshot['companyAddress'],
+      isActive: snapshot['isActive'] ?? 0,
     );
   }
 }

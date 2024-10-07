@@ -8,8 +8,9 @@ class Product {
   // final int quantity;
   final double commission;
   final String bundleType;
+  int? isActive;
 
-  const Product({
+  Product({
     required this.userId,
     required this.productId,
     // required this.productNumber,
@@ -17,6 +18,7 @@ class Product {
     // required this.quantity,
     required this.commission,
     required this.bundleType,
+    this.isActive = 1,
   });
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Product {
       // 'quantity': quantity,
       'commission': commission,
       'bundleType': bundleType,
+      'isActive': isActive,
     };
   }
 
@@ -42,6 +45,7 @@ class Product {
       // quantity: snapshot['quantity'],
       commission: snapshot['commission'],
       bundleType: snapshot['bundleType'],
+      isActive: snapshot['isActive'] ?? 0,
     );
   }
 }

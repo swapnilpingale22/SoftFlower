@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Hello Sandip!',
+                            'Hello Milind!',
                             style: TextStyle(
                               color: Colors.black45,
                               fontSize: 13,

@@ -59,6 +59,7 @@ class MonthTransactionController extends GetxController {
     firestore
         .collection('agent')
         .where('userId', isEqualTo: uid)
+        .where('isActive', isEqualTo: 1)
         .orderBy('agentName')
         .snapshots()
         .listen((snapshot) {
@@ -93,6 +94,7 @@ class MonthTransactionController extends GetxController {
         .collection('transactionMain')
         // .where('userId', isEqualTo: uid)
         .where('agentName', isEqualTo: agentName.value)
+        .where('isActive', isEqualTo: 1)
         .where('transactionDate', isGreaterThanOrEqualTo: startDate)
         .where('transactionDate', isLessThanOrEqualTo: endDate)
         .snapshots()

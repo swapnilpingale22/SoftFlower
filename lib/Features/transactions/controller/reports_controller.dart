@@ -105,24 +105,24 @@ class ReportsController extends GetxController {
     final documentReference =
         FirebaseFirestore.instance.collection(collectionName).doc(documentId);
 
-    QuerySnapshot subCollectionSnapshot = await FirebaseFirestore.instance
-        .collection(collectionName)
-        .doc(documentId)
-        .collection('transactionDetails')
-        .get();
+    // QuerySnapshot subCollectionSnapshot = await FirebaseFirestore.instance
+    //     .collection(collectionName)
+    //     .doc(documentId)
+    //     .collection('transactionDetails')
+    //     .get();
     // Get all subcollections
 
     // Iterate through subcollections and delete each document in them
-    for (var subcollection in subCollectionSnapshot.docs) {
-      await subcollection.reference.delete().then(
-        (value) {
-          log("Document \"${subcollection.id}\" deleted successfully.");
-        },
-      );
-    }
+    // for (var subcollection in subCollectionSnapshot.docs) {
+    //   await subcollection.reference.delete().then(
+    //     (value) {
+    //       log("Document \"${subcollection.id}\" deleted successfully.");
+    //     },
+    //   );
+    // }
 
     // Finally, delete the document itself
-    await documentReference.delete().then(
+    await documentReference.update({'isActive': 0}).then(
       (value) {
         Get.back();
         isDeleteLoading.value = false;
@@ -192,6 +192,7 @@ class ReportsController extends GetxController {
     firestore
         .collection('transactionMain')
         .where('userId', isEqualTo: uid)
+        .where('isActive', isEqualTo: 1)
         .snapshots()
         .listen((snapshot) async {
       List<Transactions> fetchedTransactions = [];

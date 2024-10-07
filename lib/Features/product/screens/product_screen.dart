@@ -191,8 +191,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       addTransactionController
-                                                          .showDeleteDialog(
-                                                        agentId:
+                                                          .showProductDeleteDialog(
+                                                        productId:
                                                             product.productId,
                                                         collectionName:
                                                             'product',
