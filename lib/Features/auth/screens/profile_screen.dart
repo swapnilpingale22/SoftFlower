@@ -71,34 +71,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
 
                         const SizedBox(height: 10),
-                        // profileController.userData.value?.userType == 'admin'
-                        //     ? Text(
-                        //         '${profileController.userData.value?.email}',
-                        //         style: lightTextTheme.headlineMedium?.copyWith(
-                        //           fontSize: 14,
-                        //         ),
-                        //       )
-                        //     :
-                        Column(
-                          children: [
-                            Text(
-                              'Milind Ghag',
-                              textAlign: TextAlign.center,
-                              style: lightTextTheme.headlineMedium?.copyWith(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                        profileController.userData.value?.userType == 'admin'
+                            ? Text(
+                                '${profileController.userData.value?.email}',
+                                style: lightTextTheme.headlineMedium?.copyWith(
+                                  fontSize: 14,
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Text(
+                                    profileController
+                                            .userData.value?.ownerName ??
+                                        "User",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        lightTextTheme.headlineMedium?.copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    profileController
+                                                .userData.value?.mobileNumber !=
+                                            0
+                                        ? 'App contact:  ${profileController.userData.value?.mobileNumber}'
+                                        : "",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        lightTextTheme.headlineMedium?.copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              'App contact:  7710008987',
-                              textAlign: TextAlign.center,
-                              style: lightTextTheme.headlineMedium?.copyWith(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
                         const SizedBox(height: 5),
                         profileController.userData.value?.userType == 'admin'
                             ? Text(

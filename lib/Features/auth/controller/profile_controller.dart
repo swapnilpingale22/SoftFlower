@@ -12,10 +12,15 @@ class ProfileController extends GetxController {
 
   Rx<model.User?> userData = Rx<model.User?>(null);
 
+  var greetingMessage = "Welcome back!".obs;
+
   @override
   void onInit() {
     super.onInit();
     getData();
+    Future.delayed(const Duration(seconds: 5), () {
+      updateGreetingMessage();
+    });
   }
 
   getData() async {
@@ -32,6 +37,30 @@ class ProfileController extends GetxController {
       showSnackBar(e.toString(), Get.context!);
     }
     isLoading.value = false;
+  }
+
+  void updateGreetingMessage() {
+    int currentHour = DateTime.now().hour;
+
+    if (currentHour >= 5 && currentHour < 12) {
+      greetingMessage.value = 'Good Morning!';
+    } else if (currentHour >= 12 && currentHour < 16) {
+      greetingMessage.value = 'Good Afternoon!';
+    } else if (currentHour >= 16 && currentHour < 20) {
+      greetingMessage.value = 'Good Evening!';
+    } else {
+      greetingMessage.value = 'Good Night!';
+    }
+
+    // if (currentHour >= 5 && currentHour < 12) {
+    //   return 'Good Morning!';
+    // } else if (currentHour >= 12 && currentHour < 16) {
+    //   return 'Good Afternoon!';
+    // } else if (currentHour >= 16 && currentHour < 20) {
+    //   return 'Good Evening!';
+    // } else {
+    //   return 'Good Night!';
+    // }
   }
 
   // void createNewUser(String email, String password) async {
