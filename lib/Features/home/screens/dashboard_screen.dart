@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../auth/controller/profile_controller.dart';
+import '../../customer/screens/view_customers_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -119,7 +120,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: 3,
+                          itemCount: 4,
                           itemBuilder: (context, index) {
                             return ZoomIn(
                               child: GestureDetector(
@@ -130,6 +131,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     Get.to(() => const ProductScreen());
                                   } else if (index == 2) {
                                     Get.to(() => const AddTransactionScreen());
+                                  } else if (index == 3) {
+                                    Get.to(() => const CustomersScreen());
                                   }
                                 },
                                 child: Column(

@@ -3,19 +3,21 @@ import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../Features/auth/screens/profile_screen.dart';
+import '../Features/customer/screens/view_customers_screen.dart';
 import '../Features/home/screens/all_reports_screen.dart';
 
 List<Widget> homeScreenItems = [
   const DashboardScreen(),
   const AllReportsScreen(),
   const ProfileScreen(),
+  const CustomersScreen(),
 ];
 
 List<String> buttonTitles = [
   "Farmers",
   "Flowers",
   "Patti",
-  "Patti Reports",
+  "Customer",
 ];
 List<String> allReportsbuttonTitles = [
   "All Patti Reports",
@@ -26,8 +28,8 @@ List<String> buttonIcons = [
   "assets/images/agent.png",
   "assets/images/products.png",
   "assets/images/trade.png",
-  "assets/images/transaction (1).png",
   "assets/images/company.png",
+  "assets/images/transaction (1).png",
 ];
 
 List<String> allReportsbuttonIcons = [
