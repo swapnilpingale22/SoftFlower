@@ -89,6 +89,8 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                                             .selectedAgentId.value = newValue!;
                                         monthTransactionController
                                             .fetchAgentDetails(newValue);
+                                        monthTransactionController.transactions
+                                            .clear();
                                       },
                                       items: monthTransactionController.agents
                                           .map((Agent agent) {
@@ -146,6 +148,8 @@ class _MonthTransactionScreenState extends State<MonthTransactionScreen> {
                                       onChanged: (String? newValue) {
                                         monthTransactionController
                                             .selectedMonth.value = newValue!;
+                                        monthTransactionController.transactions
+                                            .clear();
                                       },
                                       items: monthTransactionController
                                           .monthList

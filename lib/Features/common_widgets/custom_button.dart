@@ -8,12 +8,16 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? color;
   final bool isLoading;
+  final double fontSize;
+  final EdgeInsetsGeometry? padding;
   const CustomButton({
     super.key,
     required this.text,
     this.onTap,
     this.color = primaryColor3,
     this.isLoading = false,
+    this.fontSize = 20,
+    this.padding,
   });
 
   @override
@@ -23,6 +27,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
+          padding: padding,
           minimumSize: const Size(double.infinity, 50),
           backgroundColor: color,
           shape: RoundedRectangleBorder(
@@ -37,9 +42,9 @@ class CustomButton extends StatelessWidget {
               )
             : Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: fontSize,
                 ),
               ),
       ),

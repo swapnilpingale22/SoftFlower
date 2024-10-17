@@ -417,40 +417,6 @@ class _ReportsState extends State<Reports> {
                                                     },
                                                   ),
                                                 ),
-                                                // CustomRow(
-                                                //   title: 'Daag:',
-                                                //   value: '${transaction.daag}',
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Commission:',
-                                                //   value: transaction.commission
-                                                //       .toStringAsFixed(2),
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Motor Rent:',
-                                                //   value: transaction.motorRent
-                                                //       .toStringAsFixed(2),
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Coolie:',
-                                                //   value: transaction.coolie
-                                                //       .toStringAsFixed(2),
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Jaga Bhade:',
-                                                //   value: transaction.jagaBhade
-                                                //       .toStringAsFixed(2),
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Postage:',
-                                                //   value: transaction.postage
-                                                //       .toStringAsFixed(2),
-                                                // ),
-                                                // CustomRow(
-                                                //   title: 'Caret:',
-                                                //   value: transaction.caret
-                                                //       .toStringAsFixed(2),
-                                                // ),
                                                 const SizedBox(height: 10),
                                                 Row(
                                                   mainAxisAlignment:
@@ -487,7 +453,7 @@ class _ReportsState extends State<Reports> {
                                               ],
                                             ),
                                           ),
-                                          ExpansionTile(
+                                          const ExpansionTile(
                                             initiallyExpanded: true,
                                             shape: LinearBorder.none,
                                             childrenPadding: EdgeInsets.zero,
@@ -500,279 +466,21 @@ class _ReportsState extends State<Reports> {
                                             title: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
-                                              children: [
-                                                // Expanded(
-                                                //   flex: 2,
-                                                //   child: Text(
-                                                //     transaction.agentName,
-                                                //     style: const TextStyle(
-                                                //       color: Colors.black87,
-                                                //       fontWeight:
-                                                //           FontWeight.bold,
-                                                //       fontSize: 16,
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const CustomDivider(height: 25),
-                                                // Expanded(
-                                                //   flex: 3,
-                                                //   child: Text(
-                                                //     formattedDate,
-                                                //     style: const TextStyle(
-                                                //       color: Colors.black87,
-                                                //       fontWeight:
-                                                //           FontWeight.bold,
-                                                //       fontSize: 16,
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const Expanded(
-                                                //     child: SizedBox()),
-                                              ],
+                                              children: [],
                                             ),
                                             subtitle: Column(
-                                              children: [
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   mainAxisSize:
-                                                //       MainAxisSize.max,
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.start,
-                                                //   children: [
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Daag",
-                                                //         value:
-                                                //             '${transaction.daag}',
-                                                //       ),
-                                                //     ),
-                                                //     const CustomDivider(),
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Postage",
-                                                //         value: transaction
-                                                //             .postage
-                                                //             .toStringAsFixed(2),
-                                                //       ),
-                                                //     ),
-                                                //     const Expanded(
-                                                //         child: SizedBox()),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.start,
-                                                //   children: [
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Motor Rent",
-                                                //         value:
-                                                //             '${transaction.motorRent}',
-                                                //       ),
-                                                //     ),
-                                                //     const CustomDivider(),
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Commission",
-                                                //         value: transaction
-                                                //             .commission
-                                                //             .toStringAsFixed(2),
-                                                //       ),
-                                                //     ),
-                                                //     const Expanded(
-                                                //         child: SizedBox()),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.start,
-                                                //   children: [
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Jaga Bhade",
-                                                //         value:
-                                                //             '${transaction.jagaBhade}',
-                                                //       ),
-                                                //     ),
-                                                //     const CustomDivider(),
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Coolie",
-                                                //         value: transaction
-                                                //             .coolie
-                                                //             .toStringAsFixed(2),
-                                                //       ),
-                                                //     ),
-                                                //     const Expanded(
-                                                //         child: SizedBox()),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.center,
-                                                //   children: [
-                                                //     Expanded(
-                                                //       child: CustomDataColumn(
-                                                //         title: "Caret",
-                                                //         value:
-                                                //             '${transaction.caret}',
-                                                //       ),
-                                                //     ),
-                                                //     const Expanded(
-                                                //       flex: 2,
-                                                //       child: SizedBox(),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                                // const SizedBox(height: 10),
-                                                // // CustomRow(
-                                                // //   title: 'Daag:',
-                                                // //   value: '${transaction.daag}',
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Commission:',
-                                                // //   value: transaction.commission
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Motor Rent:',
-                                                // //   value: transaction.motorRent
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Coolie:',
-                                                // //   value: transaction.coolie
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Jaga Bhade:',
-                                                // //   value: transaction.jagaBhade
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Postage:',
-                                                // //   value: transaction.postage
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // // CustomRow(
-                                                // //   title: 'Caret:',
-                                                // //   value: transaction.caret
-                                                // //       .toStringAsFixed(2),
-                                                // // ),
-                                                // const SizedBox(height: 10),
-                                                // Row(
-                                                //   mainAxisAlignment:
-                                                //       MainAxisAlignment.start,
-                                                //   children: [
-                                                //     CustomDataColumn(
-                                                //       title: "Total Sale",
-                                                //       value: transaction
-                                                //           .totalSale
-                                                //           .toStringAsFixed(2),
-                                                //     ),
-                                                //     const CustomDivider(),
-                                                //     CustomDataColumn(
-                                                //       title: "Expense",
-                                                //       value: transaction
-                                                //           .totalExpense
-                                                //           .toStringAsFixed(2),
-                                                //     ),
-                                                //     const CustomDivider(),
-                                                //     CustomDataColumn(
-                                                //       title: "Balance",
-                                                //       value: transaction
-                                                //           .totalBalance
-                                                //           .toStringAsFixed(2),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                              ],
+                                              children: [],
                                             ),
 
-                                            children: [
-                                              // SizedBox(
-                                              //   height: 140,
-                                              //   width: Get.width,
-                                              //   child: ListView.builder(
-                                              //     scrollDirection:
-                                              //         Axis.horizontal,
-                                              //     itemCount: transaction
-                                              //         .transactionDetailsList
-                                              //         .length,
-                                              //     itemBuilder:
-                                              //         (context, subIndex) {
-                                              //       var transactionDetails =
-                                              //           reportsController
-                                              //                   .transactions[index]
-                                              //                   .transactionDetailsList[
-                                              //               subIndex];
-                                              //       return Container(
-                                              //         padding: const EdgeInsets
-                                              //             .fromLTRB(
-                                              //             10, 10, 5, 10),
-                                              //         width: Get.width * 0.60,
-                                              //         height: 50,
-                                              //         child: Card(
-                                              //           color: primaryColor3,
-                                              //           shape:
-                                              //               RoundedRectangleBorder(
-                                              //             borderRadius:
-                                              //                 BorderRadius
-                                              //                     .circular(8),
-                                              //           ),
-                                              //           elevation: 4,
-                                              //           child: ListTile(
-                                              //             title: Text(
-                                              //               transactionDetails
-                                              //                   .itemName,
-                                              //               style:
-                                              //                   const TextStyle(
-                                              //                 color: Colors
-                                              //                     .black87,
-                                              //                 fontWeight:
-                                              //                     FontWeight
-                                              //                         .bold,
-                                              //               ),
-                                              //             ),
-                                              //             subtitle: Column(
-                                              //               crossAxisAlignment:
-                                              //                   CrossAxisAlignment
-                                              //                       .start,
-                                              //               children: [
-                                              //                 CustomRow(
-                                              //                   title:
-                                              //                       'Quantity:',
-                                              //                   value:
-                                              //                       '${transactionDetails.quantity}',
-                                              //                 ),
-                                              //                 CustomRow(
-                                              //                   title: 'Rate:',
-                                              //                   value:
-                                              //                       '${transactionDetails.rate}',
-                                              //                 ),
-                                              //                 CustomRow(
-                                              //                   title:
-                                              //                       'Total Sale:',
-                                              //                   value:
-                                              //                       '${transactionDetails.totalSale}',
-                                              //                 ),
-                                              //               ],
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       );
-                                              //     },
-                                              //   ),
-                                              // )
-                                            ],
+                                            children: [],
                                           ),
                                           Positioned(
                                             right: 10,
                                             top: 10,
                                             child: CircleAvatar(
+                                              foregroundImage: const AssetImage(
+                                                "assets/images/remove.png",
+                                              ),
                                               backgroundColor: primaryColor3,
                                               child: InkWell(
                                                 onTap: () {
@@ -784,10 +492,16 @@ class _ReportsState extends State<Reports> {
                                                         'transactionMain',
                                                   );
                                                 },
-                                                child: const Icon(
-                                                  Icons.delete_forever,
-                                                  color: textColor,
-                                                ),
+                                                // child:
+                                                //  Image.asset(
+                                                //   "assets/images/remove.png",
+                                                //   height: 30,
+                                                //   width: 30,
+                                                // ),
+                                                //     const Icon(
+                                                //   Icons.delete_forever,
+                                                //   color: textColor,
+                                                // ),
                                               ),
                                             ),
                                           ),
@@ -819,11 +533,16 @@ class _ReportsState extends State<Reports> {
                                                               color: textColor,
                                                             ),
                                                           )
-                                                        : const Icon(
-                                                            Icons
-                                                                .picture_as_pdf,
-                                                            color: textColor,
+                                                        : Image.asset(
+                                                            "assets/images/pdf2.png",
+                                                            height: 28,
+                                                            width: 28,
                                                           ),
+                                                // const Icon(
+                                                //     Icons
+                                                //         .picture_as_pdf,
+                                                //     color: textColor,
+                                                //   ),
                                               ),
                                             ),
                                           ),

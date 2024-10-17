@@ -6,6 +6,8 @@ import 'package:expense_manager/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../payment/screens/view_payment_screen.dart';
+import '../../transactions/screens/month_agent_transactions_screen.dart';
 import '../../transactions/screens/month_transaction_screen.dart';
 
 class AllReportsScreen extends StatefulWidget {
@@ -35,7 +37,7 @@ class _AllReportsScreenState extends State<AllReportsScreen> {
         children: [
           ListView.builder(
             shrinkWrap: true,
-            itemCount: 2,
+            itemCount: 4,
             itemBuilder: (context, index) {
               return ZoomIn(
                 child: GestureDetector(
@@ -44,6 +46,10 @@ class _AllReportsScreenState extends State<AllReportsScreen> {
                       Get.to(() => const Reports());
                     } else if (index == 1) {
                       Get.to(() => const MonthTransactionScreen());
+                    } else if (index == 2) {
+                      Get.to(() => const ViewPaymentScreen());
+                    } else if (index == 3) {
+                      Get.to(() => const MonthAgentTransactionScreen());
                     }
                   },
                   child: Column(

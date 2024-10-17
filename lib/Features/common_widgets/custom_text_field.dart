@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
+  final bool? enabled;
   const CustomTextField({
     super.key,
     required this.controller,
@@ -22,11 +23,13 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.onChanged,
+    this.enabled,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       onChanged: onChanged,
       textCapitalization: TextCapitalization.words,
       keyboardType: keyboardType,
