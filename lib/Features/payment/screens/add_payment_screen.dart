@@ -98,42 +98,6 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                                         ),
                                       ],
                                     ),
-
-                                    // Container(
-                                    //   alignment: Alignment.centerLeft,
-                                    //   padding: const EdgeInsets.only(left: 8),
-                                    //   height: 50,
-                                    //   width: double.infinity,
-                                    //   decoration: BoxDecoration(
-                                    //     border: Border.all(
-                                    //       color: Colors.black12,
-                                    //     ),
-                                    //     borderRadius: const BorderRadius.all(
-                                    //       Radius.circular(10),
-                                    //     ),
-                                    //   ),
-                                    //   child: Text(
-                                    //     addPaymentController
-                                    //                 .selectedTransactionDate
-                                    //                 .value !=
-                                    //             null
-                                    //         ? DateFormat('dd/MM/yyyy').format(
-                                    //             addPaymentController
-                                    //                 .selectedTransactionDate
-                                    //                 .value!)
-                                    //         : 'Select a date',
-                                    //     style: lightTextTheme.bodyMedium!
-                                    //         .copyWith(
-                                    //       fontSize: 14,
-                                    //       color: addPaymentController
-                                    //                   .selectedTransactionDate
-                                    //                   .value !=
-                                    //               null
-                                    //           ? textColor
-                                    //           : secondaryColor,
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ),
                                 ),
                               ],
@@ -198,6 +162,7 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                             const SizedBox(height: 10),
 
                             //balance
+                            /*
                             Visibility(
                               visible: addPaymentController
                                       .selectedCustomerId.value !=
@@ -227,6 +192,7 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                                 ],
                               ),
                             ),
+                            */
 
                             const SizedBox(height: 10),
 

@@ -1,7 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_manager/Features/agent/models/agent_model.dart';
@@ -80,9 +77,8 @@ class MonthTransactionController extends GetxController {
     Agent? agent = agents.firstWhere(
       (a) => a.agentId == agentId,
     );
-    if (agent != null) {
-      agentName.value = agent.agentName;
-    }
+
+    agentName.value = agent.agentName;
   }
 
   void fetchTransactions() {
@@ -187,23 +183,6 @@ class MonthTransactionController extends GetxController {
           // Fetch transaction main data
           var transactionMain = Transactions.fromSnap(doc);
 
-          // Fetch transaction details for each transaction main
-          // var transactionDetailsSnapshot = await firestore
-          //     .collection('transactionMain')
-          //     .doc(transactionMain.transactionId)
-          //     .collection('transactionDetails')
-          //     .get();
-
-          // List<TransactionDetails> transactionDetailsList =
-          //     transactionDetailsSnapshot.docs
-          //         .map((detailsDoc) => TransactionDetails.fromSnap(detailsDoc))
-          //         .toList();
-
-          // Add transaction details to transaction main
-          // transactionMain = transactionMain.copyWith(
-          //   transactionDetailsList: transactionDetailsList,
-          // );
-
           // Add transaction main to the list
           fetchedTransactions.add(transactionMain);
           // }
@@ -212,10 +191,7 @@ class MonthTransactionController extends GetxController {
 
       // Initially display all transactions
       allMonthlyTransactions.value = fetchedTransactions;
-      // if (transactions.isNotEmpty) {
-      //   showSnackBar(
-      //       'Transactions found: ${transactions.length}', Get.context!);
-      // }
+
       isLoading.value = false;
     }, onError: (e) {
       isLoading.value = false;

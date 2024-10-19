@@ -32,8 +32,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           ),
         ),
       ),
-      body: //const CommingSoonScreen()
-          Obx(
+      body: Obx(
         () => addTransactionController.isLoading.value
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -48,65 +47,61 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Text(
-                            //   'Company Name',
-                            //   style: lightTextTheme.bodyMedium!.copyWith(
-                            //     fontWeight: FontWeight.w500,
-                            //   ),
-                            // ),
-                            // Container(
-                            //   decoration: BoxDecoration(
-                            //     border: Border.all(
-                            //       color: Colors.black12,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(10),
-                            //   ),
-                            //   padding: const EdgeInsets.only(left: 10),
-                            //   alignment: Alignment.centerLeft,
-                            //   child: addTransactionController.isLoading.value
-                            //       ? const Center(
-                            //           child: CircularProgressIndicator())
-                            //       : DropdownButton<String>(
-                            //           underline: const SizedBox.shrink(),
-                            //           isExpanded: true,
-                            //           dropdownColor: primaryColor3,
-                            //           value: addTransactionController
-                            //               .selectedCompanyId.value,
-                            //           hint: Text(
-                            //             'Select a company',
-                            //             style: lightTextTheme.headlineMedium
-                            //                 ?.copyWith(
-                            //               fontSize: 14,
-                            //               color: secondaryColor,
-                            //               fontWeight: FontWeight.w400,
-                            //             ),
-                            //           ),
-                            //           onChanged: (String? newValue) {
-                            //             addTransactionController
-                            //                 .selectedCompanyId
-                            //                 .value = newValue!;
-                            //             addTransactionController
-                            //                 .fetchCompanyDetails(newValue);
-                            //           },
-                            //           items: addTransactionController.companies
-                            //               .map((Company company) {
-                            //             return DropdownMenuItem<String>(
-                            //               value: company.companyName,
-                            //               child: Text(
-                            //                 company.companyName,
-                            //                 style: lightTextTheme.headlineMedium
-                            //                     ?.copyWith(
-                            //                         fontSize: 16,
-                            //                         color: textColor),
-                            //               ),
-                            //             );
-                            //           }).toList(),
-                            //         ),
-                            // ),
-                            // const SizedBox(height: 10),
+                            //date section
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    addTransactionController
+                                        .selectedTransactionDate
+                                        .value = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.now(),
+                                    );
+
+                                    if (addTransactionController
+                                            .selectedTransactionDate.value !=
+                                        null) {
+                                      addTransactionController
+                                              .selectedTransactionDate.value =
+                                          addTransactionController
+                                              .selectedTransactionDate.value;
+                                    }
+                                  },
+                                  child: Obx(
+                                    () => Row(
+                                      children: [
+                                        const Icon(
+                                            Icons.edit_calendar_outlined),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          addTransactionController
+                                                      .selectedTransactionDate
+                                                      .value !=
+                                                  null
+                                              ? DateFormat('dd/MM/yyyy').format(
+                                                  addTransactionController
+                                                      .selectedTransactionDate
+                                                      .value!)
+                                              : DateFormat('dd/MM/yyyy')
+                                                  .format(DateTime.now()),
+                                          style: lightTextTheme.bodyMedium!
+                                              .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             //agent section
                             Text(
-                              'Agent Name',
+                              'Farmer Name',
                               style: lightTextTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),
@@ -131,7 +126,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       value: addTransactionController
                                           .selectedAgentId.value,
                                       hint: Text(
-                                        'Select an agent',
+                                        'Select a farmer',
                                         style: lightTextTheme.headlineMedium
                                             ?.copyWith(
                                           fontSize: 14,
@@ -292,101 +287,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 ],
                               ),
                             ),
-                            //date section
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Is transaction back dated?',
-                                  style: lightTextTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Checkbox(
-                                  value: addTransactionController
-                                      .isBackDated.value,
-                                  onChanged: (value) {
-                                    addTransactionController.isBackDated.value =
-                                        value!;
-                                  },
-                                  activeColor: primaryColor3,
-                                ),
-                              ],
-                            ),
-                            Visibility(
-                              visible:
-                                  addTransactionController.isBackDated.value,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Transaction Date',
-                                    style: lightTextTheme.bodyMedium!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      DateTime? selectedDate =
-                                          await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(2000),
-                                        lastDate: DateTime.now(),
-                                      );
-
-                                      if (selectedDate != null) {
-                                        addTransactionController
-                                            .selectedTransactionDate
-                                            .value = selectedDate;
-                                      }
-                                    },
-                                    child: Obx(
-                                      () => Container(
-                                        alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.only(left: 8),
-                                        height: 50,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black12,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          addTransactionController
-                                                      .selectedTransactionDate
-                                                      .value !=
-                                                  null
-                                              ? DateFormat('dd/MM/yyyy').format(
-                                                  addTransactionController
-                                                      .selectedTransactionDate
-                                                      .value!)
-                                              : 'Select a date',
-                                          style: lightTextTheme.bodyMedium!
-                                              .copyWith(
-                                            fontSize: 14,
-                                            color: addTransactionController
-                                                        .selectedTransactionDate
-                                                        .value !=
-                                                    null
-                                                ? textColor
-                                                : secondaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
-                            ),
 
                             //product section
                             Text(
-                              'Product Name',
+                              'Flower Name',
                               style: lightTextTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.w500,
                               ),
@@ -411,7 +315,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       value: addTransactionController
                                           .selectedProductId.value,
                                       hint: Text(
-                                        'Select a product',
+                                        'Select a flower',
                                         style: lightTextTheme.headlineMedium
                                             ?.copyWith(
                                           fontSize: 14,
@@ -454,26 +358,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Quantity',
-                                      style:
-                                          lightTextTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    CustomTextField(
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val == null || val.isEmpty) {
-                                          return 'Please enter quantity';
-                                        }
-                                        return null;
-                                      },
-                                      controller: addTransactionController
-                                          .productQuantityController.value,
-                                      hintText: 'Enter your quantity',
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
                                       'Commission',
                                       style:
                                           lightTextTheme.bodyMedium!.copyWith(
@@ -493,24 +377,106 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       hintText: 'Enter commission',
                                     ),
                                     const SizedBox(height: 10),
-                                    Text(
-                                      'Rate',
-                                      style:
-                                          lightTextTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    CustomTextField(
-                                      keyboardType: TextInputType.number,
-                                      validator: (val) {
-                                        if (val == null || val.isEmpty) {
-                                          return 'Please enter rate';
-                                        }
-                                        return null;
-                                      },
-                                      controller: addTransactionController
-                                          .productRateController.value,
-                                      hintText: 'Enter rate',
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Flexible(
+                                          flex: 3,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Quantity',
+                                                style: lightTextTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              CustomTextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                validator: (val) {
+                                                  if (val == null ||
+                                                      val.isEmpty) {
+                                                    return 'Enter quantity';
+                                                  }
+                                                  return null;
+                                                },
+                                                controller:
+                                                    addTransactionController
+                                                        .productQuantityController
+                                                        .value,
+                                                hintText: 'Enter quantity',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          flex: 3,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Rate',
+                                                style: lightTextTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              CustomTextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                validator: (val) {
+                                                  if (val == null ||
+                                                      val.isEmpty) {
+                                                    return 'Enter rate';
+                                                  }
+                                                  return null;
+                                                },
+                                                controller:
+                                                    addTransactionController
+                                                        .productRateController
+                                                        .value,
+                                                hintText: 'Enter rate',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          flex: 2,
+                                          child: CustomButton(
+                                            text: 'Add item',
+                                            fontSize: 14,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 2),
+                                            onTap: () {
+                                              if (addTransactionController
+                                                      .productListFormKey
+                                                      .currentState !=
+                                                  null) {
+                                                if (addTransactionController
+                                                    .productListFormKey
+                                                    .currentState!
+                                                    .validate()) {
+                                                  addTransactionController
+                                                      .addProduct();
+                                                }
+                                              } else {
+                                                showSnackBar(
+                                                    'Please select a product!',
+                                                    context);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -518,23 +484,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             ),
                             const SizedBox(height: 10),
 
-                            CustomButton(
-                              text: 'Add to list',
-                              onTap: () {
-                                if (addTransactionController
-                                        .productListFormKey.currentState !=
-                                    null) {
-                                  if (addTransactionController
-                                      .productListFormKey.currentState!
-                                      .validate()) {
-                                    addTransactionController.addProduct();
-                                  }
-                                } else {
-                                  showSnackBar(
-                                      'Please select a product!', context);
-                                }
-                              },
-                            ),
                             const SizedBox(height: 10),
                             ListView.builder(
                               shrinkWrap: true,
@@ -547,16 +496,27 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                         .productsList[index].itemName,
                                   ),
                                   subtitle: Text(
-                                      'Rate: ${addTransactionController.productsList[index].itemRate}, Qty: ${addTransactionController.productsList[index].itemQuantity}, Total Sale: ${addTransactionController.productsList[index].totalSale}'),
-                                  trailing: GestureDetector(
-                                    onTap: () {
-                                      addTransactionController
-                                          .removeProduct(index);
-                                    },
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.redAccent,
-                                    ),
+                                      'Qty: ${addTransactionController.productsList[index].itemQuantity.toStringAsFixed(0)}  x  ₹${addTransactionController.productsList[index].itemRate.toStringAsFixed(2)}'),
+                                  trailing: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          addTransactionController
+                                              .removeProduct(index);
+                                        },
+                                        child: Image.asset(
+                                          "assets/images/delete.png",
+                                          height: 18,
+                                          width: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '₹${addTransactionController.productsList[index].totalSale.toStringAsFixed(2)}',
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },

@@ -21,7 +21,8 @@ class ViewPaymentScreen extends StatefulWidget {
 }
 
 class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
-  ViewPaymentController addPaymentController = Get.put(ViewPaymentController());
+  ViewPaymentController viewPaymentController =
+      Get.put(ViewPaymentController());
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: addPaymentController.fetchMainTransactions(),
+        stream: viewPaymentController.fetchMainTransactions(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return _buildErrorWidget(snapshot.error);
@@ -76,7 +77,7 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
 
   Widget _buildSubTransactions(String salesMainId) {
     return StreamBuilder<QuerySnapshot>(
-      stream: addPaymentController.fetchSubTransactions(salesMainId),
+      stream: viewPaymentController.fetchSubTransactions(salesMainId),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return _buildErrorWidget(snapshot.error);
@@ -93,23 +94,67 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
 
   Widget _buildSubTransactionsList(
       List<QueryDocumentSnapshot> subTransactions) {
+    // Calculate total saleAmount
+    double totalSaleAmount = subTransactions.fold(
+      0.0,
+      (sumValue, doc) => sumValue + SalesDetails.fromSnap(doc).saleAmount,
+    );
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         color: primaryColor3,
       ),
       margin: const EdgeInsets.only(right: 10),
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: subTransactions.length,
-        itemBuilder: (context, index) {
-          final subTransaction = SalesDetails.fromSnap(subTransactions[index]);
-          log("sales Details Length: ${subTransactions.length}");
-          final isLastCard = index == subTransactions.length - 1;
+      child: Column(
+        children: [
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: subTransactions.length,
+            itemBuilder: (context, index) {
+              final subTransaction =
+                  SalesDetails.fromSnap(subTransactions[index]);
+              final isLastCard = index == subTransactions.length - 1;
 
-          return _buildSubTransactionCard(subTransaction, isLastCard);
-        },
+              return _buildSubTransactionCard(subTransaction, isLastCard);
+            },
+          ),
+          Card(
+            shadowColor: Colors.transparent,
+            margin: EdgeInsets.zero,
+            color: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            elevation: 4,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.black26, width: 1),
+                ),
+              ),
+              child: ListTile(
+                title: const Text(
+                  'Total:',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                trailing: Text(
+                  '₹${totalSaleAmount.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -164,6 +209,7 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
+                  /*
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -186,6 +232,7 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
                       ),
                     ],
                   ),
+                  */
                   const SizedBox(height: 10),
                   _buildSubTransactions(mainTransaction.paymentId),
                 ],
@@ -198,10 +245,10 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
                 backgroundColor: primaryColor3,
                 child: InkWell(
                   onTap: () {
-                    // reportsController.showDeleteDialog(
-                    //   transactionId: transaction.transactionId,
-                    //   collectionName: 'transactionMain',
-                    // );
+                    viewPaymentController.showDeleteDialog(
+                      transactionId: mainTransaction.paymentId,
+                      collectionName: 'salesMain',
+                    );
                   },
                   child: const Icon(
                     Icons.delete_forever,
@@ -210,74 +257,40 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
                 ),
               ),
             ),
-            Positioned(
-              right: 57,
-              top: 10,
-              child: CircleAvatar(
-                backgroundColor: primaryColor3,
-                child: InkWell(
-                  onTap: () async {
-                    //generate and open PDF
+            // Positioned(
+            //   right: 57,
+            //   top: 10,
+            //   child: CircleAvatar(
+            //     backgroundColor: primaryColor3,
+            //     child: InkWell(
+            //       onTap: () async {
+            //         //generate and open PDF
 
-                    // final paragraphPdf = await singleTransactionPdfController
-                    //     .generateSingleTransactionPdf(
-                    //   transData: reportsController.transactions,
-                    //   index: index,
-                    // );
+            //         // final paragraphPdf = await singleTransactionPdfController
+            //         //     .generateSingleTransactionPdf(
+            //         //   transData: reportsController.transactions,
+            //         //   index: index,
+            //         // );
 
-                    // SaveAndOpneDocument.openPdf(paragraphPdf);
-                  },
-                  child: const Icon(
-                    Icons.picture_as_pdf,
-                    color: textColor,
-                  ),
-                ),
-              ),
-            ),
+            //         // SaveAndOpneDocument.openPdf(paragraphPdf);
+            //       },
+            //       child: const Icon(
+            //         Icons.picture_as_pdf,
+            //         color: textColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
     );
-
-    // Card(
-    //   margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-    //   child: Padding(
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Text(
-    //           "Payment Date: $formattedDate",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "Transaction ID: ${mainTransaction.paymentId}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "Customer ID: ${mainTransaction.customerId}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "Balance: \$${mainTransaction.balance.toStringAsFixed(2)}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "Status: ${mainTransaction.isActive == 1 ? 'Active' : 'Inactive'}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         _buildSubTransactions(mainTransaction.paymentId),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
 //Sub Payment Card
   Widget _buildSubTransactionCard(
       SalesDetails subTransaction, bool isLastCard) {
     return SizedBox(
-      // height: 80,
       child: Card(
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
@@ -292,7 +305,7 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
             border: Border(
               bottom: isLastCard
                   ? BorderSide.none
-                  : const BorderSide(color: Colors.black26, width: 1),
+                  : const BorderSide(color: Colors.black12, width: 1),
             ),
           ),
           child: ListTile(
@@ -322,37 +335,5 @@ class _ViewPaymentScreenState extends State<ViewPaymentScreen> {
         ),
       ),
     );
-
-    // Card(
-    //   margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-    //   child: Padding(
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Text(
-    //           "itemName: ${subTransaction.itemName}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "quantity: ${subTransaction.quantity.toStringAsFixed(0)}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "rate: \$${subTransaction.rate.toStringAsFixed(2)}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "saleAmount: \$${subTransaction.saleAmount.toStringAsFixed(2)}",
-    //           style: _getTextStyle(),
-    //         ),
-    //         Text(
-    //           "Status: ${subTransaction.isActive == 1 ? 'Active' : 'Inactive'}",
-    //           style: _getTextStyle(),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

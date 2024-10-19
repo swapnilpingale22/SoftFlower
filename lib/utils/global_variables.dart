@@ -21,6 +21,7 @@ List<String> buttonTitles = [
   "Patti",
   "Customers",
   "Payment",
+  "Advance",
 ];
 List<String> allReportsbuttonTitles = [
   "All Patti Reports",
@@ -34,6 +35,7 @@ List<String> buttonIcons = [
   "assets/images/products.png",
   "assets/images/trade.png",
   "assets/images/customer.png",
+  "assets/images/transaction.png",
   "assets/images/transaction.png",
 ];
 

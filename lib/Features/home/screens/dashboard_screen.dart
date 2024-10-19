@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 
 import '../../auth/controller/profile_controller.dart';
 import '../../customer/screens/view_customers_screen.dart';
+import '../../payment/screens/add_advance_screen.dart';
 import '../../payment/screens/add_payment_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -123,7 +124,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: 5,
+                            itemCount: 6,
                             itemBuilder: (context, index) {
                               return ZoomIn(
                                 child: GestureDetector(
@@ -139,6 +140,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       Get.to(() => const CustomersScreen());
                                     } else if (index == 4) {
                                       Get.to(() => const AddPaymentScreen());
+                                    } else if (index == 5) {
+                                      Get.to(() => const AddAdvanceScreen());
                                     }
                                   },
                                   child: Column(

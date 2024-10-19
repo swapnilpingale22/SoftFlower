@@ -729,80 +729,157 @@ class AddTransactionController extends GetxController {
   }
 
   //add product to list
-
   addProduct() {
-    double commissionRate =
-        double.parse(productCommissionController.value.text.trim()) / 100;
+    try {
+      double commissionRate = productCommissionController.value.text
+              .trim()
+              .isNotEmpty
+          ? double.parse(productCommissionController.value.text.trim()) / 100
+          : 0.0;
 
-    log("commissionRate >>>$commissionRate");
+      double itemQuantity =
+          productQuantityController.value.text.trim().isNotEmpty
+              ? double.parse(productQuantityController.value.text.trim())
+              : 0.0;
 
-    double itemQuantity =
-        double.parse(productQuantityController.value.text.trim());
+      double itemRate = productRateController.value.text.trim().isNotEmpty
+          ? double.parse(productRateController.value.text.trim())
+          : 0.0;
 
-    double itemRate = double.parse(productRateController.value.text.trim());
+      double postage = postageController.value.text.trim().isNotEmpty
+          ? double.parse(postageController.value.text.trim())
+          : 0.0;
 
-    // int daag = int.parse(productBoxController.value.text.trim());
+      double motorRent = motorRentController.value.text.trim().isNotEmpty
+          ? double.parse(motorRentController.value.text.trim())
+          : 0.0;
 
-    double postage = double.parse(postageController.value.text.trim());
+      double coolie = coolieController.value.text.trim().isNotEmpty
+          ? double.parse(coolieController.value.text.trim())
+          : 0.0;
 
-    double motorRent = double.parse(motorRentController.value.text.trim());
+      double jagaBhade = jagaBhadeController.value.text.trim().isNotEmpty
+          ? double.parse(jagaBhadeController.value.text.trim())
+          : 0.0;
 
-    double coolie = double.parse(coolieController.value.text.trim());
+      double caret = caretController.value.text.trim().isNotEmpty
+          ? double.parse(caretController.value.text.trim())
+          : 0.0;
 
-    double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
+      // Calculations
+      double totalSaleItem = itemRate * itemQuantity;
+      double actualCommissionItem = totalSaleItem * commissionRate;
 
-    double caret = double.parse(caretController.value.text.trim());
+      double totalExpenseItem = actualCommissionItem +
+          motorRent +
+          coolie +
+          jagaBhade +
+          caret +
+          postage;
 
-    //calculations
+      totalSale += totalSaleItem;
+      totalExpense += totalExpenseItem;
+      actualCommission += actualCommissionItem;
 
-    double totalSaleItem = itemRate * itemQuantity;
+      productModel = ProductModel(
+        itemName: productName.value,
+        itemQuantity: itemQuantity,
+        itemRate: itemRate,
+        totalSale: totalSaleItem,
+        commission: actualCommissionItem,
+      );
 
-    double actualCommissionItem = totalSaleItem * commissionRate;
+      productsList.add(productModel);
+      productCount.value = productsList.length;
 
-    log("actualCommissionItem >>>$actualCommissionItem");
+      // Clear input fields after adding the product
+      productName.value = "";
+      selectedProductId.value = null;
+      productQuantityController.value.clear();
+      productCommissionController.value.clear();
+      productRateController.value.clear();
+    } catch (e) {
+      log("Error adding product: $e");
 
-    // actualMotorRent = motorRent * daag;
-
-    // actualCoolie = coolie * daag;
-
-    // actualJagaBhade = jagaBhade * daag;
-
-    // actualCaret = caret * daag;
-
-    double totalExpenseItem =
-        actualCommissionItem + motorRent + coolie + jagaBhade + caret + postage;
-
-    totalSale += totalSaleItem;
-
-    totalExpense += totalExpenseItem;
-
-    // actualDaag += daag;
-
-    actualCommission += actualCommissionItem;
-
-    log("actualCommission after addition >>>$actualCommission");
-
-    productModel = ProductModel(
-      itemName: productName.value,
-      itemQuantity: itemQuantity,
-      itemRate: itemRate,
-      totalSale: totalSaleItem,
-      commission: actualCommissionItem,
-    );
-
-    productsList.add(productModel);
-    productCount.value = productsList.length;
-
-    // showSnackBar('Total Sale: $totalSale', Get.context!);
-
-    // Clear input fields after adding the product
-    productName.value = "";
-    selectedProductId.value = null;
-    productQuantityController.value.clear();
-    productCommissionController.value.clear();
-    // productBoxController.value.clear();
-    productRateController.value.clear();
+      showSnackBar(
+          'Invalid input detected. Please check your values.', Get.context!);
+    }
   }
+
+  // addProduct() {
+  //   double commissionRate =
+  //       double.parse(productCommissionController.value.text.trim()) / 100;
+
+  //   // log("commissionRate >>>$commissionRate");
+
+  //   double itemQuantity =
+  //       double.parse(productQuantityController.value.text.trim());
+
+  //   double itemRate = double.parse(productRateController.value.text.trim());
+
+  //   // int daag = int.parse(productBoxController.value.text.trim());
+
+  //   double postage =
+  //       double.parse(postageController.value.text.trim() ?? "") ?? 0.0;
+
+  //   double motorRent = double.parse(motorRentController.value.text.trim());
+
+  //   double coolie = double.parse(coolieController.value.text.trim());
+
+  //   double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
+
+  //   double caret = double.parse(caretController.value.text.trim());
+
+  //   //calculations
+
+  //   double totalSaleItem = itemRate * itemQuantity;
+
+  //   double actualCommissionItem = totalSaleItem * commissionRate;
+
+  //   log("actualCommissionItem >>>$actualCommissionItem");
+
+  //   // actualMotorRent = motorRent * daag;
+
+  //   // actualCoolie = coolie * daag;
+
+  //   // actualJagaBhade = jagaBhade * daag;
+
+  //   // actualCaret = caret * daag;
+
+  //   double totalExpenseItem =
+  //       actualCommissionItem + motorRent + coolie + jagaBhade + caret + postage;
+
+  //   totalSale += totalSaleItem;
+
+  //   totalExpense += totalExpenseItem;
+
+  //   // actualDaag += daag;
+
+  //   actualCommission += actualCommissionItem;
+
+  //   log("actualCommission after addition >>>$actualCommission");
+
+  //   productModel = ProductModel(
+  //     itemName: productName.value,
+  //     itemQuantity: itemQuantity,
+  //     itemRate: itemRate,
+  //     totalSale: totalSaleItem,
+  //     commission: actualCommissionItem,
+  //   );
+
+  //   productsList.add(productModel);
+  //   productCount.value = productsList.length;
+
+  //   // showSnackBar('Total Sale: $totalSale', Get.context!);
+
+  //   // Clear input fields after adding the product
+  //   productName.value = "";
+  //   selectedProductId.value = null;
+  //   productQuantityController.value.clear();
+  //   productCommissionController.value.clear();
+  //   // productBoxController.value.clear();
+  //   productRateController.value.clear();
+  // }
 
   removeProduct(int index) {
     // Subtract the product's totalSale from the cumulative totalSale
