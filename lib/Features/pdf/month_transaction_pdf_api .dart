@@ -51,7 +51,7 @@ class MonthTransactionPdfController extends GetxController {
           header: (context) => mainHeader(context, transData, 0),
           footer: (context) => buildFooter(context, transData, font),
           build: (context) => [
-            contentHeader(context, transData, 0, font),
+            contentHeader(context, transData, (transData.length) - 1, font),
             SizedBox(height: 0.5 * PdfPageFormat.cm),
             // ...bulletPoints1(transData, index, formattedDate),
             // SizedBox(height: 0.5 * PdfPageFormat.cm),
@@ -106,7 +106,7 @@ class MonthTransactionPdfController extends GetxController {
     return Column(
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(

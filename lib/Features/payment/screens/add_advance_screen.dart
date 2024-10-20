@@ -167,6 +167,12 @@ class _AddAdvanceScreenState extends State<AddAdvanceScreen> {
                                 if (val == null || val.isEmpty) {
                                   return 'Please enter amount';
                                 }
+                                if (double.tryParse(val) == null) {
+                                  return 'Please enter a valid number';
+                                }
+                                if (double.parse(val) < 0) {
+                                  return 'Value cannot be negative';
+                                }
                                 return null;
                               },
                               controller: addAdvanceController
@@ -174,19 +180,24 @@ class _AddAdvanceScreenState extends State<AddAdvanceScreen> {
                               hintText: 'Enter an amount',
                             ),
                             const SizedBox(height: 10),
-                            Text(
-                              'Remark (optional)',
-                              style: lightTextTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Remark',
+                                  style: lightTextTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  ' (optional)',
+                                  style: lightTextTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ],
                             ),
                             CustomTextField(
-                              // validator: (val) {
-                              //   if (val == null || val.isEmpty) {
-                              //     return 'Please enter remark';
-                              //   }
-                              //   return null;
-                              // },
                               controller:
                                   addAdvanceController.remarkController.value,
                               hintText: 'Enter remark',

@@ -177,6 +177,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter daag/box';
                                       }
+                                      if (int.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (int.parse(val) < 0) {
+                                        return 'Value cannot be negative';
+                                      }
                                       return null;
                                     },
                                     controller: addTransactionController
@@ -200,6 +206,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter motor rent';
                                       }
+                                      if (double.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (double.parse(val) < 0) {
+                                        return 'Motor rent cannot be negative';
+                                      }
                                       return null;
                                     },
                                     controller: addTransactionController
@@ -218,6 +230,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                     validator: (val) {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter jaga bhade';
+                                      }
+                                      if (double.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (double.parse(val) < 0) {
+                                        return 'Value cannot be negative';
                                       }
                                       return null;
                                     },
@@ -238,6 +256,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter coolie';
                                       }
+                                      if (double.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (double.parse(val) < 0) {
+                                        return 'Value cannot be negative';
+                                      }
                                       return null;
                                     },
                                     controller: addTransactionController
@@ -256,6 +280,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                     validator: (val) {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter postage';
+                                      }
+                                      if (double.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (double.parse(val) < 0) {
+                                        return 'Value cannot be negative';
                                       }
                                       return null;
                                     },
@@ -276,7 +306,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                       if (val == null || val.isEmpty) {
                                         return 'Please enter caret';
                                       }
-
+                                      if (double.tryParse(val) == null) {
+                                        return 'Please enter a valid number';
+                                      }
+                                      if (double.parse(val) < 0) {
+                                        return 'Value cannot be negative';
+                                      }
                                       return null;
                                     },
                                     controller: addTransactionController
@@ -370,6 +405,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                         if (val == null || val.isEmpty) {
                                           return 'Please enter commission';
                                         }
+                                        if (double.tryParse(val) == null) {
+                                          return 'Please enter a valid number';
+                                        }
+                                        if (double.parse(val) < 0) {
+                                          return 'Value cannot be negative';
+                                        }
                                         return null;
                                       },
                                       controller: addTransactionController
@@ -402,6 +443,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                                   if (val == null ||
                                                       val.isEmpty) {
                                                     return 'Enter quantity';
+                                                  }
+                                                  if (double.tryParse(val) ==
+                                                      null) {
+                                                    return 'Please enter a valid number';
+                                                  }
+                                                  if (double.parse(val) < 0) {
+                                                    return 'Value cannot be negative';
                                                   }
                                                   return null;
                                                 },
@@ -436,6 +484,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                                   if (val == null ||
                                                       val.isEmpty) {
                                                     return 'Enter rate';
+                                                  }
+                                                  if (double.tryParse(val) ==
+                                                      null) {
+                                                    return 'Please enter a valid number';
+                                                  }
+                                                  if (double.parse(val) < 0) {
+                                                    return 'Value cannot be negative';
                                                   }
                                                   return null;
                                                 },

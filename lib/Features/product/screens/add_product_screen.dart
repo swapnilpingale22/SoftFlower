@@ -44,24 +44,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Text(
-                                //   'Flower Number',
-                                //   style: lightTextTheme.bodyMedium!.copyWith(
-                                //     fontWeight: FontWeight.w500,
-                                //   ),
-                                // ),
-                                // CustomTextField(
-                                //   keyboardType: TextInputType.number,
-                                //   validator: (val) {
-                                //     if (val == null || val.isEmpty) {
-                                //       return 'Please enter flower no';
-                                //     }
-                                //     return null;
-                                //   },
-                                //   controller: addproductController
-                                //       .productNumberController.value,
-                                //   hintText: 'Enter flower no',
-                                // ),
                                 const SizedBox(height: 10),
                                 Text(
                                   'Flower Name',
@@ -81,25 +63,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   hintText: 'Enter flower name',
                                 ),
                                 const SizedBox(height: 10),
-                                // Text(
-                                //   'Quantity',
-                                //   style: lightTextTheme.bodyMedium!.copyWith(
-                                //     fontWeight: FontWeight.w500,
-                                //   ),
-                                // ),
-                                // CustomTextField(
-                                //   keyboardType: TextInputType.number,
-                                //   validator: (val) {
-                                //     if (val == null || val.isEmpty) {
-                                //       return 'Please enter quantity';
-                                //     }
-                                //     return null;
-                                //   },
-                                //   controller: addproductController
-                                //       .productQuantityController.value,
-                                //   hintText: 'Enter quantity',
-                                // ),
-                                // const SizedBox(height: 10),
+
                                 Text(
                                   'Commission',
                                   style: lightTextTheme.bodyMedium!.copyWith(
@@ -111,6 +75,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter commission';
+                                    }
+                                    if (double.tryParse(val) == null) {
+                                      return 'Please enter a valid number';
+                                    }
+                                    if (double.parse(val) < 0) {
+                                      return 'Value cannot be negative';
                                     }
                                     return null;
                                   },

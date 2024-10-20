@@ -90,6 +90,12 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                   if (val == null || val.isEmpty) {
                                     return 'Please enter motor rent';
                                   }
+                                  if (double.tryParse(val) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  if (double.parse(val) < 0) {
+                                    return 'Value cannot be negative';
+                                  }
                                   return null;
                                 },
                                 controller: addAgentController
@@ -108,6 +114,12 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
                                     return 'Please enter jaga bhade';
+                                  }
+                                  if (double.tryParse(val) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  if (double.parse(val) < 0) {
+                                    return 'Value cannot be negative';
                                   }
                                   return null;
                                 },
@@ -128,6 +140,12 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                   if (val == null || val.isEmpty) {
                                     return 'Please enter coolie';
                                   }
+                                  if (double.tryParse(val) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  if (double.parse(val) < 0) {
+                                    return 'Value cannot be negative';
+                                  }
                                   return null;
                                 },
                                 controller:
@@ -147,6 +165,12 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                   if (val == null || val.isEmpty) {
                                     return 'Please enter postage';
                                   }
+                                  if (double.tryParse(val) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  if (double.parse(val) < 0) {
+                                    return 'Value cannot be negative';
+                                  }
                                   return null;
                                 },
                                 controller:
@@ -165,6 +189,12 @@ class _AddAgentScreenState extends State<AddAgentScreen> {
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
                                     return 'Please enter caret';
+                                  }
+                                  if (double.tryParse(val) == null) {
+                                    return 'Please enter a valid number';
+                                  }
+                                  if (double.parse(val) < 0) {
+                                    return 'Value cannot be negative';
                                   }
 
                                   return null;

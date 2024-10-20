@@ -67,25 +67,7 @@ Future<void> showEditProductDialog(
                                               ),
                                             ),
                                             const SizedBox(height: 10),
-                                            // Text(
-                                            //   'Flower Number',
-                                            //   style:
-                                            //       lightTextTheme.bodyMedium!.copyWith(
-                                            //     fontWeight: FontWeight.w500,
-                                            //   ),
-                                            // ),
-                                            // CustomTextField(
-                                            //   keyboardType: TextInputType.number,
-                                            //   validator: (val) {
-                                            //     if (val == null || val.isEmpty) {
-                                            //       return 'Please enter flower no';
-                                            //     }
-                                            //     return null;
-                                            //   },
-                                            //   controller: editProductController
-                                            //       .productNumberController.value,
-                                            //   hintText: 'Enter flower no',
-                                            // ),
+
                                             const SizedBox(height: 10),
                                             Text(
                                               'Flower Name',
@@ -107,26 +89,6 @@ Future<void> showEditProductDialog(
                                               hintText: 'Enter flower name',
                                             ),
                                             const SizedBox(height: 10),
-                                            // Text(
-                                            //   'Quantity',
-                                            //   style:
-                                            //       lightTextTheme.bodyMedium!.copyWith(
-                                            //     fontWeight: FontWeight.w500,
-                                            //   ),
-                                            // ),
-                                            // CustomTextField(
-                                            //   keyboardType: TextInputType.number,
-                                            //   validator: (val) {
-                                            //     if (val == null || val.isEmpty) {
-                                            //       return 'Please enter quantity';
-                                            //     }
-                                            //     return null;
-                                            //   },
-                                            //   controller: editProductController
-                                            //       .productQuantityController.value,
-                                            //   hintText: 'Enter quantity',
-                                            // ),
-                                            // const SizedBox(height: 10),
                                             Text(
                                               'Commission',
                                               style: lightTextTheme.bodyMedium!
@@ -141,6 +103,13 @@ Future<void> showEditProductDialog(
                                                 if (val == null ||
                                                     val.isEmpty) {
                                                   return 'Please enter commission';
+                                                }
+                                                if (double.tryParse(val) ==
+                                                    null) {
+                                                  return 'Please enter a valid number';
+                                                }
+                                                if (double.parse(val) < 0) {
+                                                  return 'Value cannot be negative';
                                                 }
                                                 return null;
                                               },

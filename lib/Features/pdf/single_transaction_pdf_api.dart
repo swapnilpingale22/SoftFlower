@@ -113,7 +113,7 @@ class SingleTransactionPdfController extends GetxController {
     return Column(
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
@@ -305,27 +305,6 @@ class SingleTransactionPdfController extends GetxController {
             ],
           ),
         ),
-        // Row(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     Expanded(
-        //       child: Container(
-        //         margin:
-        //             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        //         height: 30,
-        //         child: Text(
-        //           'Total: \u20B9${transData[index].totalBalance.toStringAsFixed(2)}',
-        //           style: TextStyle(
-        //             fontSize: 28,
-        //             font: font,
-        //             color: tealColor,
-        //             fontWeight: FontWeight.bold,
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
@@ -345,15 +324,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-            //  Bullet(
-            //   text: 'Daag:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 3,
@@ -366,7 +336,6 @@ class SingleTransactionPdfController extends GetxController {
               ),
             ),
           ),
-          // Expanded(flex: 2, child: SizedBox())
         ],
       ),
     ];
@@ -388,15 +357,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-            // Bullet(
-            //   text: 'Total Sale:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,
@@ -424,15 +384,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-            // Bullet(
-            //   text: 'Commission:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,
@@ -460,15 +411,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-            // Bullet(
-            //   text: 'Motor Rent:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,
@@ -496,16 +438,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-
-            // Bullet(
-            //   text: 'Coolie:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,
@@ -533,15 +465,6 @@ class SingleTransactionPdfController extends GetxController {
                 font: font,
               ),
             ),
-            //  Bullet(
-            //   text: 'Total Expense:',
-            //   style: TextStyle(
-            //     fontSize: 22,
-            //     font: font,
-            //   ),
-            //   bulletMargin: const EdgeInsets.only(top: 9, right: 5),
-            //   bulletSize: 3 * PdfPageFormat.mm,
-            // ),
           ),
           Expanded(
             flex: 2,

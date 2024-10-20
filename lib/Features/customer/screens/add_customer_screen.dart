@@ -76,6 +76,12 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                                     if (val == null || val.isEmpty) {
                                       return 'Please enter opening balance';
                                     }
+                                    if (double.tryParse(val) == null) {
+                                      return 'Please enter a valid number';
+                                    }
+                                    if (double.parse(val) < 0) {
+                                      return 'Value cannot be negative';
+                                    }
                                     return null;
                                   },
                                   controller: addCustomerController

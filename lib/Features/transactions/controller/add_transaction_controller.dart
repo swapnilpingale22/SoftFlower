@@ -15,6 +15,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../auth/models/user_model.dart' as model;
+
 class AddTransactionController extends GetxController {
   final transactionFormKey = GlobalKey<FormState>();
   final productListFormKey = GlobalKey<FormState>();
@@ -91,12 +93,14 @@ class AddTransactionController extends GetxController {
   var productCount = 0.obs;
   RxBool isBackDated = false.obs;
 
+  Rx<model.User?> userData = Rx<model.User?>(null);
+
   @override
   void onInit() {
     super.onInit();
     fetchAgents();
-    // fetchCompanies();
     fetchProducts();
+    getUserData();
     filteredAgents.value = agents;
     filteredProducts.value = products;
   }
@@ -133,28 +137,31 @@ class AddTransactionController extends GetxController {
   void updateCalculatedFields() {
     String daagValue = productBoxController.value.text;
 
-    if (daagValue.isNotEmpty && daagValue != "0") {
-      int daag = int.parse(productBoxController.value.text.trim());
+    if (daagValue.isNotEmpty &&
+        int.tryParse(daagValue) != null &&
+        daagValue != "-" &&
+        daagValue != "0") {
+      int daag = int.parse(daagValue);
 
       actualMotorRent.value = initialMotorRent.value * daag;
       actualJagaBhade.value = initialJagaBhade.value * daag;
       actualCoolie.value = initialCoolie.value * daag;
       actualCaret.value = initialCaret.value * daag;
 
-      motorRentController.value.text = actualMotorRent.toString();
-      jagaBhadeController.value.text = actualJagaBhade.toString();
-      coolieController.value.text = actualCoolie.toString();
-      caretController.value.text = actualCaret.toString();
+      motorRentController.value.text = actualMotorRent.toStringAsFixed(2);
+      jagaBhadeController.value.text = actualJagaBhade.toStringAsFixed(2);
+      coolieController.value.text = actualCoolie.toStringAsFixed(2);
+      caretController.value.text = actualCaret.toStringAsFixed(2);
     } else {
       actualMotorRent.value = initialMotorRent.value;
       actualJagaBhade.value = initialJagaBhade.value;
       actualCoolie.value = initialCoolie.value;
       actualCaret.value = initialCaret.value;
 
-      motorRentController.value.text = actualMotorRent.toString();
-      jagaBhadeController.value.text = actualJagaBhade.toString();
-      coolieController.value.text = actualCoolie.toString();
-      caretController.value.text = actualCaret.toString();
+      motorRentController.value.text = actualMotorRent.toStringAsFixed(2);
+      jagaBhadeController.value.text = actualJagaBhade.toStringAsFixed(2);
+      coolieController.value.text = actualCoolie.toStringAsFixed(2);
+      caretController.value.text = actualCaret.toStringAsFixed(2);
     }
   }
 
@@ -290,11 +297,11 @@ class AddTransactionController extends GetxController {
     );
     if (agent != null) {
       agentName.value = agent.agentName;
-      motorRentController.value.text = agent.motorRent.toString();
-      coolieController.value.text = agent.coolie.toString();
-      jagaBhadeController.value.text = agent.jagaBhade.toString();
-      postageController.value.text = agent.postage.toString();
-      caretController.value.text = agent.caret.toString();
+      motorRentController.value.text = agent.motorRent.toStringAsFixed(2);
+      coolieController.value.text = agent.coolie.toStringAsFixed(2);
+      jagaBhadeController.value.text = agent.jagaBhade.toStringAsFixed(2);
+      postageController.value.text = agent.postage.toStringAsFixed(2);
+      caretController.value.text = agent.caret.toStringAsFixed(2);
       //set initial values
       initialMotorRent.value = agent.motorRent;
       initialJagaBhade.value = agent.jagaBhade;
@@ -314,6 +321,23 @@ class AddTransactionController extends GetxController {
     }
   }
 
+  //get company details
+  void getUserData() async {
+    isLoading.value = true;
+
+    final uid = _auth.currentUser!.uid;
+
+    try {
+      var userSnap =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      userData.value = model.User.fromSnap(userSnap);
+    } catch (e) {
+      showSnackBar(e.toString(), Get.context!);
+    }
+    isLoading.value = false;
+  }
+
   //save transaction
 
   Future<String> addTransactionMain({
@@ -331,17 +355,7 @@ class AddTransactionController extends GetxController {
     required double totalExpense,
     required String companyId,
     required String companyAddress,
-    //total sale
-    // required double totalSale,
     required DateTime transactionDate,
-    //transaction id
-    //
-    // required String itemName, //2
-    // required int quantity, //2
-    // required double rate, //2
-    //each total sale
-    //transaction details id
-    //transaction main id
   }) async {
     String res = "Some error occured";
     final userId = _auth.currentUser!.uid;
@@ -462,56 +476,6 @@ class AddTransactionController extends GetxController {
       }
 
       _saveTransactionToDB(selectedDateWithoutTime);
-
-      // String res = await addTransactionMain(
-      //   transactionDate: selectedDate,
-      //   agentId: selectedAgentId.value ?? "",
-      //   agentName: agentName.value,
-      //   productId: selectedProductId.value ?? "",
-      //   daag: int.parse(productBoxController.value.text.trim()),
-      //   commission: actualCommission,
-      //   motorRent: double.parse(motorRentController.value.text.trim()),
-      //   coolie: double.parse(coolieController.value.text.trim()),
-      //   jagaBhade: double.parse(jagaBhadeController.value.text.trim()),
-      //   postage: double.parse(postageController.value.text.trim()),
-      //   caret: double.parse(caretController.value.text.trim()),
-      //   totalExpense: totalExpense,
-      //   totalBalance: totalBalance,
-      //   // companyId: selectedCompanyId.value ?? "",
-      //   companyId: "Softflower",
-      //   companyAddress: "Dadar, Mumbai, 420064, Milind Ghag, 7710008987",
-      //   // "${companyAddress.value}, ${companyCity.value}, ${companyPincode.value}, \n${companyOwnerName.value}, ${companyMobNo.value}",
-      // );
-
-      // if (res == "Success") {
-      //   agentName.value = "";
-      //   productBoxController.value.clear();
-      //   productCommissionController.value.clear();
-      //   motorRentController.value.clear();
-      //   coolieController.value.clear();
-      //   jagaBhadeController.value.clear();
-      //   postageController.value.clear();
-      //   caretController.value.clear();
-      //   totalSale = 0.0;
-      //   totalExpense = 0.0;
-      //   totalBalance = 0.0;
-      //   actualCommission = 0.0;
-      //   actualMotorRent.value = 0.0;
-      //   actualCoolie.value = 0.0;
-      //   actualJagaBhade.value = 0.0;
-      //   actualCaret.value = 0.0;
-      //   // actualDaag = 0;
-      //   productsList.clear();
-
-      //   // isLoading.value = false;
-      //   isSaveLoading.value = false;
-      //   Get.back();
-      //   showSnackBar('Patti saved', Get.context!);
-      // } else {
-      //   isSaveLoading.value = false;
-
-      //   showSnackBar(res, Get.context!);
-      // }
     } catch (e) {
       isSaveLoading.value = false;
       log(e.toString());
@@ -522,22 +486,25 @@ class AddTransactionController extends GetxController {
   void _saveTransactionToDB(DateTime selectedDateWithoutTime) async {
     isSaveLoading2.value = true;
     String res = await addTransactionMain(
-      transactionDate: selectedDateWithoutTime,
-      agentId: selectedAgentId.value ?? "",
-      agentName: agentName.value,
-      productId: selectedProductId.value ?? "",
-      daag: int.parse(productBoxController.value.text.trim()),
-      commission: actualCommission,
-      motorRent: double.parse(motorRentController.value.text.trim()),
-      coolie: double.parse(coolieController.value.text.trim()),
-      jagaBhade: double.parse(jagaBhadeController.value.text.trim()),
-      postage: double.parse(postageController.value.text.trim()),
-      caret: double.parse(caretController.value.text.trim()),
-      totalExpense: totalExpense,
-      totalBalance: totalBalance,
-      companyId: "Softflower",
-      companyAddress: "Prop: Milind Ghag, \nMob: 7710008987",
-    );
+        transactionDate: selectedDateWithoutTime,
+        agentId: selectedAgentId.value ?? "",
+        agentName: agentName.value,
+        productId: selectedProductId.value ?? "",
+        daag: int.parse(productBoxController.value.text.trim()),
+        commission: actualCommission,
+        motorRent: double.parse(motorRentController.value.text.trim()),
+        coolie: double.parse(coolieController.value.text.trim()),
+        jagaBhade: double.parse(jagaBhadeController.value.text.trim()),
+        postage: double.parse(postageController.value.text.trim()),
+        caret: double.parse(caretController.value.text.trim()),
+        totalExpense: totalExpense,
+        totalBalance: totalBalance,
+        companyId: userData.value?.companyName ?? "Softflower",
+        companyAddress: userData.value?.ownerName == "Milind Ghag"
+            ? "Prop: ${userData.value?.ownerName}, \nMob: ${userData.value?.mobileNumber}"
+            : "Prop: ${userData.value?.ownerName}, \nMob: ${userData.value?.mobileNumber} \n${userData.value?.address}, ${userData.value?.city} - ${userData.value?.pincode}"
+        // "Prop: Milind Ghag, \nMob: 7710008987",
+        );
 
     if (res == "Success") {
       // Clear the form and show success snackbar
@@ -809,56 +776,32 @@ class AddTransactionController extends GetxController {
   // addProduct() {
   //   double commissionRate =
   //       double.parse(productCommissionController.value.text.trim()) / 100;
-
   //   // log("commissionRate >>>$commissionRate");
-
   //   double itemQuantity =
   //       double.parse(productQuantityController.value.text.trim());
-
   //   double itemRate = double.parse(productRateController.value.text.trim());
-
   //   // int daag = int.parse(productBoxController.value.text.trim());
-
   //   double postage =
   //       double.parse(postageController.value.text.trim() ?? "") ?? 0.0;
-
   //   double motorRent = double.parse(motorRentController.value.text.trim());
-
   //   double coolie = double.parse(coolieController.value.text.trim());
-
   //   double jagaBhade = double.parse(jagaBhadeController.value.text.trim());
-
   //   double caret = double.parse(caretController.value.text.trim());
-
   //   //calculations
-
   //   double totalSaleItem = itemRate * itemQuantity;
-
   //   double actualCommissionItem = totalSaleItem * commissionRate;
-
   //   log("actualCommissionItem >>>$actualCommissionItem");
-
   //   // actualMotorRent = motorRent * daag;
-
   //   // actualCoolie = coolie * daag;
-
   //   // actualJagaBhade = jagaBhade * daag;
-
   //   // actualCaret = caret * daag;
-
   //   double totalExpenseItem =
   //       actualCommissionItem + motorRent + coolie + jagaBhade + caret + postage;
-
   //   totalSale += totalSaleItem;
-
   //   totalExpense += totalExpenseItem;
-
   //   // actualDaag += daag;
-
   //   actualCommission += actualCommissionItem;
-
   //   log("actualCommission after addition >>>$actualCommission");
-
   //   productModel = ProductModel(
   //     itemName: productName.value,
   //     itemQuantity: itemQuantity,
@@ -866,12 +809,9 @@ class AddTransactionController extends GetxController {
   //     totalSale: totalSaleItem,
   //     commission: actualCommissionItem,
   //   );
-
   //   productsList.add(productModel);
   //   productCount.value = productsList.length;
-
   //   // showSnackBar('Total Sale: $totalSale', Get.context!);
-
   //   // Clear input fields after adding the product
   //   productName.value = "";
   //   selectedProductId.value = null;
@@ -882,13 +822,9 @@ class AddTransactionController extends GetxController {
   // }
 
   removeProduct(int index) {
-    // Subtract the product's totalSale from the cumulative totalSale
     totalSale -= productsList[index].totalSale;
     actualCommission -= productsList[index].commission;
-    log("actualCommission after remove >>>$actualCommission");
     productsList.removeAt(index);
     productCount.value = productsList.length;
-
-    // showSnackBar('Total Sale: $totalSale', Get.context!);
   }
 }

@@ -1,10 +1,10 @@
-class CustomData {
-  const CustomData({
-    this.name = '[your name]',
-    this.testing = false,
-  });
+// class CustomData {
+//   const CustomData({
+//     this.name = '[your name]',
+//     this.testing = false,
+//   });
 
-  final String name;
+//   final String name;
 
-  final bool testing;
-}
+//   final bool testing;
+// }

@@ -282,6 +282,13 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                                               if (val == null || val.isEmpty) {
                                                 return 'Enter quantity';
                                               }
+                                              if (double.tryParse(val) ==
+                                                  null) {
+                                                return 'Invalid number';
+                                              }
+                                              if (double.parse(val) < 0) {
+                                                return 'Negative value';
+                                              }
                                               return null;
                                             },
                                             controller: addPaymentController
@@ -311,6 +318,13 @@ class _AddPaymentScreenState extends State<AddPaymentScreen> {
                                             validator: (val) {
                                               if (val == null || val.isEmpty) {
                                                 return 'Enter rate';
+                                              }
+                                              if (double.tryParse(val) ==
+                                                  null) {
+                                                return 'Invalid number';
+                                              }
+                                              if (double.parse(val) < 0) {
+                                                return 'Negative value';
                                               }
                                               return null;
                                             },
